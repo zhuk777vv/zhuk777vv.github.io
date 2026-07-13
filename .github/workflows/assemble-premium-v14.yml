@@ -1,0 +1,42 @@
+name: Assemble premium v14
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'premium-v14/source/**'
+      - '.github/workflows/assemble-premium-v14.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  assemble:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble production site
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat premium-v14/source/package.part* | base64 --decode > /tmp/premium-v14.zip
+          rm -rf /tmp/premium-v14-out
+          mkdir -p /tmp/premium-v14-out
+          unzip -q /tmp/premium-v14.zip -d /tmp/premium-v14-out
+          rm -rf premium-v14/assets premium-v14/index.html premium-v14/styles.css premium-v14/app.js premium-v14/robots.txt premium-v14/sitemap.xml
+          cp -R /tmp/premium-v14-out/. premium-v14/
+          rm -rf premium-v14/source
+          node --check premium-v14/app.js
+          test -s premium-v14/index.html
+          test -s premium-v14/styles.css
+          test -s premium-v14/assets/glass-before.webp
+          test -s premium-v14/assets/glass-after.webp
+      - name: Commit assembled files
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add premium-v14
+          git diff --cached --quiet || git commit -m 'Assemble premium v14 production site'
+          git push
