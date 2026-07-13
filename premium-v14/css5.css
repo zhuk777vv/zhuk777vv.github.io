@@ -1,0 +1,3 @@
+@media(max-width:390px){.hero h1{font-size:42px}.proof-head h2{font-size:27px}.state-label span{display:none}.proof-economy b{font-size:18px}.section-heading h2,.trust-copy h2,.deliverable h2,.calculator-intro h2,.limits h2,.final h2{font-size:37px}.decision-numbers article b{font-size:29px}.brand{font-size:8px}.nav-action{padding:0 11px}.loss-meter>strong{font-size:41px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+.macro-before-image,.macro-after-image{object-position:72% 48%!important;transform:scale(1.75)}
