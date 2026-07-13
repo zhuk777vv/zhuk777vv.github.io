@@ -25,7 +25,9 @@ jobs:
           mkdir -p premium-v14/assets
           base64 --decode premium-v12/before.b64 > premium-v14/assets/glass-before.webp
           base64 --decode premium-v12/after.b64 > premium-v14/assets/glass-after.webp
-          curl -L --fail --retry 3 --connect-timeout 15 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=84' -o premium-v14/assets/specialist.webp
+          curl -L --fail --retry 3 --connect-timeout 15 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=84' -o premium-v14/assets/specialist.jpg
+          rm -f premium-v14/assets/specialist.webp
+          sed -i 's/assets\/specialist\.webp/assets\/specialist.jpg/g' premium-v14/index.html
           cat premium-v14/css1.css premium-v14/css2.css premium-v14/css3.css premium-v14/css4.css premium-v14/css5.css > premium-v14/styles.css
           cat > premium-v14/assets/favicon.svg <<'SVG'
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#0b1015"/><path d="M18 14h12v36H18z" fill="#d9edf1"/><path d="M34 14h12v36H34z" fill="#9fcbd5"/><path d="M30 14h4v36h-4z" fill="#fff" opacity=".85"/></svg>
@@ -44,9 +46,10 @@ jobs:
           test -s premium-v14/styles.css
           test -s premium-v14/assets/glass-before.webp
           test -s premium-v14/assets/glass-after.webp
-          test -s premium-v14/assets/specialist.webp
+          test -s premium-v14/assets/specialist.jpg
           file premium-v14/assets/glass-before.webp | grep -qi webp
           file premium-v14/assets/glass-after.webp | grep -qi webp
+          file premium-v14/assets/specialist.jpg | grep -qi jpeg
       - name: Commit finalized site
         shell: bash
         run: |
