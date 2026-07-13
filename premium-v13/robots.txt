@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://zhuk777vv.github.io/premium-v13/sitemap.xml
