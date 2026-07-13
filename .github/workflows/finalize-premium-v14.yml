@@ -1,0 +1,57 @@
+name: Finalize premium v14
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/finalize-premium-v14.yml'
+      - 'premium-v14/**'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build production assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p premium-v14/assets
+          base64 --decode premium-v12/before.b64 > premium-v14/assets/glass-before.webp
+          base64 --decode premium-v12/after.b64 > premium-v14/assets/glass-after.webp
+          curl -L --fail --retry 3 --connect-timeout 15 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=84' -o premium-v14/assets/specialist.webp
+          cat premium-v14/css1.css premium-v14/css2.css premium-v14/css3.css premium-v14/css4.css premium-v14/css5.css > premium-v14/styles.css
+          cat > premium-v14/assets/favicon.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#0b1015"/><path d="M18 14h12v36H18z" fill="#d9edf1"/><path d="M34 14h12v36H34z" fill="#9fcbd5"/><path d="M30 14h4v36h-4z" fill="#fff" opacity=".85"/></svg>
+          SVG
+          cat > premium-v14/robots.txt <<'TXT'
+          User-agent: *
+          Allow: /
+          Sitemap: https://zhuk777vv.github.io/premium-v14/sitemap.xml
+          TXT
+          cat > premium-v14/sitemap.xml <<'XML'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://zhuk777vv.github.io/premium-v14/</loc><lastmod>2026-07-13</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>
+          XML
+          node --check premium-v14/app.js
+          test -s premium-v14/index.html
+          test -s premium-v14/styles.css
+          test -s premium-v14/assets/glass-before.webp
+          test -s premium-v14/assets/glass-after.webp
+          test -s premium-v14/assets/specialist.webp
+          file premium-v14/assets/glass-before.webp | grep -qi webp
+          file premium-v14/assets/glass-after.webp | grep -qi webp
+      - name: Commit finalized site
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add premium-v14
+          git diff --cached --quiet || git commit -m 'Finalize premium v14 production site'
+          git push
