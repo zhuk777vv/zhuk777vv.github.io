@@ -1,0 +1,146 @@
+name: Audit premium v14 final
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'premium-v14/**'
+      - '.github/workflows/audit-premium-v14-final.yml'
+      - '.audit-v14-trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install browser audit tools
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright @axe-core/playwright
+          npx playwright install --with-deps chromium
+      - name: Run production audit
+        shell: bash
+        run: |
+          cat > /tmp/audit-v14.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import AxeBuilder from '@axe-core/playwright';
+          import fs from 'node:fs';
+          import { spawn } from 'node:child_process';
+
+          const server = spawn('python3', ['-m','http.server','8765','--bind','127.0.0.1'], {stdio:'ignore'});
+          const sleep = ms => new Promise(r=>setTimeout(r,ms));
+          await sleep(1200);
+
+          const viewports = [
+            {name:'iphone-se', width:360, height:800},
+            {name:'iphone-14', width:390, height:844},
+            {name:'large-phone', width:430, height:932},
+            {name:'desktop', width:1440, height:1000}
+          ];
+          const results=[];
+          let failed=false;
+          const browser=await chromium.launch({headless:true});
+
+          for (const vp of viewports) {
+            const context=await browser.newContext({viewport:{width:vp.width,height:vp.height},deviceScaleFactor:1});
+            const page=await context.newPage();
+            const consoleErrors=[]; const pageErrors=[]; const requestFailures=[];
+            page.on('console',m=>{if(m.type()==='error')consoleErrors.push(m.text())});
+            page.on('pageerror',e=>pageErrors.push(String(e)));
+            page.on('requestfailed',r=>requestFailures.push(`${r.method()} ${r.url()} ${r.failure()?.errorText||''}`));
+            const checks=[];
+            const check=(name,ok,detail='')=>{checks.push({name,ok:Boolean(ok),detail});if(!ok)failed=true};
+
+            const response=await page.goto('http://127.0.0.1:8765/premium-v14/?utm_source=audit&utm_medium=qa', {waitUntil:'networkidle'});
+            check('HTTP 200', response?.status()===200, `status=${response?.status()}`);
+            check('No console errors', consoleErrors.length===0, consoleErrors.join(' | '));
+            check('No page errors', pageErrors.length===0, pageErrors.join(' | '));
+            check('No failed requests', requestFailures.length===0, requestFailures.join(' | '));
+
+            const dimensions=await page.evaluate(()=>({innerWidth,scrollWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth}));
+            check('No horizontal overflow', dimensions.scrollWidth<=dimensions.innerWidth+1 && dimensions.bodyWidth<=dimensions.innerWidth+1, JSON.stringify(dimensions));
+
+            const brokenImages=await page.evaluate(()=>[...document.images].filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.getAttribute('src')));
+            check('All images loaded', brokenImages.length===0, brokenImages.join(', '));
+            check('Hero offer present', (await page.locator('h1').innerText()).trim()==='Не меняйте стекло из-за царапин');
+            check('Primary Telegram CTA', (await page.locator('.hero-actions a').first().getAttribute('href'))==='https://t.me/zhukov_boss');
+            check('Phone CTA', await page.locator('a[href="tel:+79919917991"]').count()>0);
+
+            await page.locator('[data-state="before"]').click();
+            let split=await page.locator('#beforeAfter').evaluate(el=>parseFloat(getComputedStyle(el).getPropertyValue('--split')));
+            check('Before button shows damaged glass', split>=99, `split=${split}`);
+            await page.locator('[data-state="after"]').click();
+            split=await page.locator('#beforeAfter').evaluate(el=>parseFloat(getComputedStyle(el).getPropertyValue('--split')));
+            check('After button shows restored glass', split<=1, `split=${split}`);
+            await page.locator('[data-state="compare"]').click();
+            split=await page.locator('#beforeAfter').evaluate(el=>parseFloat(getComputedStyle(el).getPropertyValue('--split')));
+            check('Compare button restores split view', split>=45&&split<=59, `split=${split}`);
+            check('Slider accessibility role', (await page.locator('#splitHandle').getAttribute('role'))==='slider');
+            check('Correct before label', (await page.locator('.state-before b').innerText()).trim()==='ДО');
+            check('Correct after label', (await page.locator('.state-after b').innerText()).trim()==='ПОСЛЕ');
+
+            check('Restore scenario is default', (await page.locator('#decisionMoney').innerText()).includes('96 000'));
+            await page.locator('[data-mode="replace"]').click();
+            await page.waitForTimeout(650);
+            check('Replace scenario switches to 312k', (await page.locator('#decisionMoney').innerText()).includes('312 000'));
+            await page.locator('[data-mode="restore"]').click();
+            await page.waitForTimeout(650);
+            check('Restore scenario switches back', (await page.locator('#decisionMoney').innerText()).includes('96 000'));
+
+            const calcDefault=await page.evaluate(()=>({replacement:document.querySelector('#replacementRange')?.textContent,restoration:document.querySelector('#restorationRange')?.textContent,saving:document.querySelector('#savingMoney')?.textContent,verdict:document.querySelector('#calcVerdict')?.textContent}));
+            check('Calculator renders money', !Object.values(calcDefault).some(v=>!v||v.includes('—')||v.includes('NaN')), JSON.stringify(calcDefault));
+            await page.locator('input[name="known"]').fill('10000');
+            await page.locator('input[name="known"]').dispatchEvent('input');
+            check('Calculator handles uneconomic case', (await page.locator('#savingBlock').getAttribute('class')).includes('negative'));
+            await page.locator('input[name="known"]').fill('1000000');
+            await page.locator('input[name="known"]').dispatchEvent('input');
+            check('Calculator handles high saving case', !(await page.locator('#savingBlock').getAttribute('class')).includes('negative'));
+
+            await page.locator('#economics').scrollIntoViewIfNeeded();
+            await page.evaluate(()=>window.scrollTo(0,document.querySelector('#economics').offsetTop+document.querySelector('#economics').offsetHeight));
+            await page.waitForTimeout(700);
+            check('Loss counter reaches total', (await page.locator('#lossMoney').innerText()).includes('312 000'), await page.locator('#lossMoney').innerText());
+
+            const axe=await new AxeBuilder({page}).disableRules(['color-contrast']).analyze();
+            const serious=axe.violations.filter(v=>['serious','critical'].includes(v.impact));
+            check('No serious accessibility violations', serious.length===0, serious.map(v=>`${v.id}:${v.nodes.length}`).join(', '));
+
+            if(vp.width<=430){
+              await page.locator('#calculator').scrollIntoViewIfNeeded();
+              await page.locator('input[name="area"]').focus();
+              await page.waitForTimeout(250);
+              check('Mobile CTA hides while typing', await page.locator('#mobileCta').evaluate(el=>el.classList.contains('keyboard')));
+            }
+
+            await page.screenshot({path:`audit-${vp.name}.png`,fullPage:true});
+            results.push({...vp,checks,consoleErrors,pageErrors,requestFailures,calcDefault});
+            await context.close();
+          }
+
+          await browser.close();
+          server.kill('SIGTERM');
+          const lines=[];
+          for(const r of results){lines.push(`\n[${r.name} ${r.width}x${r.height}]`);for(const c of r.checks)lines.push(`${c.ok?'PASS':'FAIL'} | ${c.name}${c.detail?' | '+c.detail:''}`)}
+          lines.push(`\nFINAL: ${failed?'FAILED':'PASSED'}`);
+          fs.writeFileSync('audit-report.txt',lines.join('\n'));
+          fs.writeFileSync('audit-report.json',JSON.stringify(results,null,2));
+          console.log(lines.join('\n'));
+          if(failed)process.exit(1);
+          JS
+          node /tmp/audit-v14.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: premium-v14-final-audit
+          path: |
+            audit-report.txt
+            audit-report.json
+            audit-*.png
+          retention-days: 7
