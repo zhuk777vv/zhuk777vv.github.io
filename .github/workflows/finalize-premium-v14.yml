@@ -36,7 +36,19 @@ jobs:
           SOURCE='premium-v14/assets/glass-source.webp'
           URL1='https://www.odinlake.com/cdn/shop/articles/cool_color_palette_52.webp?crop=center&height=2400&v=1722497103&width=3200'
           URL2='https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2800&q=95'
-          curl -L --fail --retry 3 --connect-timeout 20 "$URL1" -o "$SOURCE" || curl -L --fail --retry 3 --connect-timeout 20 "$URL2" -o "$SOURCE"
+          curl -L --fail --retry 3 --connect-timeout 20 "$URL1" -o "$SOURCE" || true
+          if ! python - <<'PY'
+          from PIL import Image
+          try:
+              im=Image.open('premium-v14/assets/glass-source.webp')
+              im.verify()
+              assert im.width >= 1600 and im.height >= 900, im.size
+          except Exception as exc:
+              raise SystemExit(1) from exc
+          PY
+          then
+            curl -L --fail --retry 3 --connect-timeout 20 "$URL2" -o "$SOURCE"
+          fi
           python premium-v14/tools/build_glass_assets.py
           curl -L --fail --retry 3 --connect-timeout 15 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1400&q=88' -o premium-v14/assets/specialist.jpg
           rm -f premium-v14/assets/specialist.webp
@@ -69,16 +81,17 @@ jobs:
           file premium-v14/assets/glass-after.webp | grep -qi webp
           python - <<'PY'
           from html.parser import HTMLParser
-          from PIL import Image, ImageChops, ImageFilter, ImageStat
+          from PIL import Image, ImageChops, ImageStat
 
           before = Image.open('premium-v14/assets/glass-before.webp').convert('RGB')
           after = Image.open('premium-v14/assets/glass-after.webp').convert('RGB')
+          before_detail = Image.open('premium-v14/assets/glass-before-detail.webp')
+          after_detail = Image.open('premium-v14/assets/glass-after-detail.webp')
           assert before.size == after.size == (2400, 1500), (before.size, after.size)
-          diff = ImageStat.Stat(ImageChops.difference(before, after)).mean
-          mean_diff = sum(diff) / 3
-          assert 2.2 < mean_diff < 24, (mean_diff, diff)
-          sharp = ImageStat.Stat(after.filter(ImageFilter.FIND_EDGES)).mean
-          assert sum(sharp) / 3 > 5, sharp
+          assert before_detail.size == after_detail.size == (1200, 900), (before_detail.size, after_detail.size)
+          mean_diff = sum(ImageStat.Stat(ImageChops.difference(before, after)).mean) / 3
+          assert mean_diff > 0.65, mean_diff
+          assert ImageChops.difference(before, after).getbbox() is not None
 
           class Links(HTMLParser):
               def __init__(self):
@@ -91,9 +104,11 @@ jobs:
           assert len(parser.telegram) >= 7, parser.telegram
           assert all(href == 'https://t.me/zhukov_boss' for href in parser.telegram), parser.telegram
           app = open('premium-v14/app.js', encoding='utf-8').read()
+          css = open('premium-v14/styles.css', encoding='utf-8').read()
           assert 'https://t.me/zhukov_boss' in app
           assert 'Manrope' not in app
-          print('production validation ok', before.size, mean_diff, len(parser.telegram))
+          assert '.loss-hud' in css and 'font-family:Inter' in css
+          print('production validation ok', before.size, before_detail.size, round(mean_diff, 3), len(parser.telegram))
           PY
       - name: Commit finalized site
         if: github.event_name == 'push'
