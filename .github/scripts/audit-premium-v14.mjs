@@ -13,6 +13,7 @@ const viewports = [
 await fs.mkdir('audit-output', { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const failures = [];
+const notes = [];
 
 for (const viewport of viewports) {
   const context = await browser.newContext({ viewport });
@@ -46,6 +47,8 @@ for (const viewport of viewports) {
   await page.waitForTimeout(850);
   const afterSplit = await page.locator('#splitHandle').getAttribute('aria-valuenow');
   if (Number(beforeSplit) > 8 || Number(afterSplit) < 92) failures.push(`${viewport.name}: before/after controls failed`);
+  await page.locator('[data-state="compare"]').click();
+  await page.waitForTimeout(850);
 
   await page.locator('[data-mode="replace"]').click();
   await page.waitForTimeout(650);
@@ -64,27 +67,38 @@ for (const viewport of viewports) {
   }));
   if (Object.values(calcValues).some(value => !value || value === '—')) failures.push(`${viewport.name}: calculator did not update`);
 
-  await page.locator('#economics').scrollIntoViewIfNeeded();
-  const lossBox = await page.locator('#economics').boundingBox();
-  if (lossBox) {
-    await page.evaluate(y => scrollTo(0, y), lossBox.y + lossBox.height * 0.72);
-    await page.waitForTimeout(700);
-    const lossMoney = (await page.locator('#lossMoney').textContent())?.replace(/\s/g, '');
-    if (!lossMoney || lossMoney === '0₽') failures.push(`${viewport.name}: scrolling money counter did not update`);
-  }
+  const targetY = await page.locator('#economics').evaluate(el => el.offsetTop + el.offsetHeight * 0.7);
+  await page.evaluate(y => scrollTo({ top: y, behavior: 'instant' }), targetY);
+  await page.waitForTimeout(800);
+  const lossMoney = (await page.locator('#lossMoney').textContent())?.replace(/\s/g, '');
+  if (!lossMoney || lossMoney === '0₽') failures.push(`${viewport.name}: scrolling money counter did not update`);
 
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   const serious = axe.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? ''));
-  if (serious.length) failures.push(`${viewport.name}: accessibility ${serious.map(v => v.id).join(', ')}`);
+  if (serious.length) {
+    for (const violation of serious) {
+      const targets = violation.nodes.slice(0, 5).flatMap(node => node.target).join(' | ');
+      failures.push(`${viewport.name}: accessibility ${violation.id} — ${targets}`);
+    }
+  }
 
   if (runtimeErrors.length) failures.push(`${viewport.name}: ${runtimeErrors.join(' | ')}`);
+  notes.push(`${viewport.name}: overflow=${pageState.overflow}px, loss=${lossMoney}, calc=${JSON.stringify(calcValues)}`);
+  await page.evaluate(() => scrollTo(0, 0));
+  await page.waitForTimeout(300);
   await page.screenshot({ path: `audit-output/${viewport.name}.png`, fullPage: true });
   await context.close();
 }
 
 await browser.close();
-if (failures.length) {
-  console.error('\nAUDIT FAILED\n' + failures.map(f => `- ${f}`).join('\n'));
-  process.exit(1);
-}
-console.log('Premium v14 browser audit passed on all viewports.');
+const report = [
+  'PREMIUM V14 AUDIT',
+  '',
+  ...notes,
+  '',
+  failures.length ? 'FAILURES' : 'RESULT: PASSED',
+  ...failures.map(f => `- ${f}`),
+].join('\n');
+await fs.writeFile('audit-output/report.txt', report, 'utf8');
+console.log(report);
+if (failures.length) process.exit(1);
