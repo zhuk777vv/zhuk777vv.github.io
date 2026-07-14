@@ -20,7 +20,6 @@ def cover_crop(img: Image.Image, size: tuple[int, int]) -> Image.Image:
     ratio = max(tw / img.width, th / img.height)
     nw, nh = round(img.width * ratio), round(img.height * ratio)
     img = img.resize((nw, nh), Image.Resampling.LANCZOS)
-    # Bias crop slightly right and down to keep the glass entrance and interior.
     left = max(0, min(nw - tw, round((nw - tw) * 0.58)))
     top = max(0, min(nh - th, round((nh - th) * 0.52)))
     return img.crop((left, top, left + tw, top + th))
@@ -46,7 +45,6 @@ def add_scratch(draw: ImageDraw.ImageDraw, p0, p3, width, alpha, bend=0.10):
     p1 = (p0[0] + dx * .33 + nx * k1, p0[1] + dy * .33 + ny * k1)
     p2 = (p0[0] + dx * .67 + nx * k2, p0[1] + dy * .67 + ny * k2)
     pts = cubic(p0, p1, p2, p3)
-    # Fine dark groove + bright grazing-light edge.
     shadow = [(x + 1.4*SCALE, y + 1.1*SCALE) for x, y in pts]
     draw.line(shadow, fill=(7, 13, 17, min(120, alpha)), width=max(1, width + 2), joint="curve")
     draw.line(pts, fill=(239, 248, 250, alpha), width=width, joint="curve")
@@ -61,7 +59,6 @@ clean = ImageEnhance.Contrast(clean).enhance(1.05)
 clean = ImageEnhance.Color(clean).enhance(0.92)
 clean = ImageEnhance.Brightness(clean).enhance(0.99)
 
-# Subtle cinematic grade; still a natural photograph.
 grade = Image.new("RGBA", clean.size, (10, 18, 23, 0))
 gd = ImageDraw.Draw(grade)
 gd.rectangle((0, 0, W, H), fill=(8, 15, 20, 18))
@@ -69,11 +66,10 @@ gd.rectangle((0, 0, W, H), fill=(189, 225, 229, 8))
 clean = Image.alpha_composite(clean.convert("RGBA"), grade).convert("RGB")
 clean.save(ASSETS / "glass-after.webp", "WEBP", quality=91, method=6)
 
-# Build damage at 2x for natural anti-aliasing.
 base = clean.resize((W*SCALE, H*SCALE), Image.Resampling.LANCZOS).convert("RGBA")
 damage = Image.new("RGBA", base.size, (0, 0, 0, 0))
-d = ImageDraw.Draw(damage, "RGBA")n
-# Main scratch field: concentrated on the left-center glass pane, never perfectly parallel.
+d = ImageDraw.Draw(damage, "RGBA")
+
 for _ in range(30):
     x = random.uniform(.08, .58) * W * SCALE
     y = random.uniform(.08, .84) * H * SCALE
@@ -83,7 +79,6 @@ for _ in range(30):
     p3 = (x + math.cos(angle) * length, y + math.sin(angle) * length)
     add_scratch(d, p0, p3, width=random.choice([1, 1, 2]), alpha=random.randint(72, 145), bend=.035)
 
-# Deeper, fewer scratches that catch the side light.
 for _ in range(7):
     x = random.uniform(.10, .52) * W * SCALE
     y = random.uniform(.16, .78) * H * SCALE
@@ -91,7 +86,6 @@ for _ in range(7):
     angle = random.uniform(-0.42, 0.30)
     add_scratch(d, (x, y), (x + math.cos(angle)*length, y + math.sin(angle)*length), width=random.choice([3, 4]), alpha=random.randint(145, 205), bend=.055)
 
-# Scraper arcs / polishing scuffs.
 for _ in range(5):
     cx = random.uniform(.17, .50) * W * SCALE
     cy = random.uniform(.23, .74) * H * SCALE
@@ -103,7 +97,6 @@ for _ in range(5):
     d.arc(box, start=start, end=end, fill=(242, 250, 251, random.randint(80, 135)), width=random.choice([2, 3]))
     d.arc((box[0]+2, box[1]+2, box[2]+2, box[3]+2), start=start, end=end, fill=(4, 8, 11, 70), width=2)
 
-# Local haze / matte scuff with structured noise.
 haze = Image.new("L", base.size, 0)
 hd = ImageDraw.Draw(haze)
 for _ in range(75):
@@ -117,7 +110,6 @@ haze_rgba = Image.new("RGBA", base.size, (232, 239, 238, 0))
 haze_rgba.putalpha(haze)
 damage = Image.alpha_composite(damage, haze_rgba)
 
-# Paint and construction residue near the lower edge.
 d = ImageDraw.Draw(damage, "RGBA")
 for _ in range(38):
     x = random.uniform(.05, .42) * W * SCALE
@@ -129,7 +121,6 @@ for _ in range(9):
     y = random.uniform(.79, .93) * H * SCALE
     d.line((x, y, x + random.uniform(18, 70)*SCALE, y + random.uniform(-7, 9)*SCALE), fill=(234, 233, 222, 150), width=random.randint(2, 5)*SCALE)
 
-# Realistic grazing reflection that makes scratches visible without looking painted.
 reflection = Image.new("RGBA", base.size, (0, 0, 0, 0))
 rd = ImageDraw.Draw(reflection)
 rd.polygon([(0, 0), (W*.48*SCALE, 0), (W*.66*SCALE, H*SCALE), (W*.17*SCALE, H*SCALE)], fill=(208, 237, 242, 18))
@@ -140,7 +131,6 @@ before = Image.alpha_composite(before, damage)
 before = before.resize((W, H), Image.Resampling.LANCZOS).convert("RGB")
 before.save(ASSETS / "glass-before.webp", "WEBP", quality=91, method=6)
 
-# True detail crops from the full-resolution matched pair.
 box = (round(W*.12), round(H*.18), round(W*.59), round(H*.84))
 for name in ("before", "after"):
     source = Image.open(ASSETS / f"glass-{name}.webp").convert("RGB")
