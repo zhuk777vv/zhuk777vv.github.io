@@ -72,9 +72,8 @@ def draw_scratch(highlight, shadow, core, p0, p3, final_width: float, strength: 
 
 
 source = Image.open(SRC).convert("RGB")
-# Shift towards the floor-to-ceiling glazing, so damage reads as being on glass,
-# not floating over the furniture in the room.
-clean = cover_crop(source, (W, H), 0.20, 0.47)
+# The source is a real reflective storefront; keep the glass plane centered.
+clean = cover_crop(source, (W, H), 0.50, 0.48)
 clean = ImageEnhance.Contrast(clean).enhance(1.055)
 clean = ImageEnhance.Color(clean).enhance(0.91)
 clean = ImageEnhance.Sharpness(clean).enhance(1.19)
@@ -96,8 +95,6 @@ hd = ImageDraw.Draw(highlight, "RGBA")
 sd = ImageDraw.Draw(shadow, "RGBA")
 cd = ImageDraw.Draw(core, "RGBA")
 
-# Localised scraper web. Short strokes with varied angles look photographic
-# on a phone; no long parallel lines across the full composition.
 for _ in range(58):
     x = random.uniform(.12, .53) * W * SCALE
     y = random.uniform(.17, .78) * H * SCALE
@@ -114,25 +111,17 @@ for _ in range(15):
     p3 = (x + math.cos(angle) * length, y + math.sin(angle) * length)
     draw_scratch(hd, sd, cd, (x, y), p3, random.choice([.9, 1.05, 1.22]), random.randint(116, 165), broken=random.random() < .24)
 
-# Four clearly visible, thin deep scratches. They are diagonal, irregular,
-# and limited to the damaged panel instead of spanning the whole photograph.
-deep_specs = [
-    (.17, .29, .22, -.42),
-    (.24, .55, .18, .34),
-    (.36, .24, .20, .60),
-    (.43, .64, .17, -.69),
-]
+# Four visible but thin deep scratches, varied in direction and length.
+deep_specs = [(.17,.29,.22,-.42),(.24,.55,.18,.34),(.36,.24,.20,.60),(.43,.64,.17,-.69)]
 for x0, y0, length_ratio, angle in deep_specs:
     x, y = x0 * W * SCALE, y0 * H * SCALE
     length = length_ratio * W * SCALE
     p3 = (x + math.cos(angle) * length, y + math.sin(angle) * length)
     draw_scratch(hd, sd, cd, (x, y), p3, 1.35, 188)
 
-# Local semicircular traces left by a scraper edge.
-for cxr, cyr, rxr, ryr, start in [(.28,.42,.075,.045,202),(.40,.57,.095,.052,214),(.21,.66,.055,.034,188)]:
-    cx, cy = cxr * W * SCALE, cyr * H * SCALE
-    rx, ry = rxr * W * SCALE, ryr * H * SCALE
-    box = (cx-rx, cy-ry, cx+rx, cy+ry)
+for cxr,cyr,rxr,ryr,start in [(.28,.42,.075,.045,202),(.40,.57,.095,.052,214),(.21,.66,.055,.034,188)]:
+    cx,cy=cxr*W*SCALE,cyr*H*SCALE;rx,ry=rxr*W*SCALE,ryr*H*SCALE
+    box=(cx-rx,cy-ry,cx+rx,cy+ry)
     sd.arc((box[0]+2*SCALE,box[1]+2*SCALE,box[2]+2*SCALE,box[3]+2*SCALE),start,start+82,fill=(3,8,11,74),width=3*SCALE)
     hd.arc(box,start,start+82,fill=(249,254,255,126),width=2*SCALE)
 
@@ -140,7 +129,6 @@ shadow = shadow.filter(ImageFilter.GaussianBlur(.72 * SCALE))
 highlight = highlight.filter(ImageFilter.GaussianBlur(.16 * SCALE))
 core = core.filter(ImageFilter.GaussianBlur(.24 * SCALE))
 
-# Irregular matte scuff, visible in grazing light but not a white fog layer.
 noise = Image.effect_noise((W // 3, H // 3), 34).resize(size, Image.Resampling.BICUBIC)
 noise = ImageOps.autocontrast(noise).filter(ImageFilter.GaussianBlur(6 * SCALE))
 mask = Image.new("L", size, 0)
@@ -151,7 +139,6 @@ mask = mask.filter(ImageFilter.GaussianBlur(58 * SCALE))
 noise = ImageChops.multiply(noise, mask).point(lambda p: round(p * .39))
 haze = Image.new("RGBA", size, (226, 235, 234, 0)); haze.putalpha(noise)
 
-# Small dried paint drops and residue near the lower frame.
 residue = Image.new("RGBA", size, (0, 0, 0, 0)); rd = ImageDraw.Draw(residue, "RGBA")
 for _ in range(24):
     x = random.uniform(.09, .39) * W * SCALE
@@ -172,11 +159,11 @@ before = before.resize((W, H), Image.Resampling.LANCZOS).convert("RGB")
 before = ImageEnhance.Sharpness(before).enhance(1.08)
 before.save(ASSETS / "glass-before.webp", "WEBP", quality=95, method=6)
 
-box = (round(W*.09),round(H*.16),round(W*.61),round(H*.86))
-for name in ("before", "after"):
-    image = Image.open(ASSETS / f"glass-{name}.webp").convert("RGB")
-    detail = cover_crop(image.crop(box), (1200, 900), .48, .50)
-    detail = ImageEnhance.Sharpness(detail).enhance(1.14)
-    detail.save(ASSETS / f"glass-{name}-detail.webp", "WEBP", quality=95, method=6)
+box=(round(W*.09),round(H*.16),round(W*.61),round(H*.86))
+for name in ("before","after"):
+    image=Image.open(ASSETS/f"glass-{name}.webp").convert("RGB")
+    detail=cover_crop(image.crop(box),(1200,900),.48,.50)
+    detail=ImageEnhance.Sharpness(detail).enhance(1.14)
+    detail.save(ASSETS/f"glass-{name}-detail.webp","WEBP",quality=95,method=6)
 
 print("generated", *(p.name for p in sorted(ASSETS.glob("glass-*.webp"))))
