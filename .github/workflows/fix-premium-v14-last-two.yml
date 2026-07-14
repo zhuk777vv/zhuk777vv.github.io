@@ -1,0 +1,36 @@
+name: Fix premium v14 last two issues
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-premium-v14-last-two.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fix image loading and button contrast
+        shell: bash
+        run: |
+          set -euo pipefail
+          sed -i 's/loading="lazy" alt="Иллюстрация процесса работы со стеклом"/loading="eager" decoding="async" alt="Иллюстрация процесса работы со стеклом"/' premium-v14/index.html
+          grep -q '^\.button-calc{background:#75401f' premium-v14/css5.css || cat >> premium-v14/css5.css <<'CSS'
+          .button-calc{background:#75401f;color:#fff}.button-calc:hover{background:#63351a}
+          CSS
+          grep -q 'loading="eager" decoding="async" alt="Иллюстрация процесса работы со стеклом"' premium-v14/index.html
+          grep -q '^\.button-calc{background:#75401f' premium-v14/css5.css
+      - name: Commit final fixes
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add premium-v14/index.html premium-v14/css5.css
+          git diff --cached --quiet || git commit -m 'Fix premium v14 final audit issues'
+          git push
