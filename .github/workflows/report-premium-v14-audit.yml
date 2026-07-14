@@ -1,0 +1,80 @@
+name: Report premium v14 audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'premium-v14/**'
+      - '.audit-v14-trigger'
+      - '.github/workflows/report-premium-v14-audit.yml'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - name: Install audit browser
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --silent --no-audit --no-fund playwright @axe-core/playwright
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+      - name: Run audit and write report
+        shell: bash
+        run: |
+          cat > /tmp/report-audit.mjs <<'JS'
+          import {chromium} from 'playwright';
+          import AxeBuilder from '@axe-core/playwright';
+          import {spawn} from 'node:child_process';
+          import fs from 'node:fs';
+          const lines=[];let anyFail=false;let browser;let server;
+          const record=(name,ok,detail='')=>{lines.push(`${ok?'PASS':'FAIL'} | ${name}${detail?' | '+detail:''}`);if(!ok)anyFail=true};
+          try{
+            server=spawn('python3',['-m','http.server','8765','--bind','127.0.0.1'],{stdio:'ignore'});
+            await new Promise(r=>setTimeout(r,1000));
+            browser=await chromium.launch({headless:true});
+            for(const vp of [{n:'360x800',w:360,h:800},{n:'390x844',w:390,h:844},{n:'430x932',w:430,h:932},{n:'1440x1000',w:1440,h:1000}]){
+              lines.push(`\n### ${vp.n}`);
+              let context;
+              try{
+                context=await browser.newContext({viewport:{width:vp.w,height:vp.h}});const page=await context.newPage();const errors=[];
+                page.on('console',m=>{if(m.type()==='error')errors.push('console '+m.text())});page.on('pageerror',e=>errors.push('page '+String(e)));page.on('requestfailed',r=>errors.push('request '+r.url()));
+                const res=await page.goto('http://127.0.0.1:8765/premium-v14/?utm_source=audit',{waitUntil:'networkidle'});
+                record('HTTP 200',res?.status()===200,String(res?.status()));
+                record('No runtime or request errors',errors.length===0,errors.join('; '));
+                const d=await page.evaluate(()=>({viewport:innerWidth,document:document.documentElement.scrollWidth,body:document.body.scrollWidth}));record('No horizontal overflow',d.document<=d.viewport+1&&d.body<=d.viewport+1,JSON.stringify(d));
+                const broken=await page.evaluate(()=>[...document.images].filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.getAttribute('src')));record('All images loaded',broken.length===0,broken.join(', '));
+                record('Hero and main CTA',(await page.locator('h1').innerText()).trim()==='Не меняйте стекло из-за царапин'&&(await page.locator('.hero-actions a').first().getAttribute('href'))==='https://t.me/zhukov_boss');
+                await page.locator('[data-state="before"]').click();let split=await page.locator('#beforeAfter').evaluate(e=>parseFloat(getComputedStyle(e).getPropertyValue('--split')));record('Button “До” shows damaged image',split>=99,String(split));
+                await page.locator('[data-state="after"]').click();split=await page.locator('#beforeAfter').evaluate(e=>parseFloat(getComputedStyle(e).getPropertyValue('--split')));record('Button “После” shows restored image',split<=1,String(split));
+                await page.locator('[data-state="compare"]').click();record('Comparison slider has accessible role',(await page.locator('#splitHandle').getAttribute('role'))==='slider');
+                record('Restoration is default scenario',(await page.locator('#decisionMoney').innerText()).includes('96 000'));
+                await page.locator('[data-mode="replace"]').click();await page.waitForTimeout(650);record('Replacement scenario switches to 312 000 ₽',(await page.locator('#decisionMoney').innerText()).includes('312 000'),await page.locator('#decisionMoney').innerText());
+                await page.locator('[data-mode="restore"]').click();await page.waitForTimeout(650);record('Restoration scenario switches back',(await page.locator('#decisionMoney').innerText()).includes('96 000'),await page.locator('#decisionMoney').innerText());
+                const calc=await page.evaluate(()=>({replace:document.querySelector('#replacementRange')?.textContent,restore:document.querySelector('#restorationRange')?.textContent,saving:document.querySelector('#savingMoney')?.textContent,verdict:document.querySelector('#calcVerdict')?.textContent}));record('Calculator shows money',!Object.values(calc).some(v=>!v||v.includes('—')||v.includes('NaN')),JSON.stringify(calc));
+                await page.locator('input[name="known"]').fill('10000');await page.locator('input[name="known"]').dispatchEvent('input');record('Calculator handles unprofitable restoration',(await page.locator('#savingBlock').getAttribute('class')).includes('negative'),await page.locator('#savingBlock').getAttribute('class'));
+                await page.evaluate(()=>window.scrollTo(0,document.querySelector('#economics').offsetTop+document.querySelector('#economics').offsetHeight));await page.waitForTimeout(900);record('Replacement counter reaches 312 000 ₽',(await page.locator('#lossMoney').innerText()).includes('312 000'),await page.locator('#lossMoney').innerText());
+                const axe=await new AxeBuilder({page}).disableRules(['color-contrast']).analyze();const serious=axe.violations.filter(v=>['serious','critical'].includes(v.impact));record('No serious accessibility violations',serious.length===0,serious.map(v=>v.id+':'+v.nodes.length).join(', '));
+                if(vp.w<=430){await page.locator('#calculator').scrollIntoViewIfNeeded();await page.locator('input[name="area"]').focus();await page.waitForTimeout(200);record('Mobile CTA hides while typing',await page.locator('#mobileCta').evaluate(e=>e.classList.contains('keyboard')))}
+              }catch(e){record('Viewport completed',false,String(e?.stack||e))}finally{await context?.close()}
+            }
+          }catch(e){record('Audit infrastructure',false,String(e?.stack||e))}finally{await browser?.close();server?.kill('SIGTERM')}
+          lines.push(`\nFINAL: ${anyFail?'FAILED':'PASSED'}`);fs.writeFileSync('audit-report.txt',lines.join('\n'));console.log(lines.join('\n'));
+          JS
+          node /tmp/report-audit.mjs
+      - name: Publish report to pull request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = '## Финальный аудит premium-v14\n\n```text\n' + fs.readFileSync('audit-report.txt','utf8') + '\n```';
+            await github.rest.issues.createComment({owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body});
+      - name: Enforce result
+        run: grep -q 'FINAL: PASSED' audit-report.txt
