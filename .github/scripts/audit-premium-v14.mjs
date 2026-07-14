@@ -46,7 +46,7 @@ for (const viewport of viewports) {
   await page.locator('[data-state="after"]').click();
   await page.waitForTimeout(850);
   const afterSplit = await page.locator('#splitHandle').getAttribute('aria-valuenow');
-  if (Number(beforeSplit) > 8 || Number(afterSplit) < 92) failures.push(`${viewport.name}: before/after controls failed`);
+  if (Number(beforeSplit) < 92 || Number(afterSplit) > 8) failures.push(`${viewport.name}: before/after controls failed`);
   await page.locator('[data-state="compare"]').click();
   await page.waitForTimeout(850);
 
