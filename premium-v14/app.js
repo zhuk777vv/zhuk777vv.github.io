@@ -1,35 +1,163 @@
 (()=>{
 'use strict';
-const trustFix=document.createElement('style');trustFix.textContent='.trust-photo{isolation:isolate}.trust-photo picture{position:absolute;inset:0;display:block;width:100%;height:100%}.trust-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}.trust-photo:after{z-index:1}.trust-caption{z-index:2}';document.head.appendChild(trustFix);
-const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+
+const $=(s,c=document)=>c.querySelector(s);
+const $$=(s,c=document)=>[...c.querySelectorAll(s)];
 const fullRub=n=>new Intl.NumberFormat('ru-RU').format(Math.round(n/1000)*1000)+' ₽';
 const compact=n=>{n=Math.max(0,n);if(n>=1e6)return (n/1e6).toLocaleString('ru-RU',{minimumFractionDigits:n<1e7?2:1,maximumFractionDigits:2})+' млн ₽';if(n>=1e5)return Math.round(n/1000).toLocaleString('ru-RU')+' тыс. ₽';return fullRub(n)};
 const compactRange=(a,b)=>Math.abs(b-a)<5000?compact((a+b)/2):`${compact(a)} — ${compact(b)}`;
-const progress=$('#pageProgress'),mobileCta=$('#mobileCta'),toast=$('#leadToast');let scrollRaf=0,toastTimer=0;
-function showToast(text){if(!toast)return;clearTimeout(toastTimer);toast.textContent=text;toast.classList.add('show');toastTimer=setTimeout(()=>toast.classList.remove('show'),4200)}
-function animateMoney(el,to,duration=560){if(!el)return;const from=Number(el.dataset.current||String(el.textContent).replace(/\D/g,'')||0),start=performance.now();cancelAnimationFrame(el._raf);function tick(now){const t=Math.min(1,(now-start)/duration),v=Math.round(from+(to-from)*(1-Math.pow(1-t,3)));el.textContent=fullRub(v);if(t<1)el._raf=requestAnimationFrame(tick);else el.dataset.current=String(to)}el._raf=requestAnimationFrame(tick)}
-function onScroll(){if(scrollRaf)return;scrollRaf=requestAnimationFrame(()=>{scrollRaf=0;const h=document.documentElement.scrollHeight-innerHeight;if(progress)progress.style.width=(h>0?scrollY/h*100:0)+'%';mobileCta?.classList.toggle('show',scrollY>520);updateLoss();});}addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll,{passive:true});
-const demo=$('#beforeAfter'),after=$('#afterLayer'),splitLine=$('#splitLine'),splitHandle=$('#splitHandle');let split=52,dragging=false,userTouched=false,startX=0,startY=0,horizontal=false;
-function setSplit(pos,instant=false){if(!demo)return;split=Math.max(0,Math.min(100,pos));demo.style.setProperty('--split',split+'%');if(after)after.style.clipPath=`inset(0 0 0 ${split}%)`;if(splitLine)splitLine.style.left=split+'%';splitHandle?.setAttribute('aria-valuenow',String(Math.round(split)));if(instant){after?.style.setProperty('transition','none');splitLine?.style.setProperty('transition','none');requestAnimationFrame(()=>{after?.style.removeProperty('transition');splitLine?.style.removeProperty('transition')})}$$('[data-state]').forEach(b=>b.classList.toggle('active',(b.dataset.state==='before'&&split>92)||(b.dataset.state==='after'&&split<8)||(b.dataset.state==='compare'&&split>=8&&split<=92)));}
-function setSplitFromX(x){const r=demo.getBoundingClientRect();setSplit((x-r.left)/r.width*100,true)}
-if(demo){setSplit(52,true);demo.addEventListener('pointerdown',e=>{userTouched=true;dragging=true;horizontal=false;startX=e.clientX;startY=e.clientY;demo.setPointerCapture?.(e.pointerId)});demo.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-startX,dy=e.clientY-startY;if(!horizontal&&Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy))horizontal=true;if(horizontal){e.preventDefault();setSplitFromX(e.clientX)}});const end=e=>{dragging=false;horizontal=false;demo.releasePointerCapture?.(e.pointerId)};demo.addEventListener('pointerup',end);demo.addEventListener('pointercancel',end);splitHandle?.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){userTouched=true;setSplit(split-5);e.preventDefault()}if(e.key==='ArrowRight'){userTouched=true;setSplit(split+5);e.preventDefault()}if(e.key==='Home'){userTouched=true;setSplit(0);e.preventDefault()}if(e.key==='End'){userTouched=true;setSplit(100);e.preventDefault()}});$$('[data-state]').forEach(b=>b.addEventListener('click',()=>{userTouched=true;setSplit(b.dataset.state==='before'?100:b.dataset.state==='after'?0:52)}));if('IntersectionObserver'in window){const io=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){io.disconnect();if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;setTimeout(()=>{if(!userTouched)setSplit(88)},220);setTimeout(()=>{if(!userTouched)setSplit(12)},1250);setTimeout(()=>{if(!userTouched)setSplit(52)},2850)}},{threshold:.42});io.observe(demo)}}
-const loss=$('#economics'),lossSteps=$$('#lossSteps article'),lossMoney=$('#lossMoney'),lossDays=$('#lossDays'),lossLabel=$('#lossLabel'),lossBar=$('#lossBar');
-function updateLoss(){if(!loss||!lossSteps.length)return;const rect=loss.getBoundingClientRect(),vh=innerHeight,start=vh*.72,end=Math.max(1,rect.height-vh*.45),raw=(start-rect.top)/end,p=Math.max(0,Math.min(.999,raw)),idx=raw<=0?-1:Math.min(lossSteps.length-1,Math.floor(p*lossSteps.length));lossSteps.forEach((step,i)=>step.classList.toggle('active',i<=idx));let total=0,days=0;for(let i=0;i<=idx;i++){total+=Number(lossSteps[i].dataset.money||0);days+=Number(lossSteps[i].dataset.days||0)}if(Number(lossMoney?.dataset.value||0)!==total){lossMoney.dataset.value=String(total);animateMoney(lossMoney,total,420)}if(lossDays)lossDays.textContent=days+' '+(days===1?'день':days<5?'дня':'дней');if(lossLabel)lossLabel.textContent=idx<0?'Расчёт ещё не начался':lossSteps[idx].dataset.label;if(lossBar)lossBar.style.width=(idx<0?0:(idx+1)/lossSteps.length*100)+'%';}
+
+// Load the selected type family without blocking the first render.
+const fontLink=document.createElement('link');
+fontLink.rel='stylesheet';
+fontLink.href='https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap';
+document.head.appendChild(fontLink);
+
+// Replace old enlarged crops with dedicated high-resolution detail images.
+const macroBefore=$('.macro-before-image');
+const macroAfter=$('.macro-after-image');
+if(macroBefore){macroBefore.src='assets/glass-before-detail.webp';macroBefore.width=1100;macroBefore.height=860;}
+if(macroAfter){macroAfter.src='assets/glass-after-detail.webp';macroAfter.width=1100;macroAfter.height=860;}
+$$('.before-after img').forEach(img=>{img.width=2200;img.height=1375;});
+
+// Every Telegram button remains a normal direct link. No popup, clipboard or delayed redirect.
+$$('a[href^="https://t.me/zhukov_boss"]').forEach(link=>{link.removeAttribute('target');link.removeAttribute('rel');link.dataset.telegram='direct';});
+
+const progress=$('#pageProgress');
+const mobileCta=$('#mobileCta');
+const toast=$('#leadToast');
+let scrollRaf=0;
+let toastTimer=0;
+function showToast(text){if(!toast)return;clearTimeout(toastTimer);toast.textContent=text;toast.classList.add('show');toastTimer=setTimeout(()=>toast.classList.remove('show'),3600);}
+
+function animateMoney(el,to,duration=430){
+  if(!el)return;
+  cancelAnimationFrame(el._raf);
+  const from=Number(el.dataset.current||String(el.textContent).replace(/\D/g,'')||0);
+  const started=performance.now();
+  const tick=now=>{
+    const t=Math.min(1,(now-started)/duration);
+    const value=Math.round(from+(to-from)*(1-Math.pow(1-t,3)));
+    el.textContent=fullRub(value);
+    el.dataset.current=String(value);
+    if(t<1)el._raf=requestAnimationFrame(tick);
+    else{el.textContent=fullRub(to);el.dataset.current=String(to);}
+  };
+  el._raf=requestAnimationFrame(tick);
+}
+
+// Before / after slider.
+const demo=$('#beforeAfter');
+const after=$('#afterLayer');
+const splitLine=$('#splitLine');
+const splitHandle=$('#splitHandle');
+let split=52,dragging=false,userTouched=false,startX=0,startY=0,horizontal=false;
+function setSplit(pos,instant=false){
+  if(!demo)return;
+  split=Math.max(0,Math.min(100,pos));
+  demo.style.setProperty('--split',split+'%');
+  if(after)after.style.clipPath=`inset(0 0 0 ${split}%)`;
+  if(splitLine)splitLine.style.left=split+'%';
+  splitHandle?.setAttribute('aria-valuenow',String(Math.round(split)));
+  if(instant){
+    after?.style.setProperty('transition','none');
+    splitLine?.style.setProperty('transition','none');
+    requestAnimationFrame(()=>{after?.style.removeProperty('transition');splitLine?.style.removeProperty('transition');});
+  }
+  $$('[data-state]').forEach(b=>b.classList.toggle('active',(b.dataset.state==='before'&&split>92)||(b.dataset.state==='after'&&split<8)||(b.dataset.state==='compare'&&split>=8&&split<=92)));
+}
+function setSplitFromX(x){const r=demo.getBoundingClientRect();setSplit((x-r.left)/r.width*100,true);}
+if(demo){
+  setSplit(52,true);
+  demo.addEventListener('pointerdown',e=>{userTouched=true;dragging=true;horizontal=false;startX=e.clientX;startY=e.clientY;demo.setPointerCapture?.(e.pointerId);});
+  demo.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-startX,dy=e.clientY-startY;if(!horizontal&&Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy))horizontal=true;if(horizontal){e.preventDefault();setSplitFromX(e.clientX);}});
+  const end=e=>{dragging=false;horizontal=false;try{demo.releasePointerCapture?.(e.pointerId);}catch(_){}};
+  demo.addEventListener('pointerup',end);demo.addEventListener('pointercancel',end);
+  splitHandle?.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){userTouched=true;setSplit(split-5);e.preventDefault();}if(e.key==='ArrowRight'){userTouched=true;setSplit(split+5);e.preventDefault();}if(e.key==='Home'){userTouched=true;setSplit(0);e.preventDefault();}if(e.key==='End'){userTouched=true;setSplit(100);e.preventDefault();}});
+  $$('[data-state]').forEach(b=>b.addEventListener('click',()=>{userTouched=true;setSplit(b.dataset.state==='before'?100:b.dataset.state==='after'?0:52);}));
+  if('IntersectionObserver'in window){const io=new IntersectionObserver(entries=>{if(!entries[0].isIntersecting)return;io.disconnect();if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;setTimeout(()=>{if(!userTouched)setSplit(86);},250);setTimeout(()=>{if(!userTouched)setSplit(14);},1350);setTimeout(()=>{if(!userTouched)setSplit(52);},2950);},{threshold:.42});io.observe(demo);}
+}
+
+// Reliable fixed economics HUD: visible throughout section 02 on every viewport.
+const loss=$('#economics');
+const lossSteps=$$('#lossSteps article');
+const lossMoney=$('#lossMoney');
+const lossDays=$('#lossDays');
+const lossLabel=$('#lossLabel');
+const lossBar=$('#lossBar');
+const hud=document.createElement('aside');
+hud.className='loss-hud';
+hud.id='lossHud';
+hud.setAttribute('aria-live','polite');
+hud.innerHTML=`<div class="loss-hud__top"><span>Полная замена</span><b id="lossHudDays">0 дней</b></div><strong class="loss-hud__money" id="lossHudMoney">0 ₽</strong><div class="loss-hud__current"><span>Сейчас добавляется</span><strong id="lossHudLabel">Расчёт ещё не начался</strong><b id="lossHudDelta">+0 ₽</b></div><div class="loss-hud__bar"><i id="lossHudBar"></i></div><div class="loss-hud__compare"><div><span>Восстановление</span><b>96 000 ₽</b></div><small>около 2 дней</small></div><div class="loss-hud__dots">${lossSteps.map(()=>'<i></i>').join('')}</div>`;
+document.body.appendChild(hud);
+const hudMoney=$('#lossHudMoney'),hudDays=$('#lossHudDays'),hudLabel=$('#lossHudLabel'),hudDelta=$('#lossHudDelta'),hudBar=$('#lossHudBar'),hudDots=$$('.loss-hud__dots i');
+
+function pluralDays(days){return days+' '+(days===1?'день':days>1&&days<5?'дня':'дней');}
+function updateLoss(){
+  if(!loss||!lossSteps.length)return;
+  const rect=loss.getBoundingClientRect();
+  const active=rect.top<innerHeight*.78&&rect.bottom>150;
+  hud.classList.toggle('active',active);
+  mobileCta?.classList.toggle('keyboard',active&&innerWidth<=760&&rect.bottom<innerHeight*.55);
+  const trigger=Math.min(innerHeight*.64,560);
+  let idx=-1;
+  lossSteps.forEach((step,i)=>{if(step.getBoundingClientRect().top<trigger)idx=i;});
+  idx=Math.min(lossSteps.length-1,Math.max(-1,idx));
+  lossSteps.forEach((step,i)=>step.classList.toggle('active',i<=idx));
+  let total=0,days=0;
+  for(let i=0;i<=idx;i++){total+=Number(lossSteps[i].dataset.money||0);days+=Number(lossSteps[i].dataset.days||0);}
+  const current=idx>=0?lossSteps[idx]:null;
+  const label=current?.dataset.label||'Расчёт ещё не начался';
+  const delta=current?Number(current.dataset.money||0):0;
+  if(Number(lossMoney?.dataset.value||0)!==total){lossMoney.dataset.value=String(total);animateMoney(lossMoney,total);animateMoney(hudMoney,total);}
+  if(lossDays)lossDays.textContent=pluralDays(days);
+  if(lossLabel)lossLabel.textContent=label;
+  if(lossBar)lossBar.style.width=(idx<0?0:(idx+1)/lossSteps.length*100)+'%';
+  hudDays.textContent=pluralDays(days);
+  hudLabel.textContent=label;
+  hudDelta.textContent='+'+fullRub(delta);
+  hudBar.style.width=(idx<0?0:(idx+1)/lossSteps.length*100)+'%';
+  hudDots.forEach((dot,i)=>dot.classList.toggle('on',i<=idx));
+}
+
+// Scenario comparison.
 const modes={
-replace:{label:'Полная замена',title:'Новое стекло: замер, производство, доставка, демонтаж и повторный монтаж',money:312000,days:'18–21 день',result:'До 21 дня и несколько подрядчиков',text:'Срок зависит от производства, доставки и монтажа',steps:[['Повторный замер','1–2 дня',1],['Производство стекла','10–18 дней',1],['Доставка и подъём','1–2 дня',1],['Демонтаж и монтаж','1–2 дня',1],['Отделка и сдача','1 день',1]]},
-restore:{label:'Восстановление на объекте',title:'Обрабатываем повреждённый участок без демонтажа стекла',money:96000,days:'около 2 дней',result:'Экономия в примере — 216 000 ₽',text:'Без ожидания производства, доставки и повторного монтажа',steps:[['Фото и диагностика','в день обращения',1],['Тестовый участок','при необходимости',1],['Работы на объекте','1–3 дня',1],['Приёмка и документы','в день окончания',1],['Производство и доставка','не требуются',0]]}
+  replace:{label:'Полная замена',title:'Новое стекло: замер, производство, доставка, демонтаж и повторный монтаж',money:312000,days:'18–21 день',result:'До 21 дня и несколько подрядчиков',text:'Срок зависит от производства, доставки и монтажа',steps:[['Повторный замер','1–2 дня',1],['Производство стекла','10–18 дней',1],['Доставка и подъём','1–2 дня',1],['Демонтаж и монтаж','1–2 дня',1],['Отделка и сдача','1 день',1]]},
+  restore:{label:'Восстановление на объекте',title:'Обрабатываем повреждённый участок без демонтажа стекла',money:96000,days:'около 2 дней',result:'Экономия в примере — 216 000 ₽',text:'Без ожидания производства, доставки и повторного монтажа',steps:[['Фото и диагностика','в день обращения',1],['Тестовый участок','при необходимости',1],['Работы на объекте','1–3 дня',1],['Приёмка и документы','в день окончания',1],['Производство и доставка','не требуются',0]]}
 };
 const decisionLabel=$('#decisionLabel'),decisionTitle=$('#decisionTitle'),decisionMoney=$('#decisionMoney'),decisionDays=$('#decisionDays'),decisionResult=$('#decisionResult'),decisionResultText=$('#decisionResultText'),timeline=$$('#timeline>div');
-function setMode(name){const m=modes[name];if(!m)return;$$('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===name));decisionLabel.textContent=m.label;decisionTitle.textContent=m.title;animateMoney(decisionMoney,m.money,520);decisionDays.textContent=m.days;decisionResult.textContent=m.result;decisionResultText.textContent=m.text;timeline.forEach((el,i)=>{const step=m.steps[i];$('span',el).textContent=step[0];$('small',el).textContent=step[1];el.classList.toggle('off',!step[2])})}
+function setMode(name){const m=modes[name];if(!m)return;$$('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===name));decisionLabel.textContent=m.label;decisionTitle.textContent=m.title;animateMoney(decisionMoney,m.money,500);decisionDays.textContent=m.days;decisionResult.textContent=m.result;decisionResultText.textContent=m.text;timeline.forEach((el,i)=>{const step=m.steps[i];$('span',el).textContent=step[0];$('small',el).textContent=step[1];el.classList.toggle('off',!step[2]);});}
 $$('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));setMode('restore');
+
+// Calculator.
 const form=$('#calculatorForm'),replacementRange=$('#replacementRange'),restorationRange=$('#restorationRange'),savingMoney=$('#savingMoney'),savingPercent=$('#savingPercent'),calcVerdict=$('#calcVerdict'),replacementTime=$('#replacementTime'),restorationTime=$('#restorationTime'),savingBlock=$('#savingBlock');
-function calculate(){if(!form)return null;const d=new FormData(form),object=Number(d.get('object')),area=Math.max(.2,Number(d.get('area'))||.2),pieces=Math.max(1,Number(d.get('pieces'))||1),damage=Number(d.get('damage')),access=Number(d.get('access')||1),urgency=Number(d.get('urgency')||1),known=Number(d.get('known'))||0;const restoration=Math.max(4000,(6200*area+1800*pieces)*object*damage*access*urgency),restLow=Math.round(restoration*.9),restHigh=Math.round(restoration*1.14);let replLow,replHigh;if(known>0){replLow=Math.round(known*.97);replHigh=Math.round(known*1.03)}else{let replacement=(14800*area+23500*pieces+42000)*object*Math.max(1,.94*access);if(urgency>1.25)replacement*=1.08;replLow=Math.round(replacement*.9);replHigh=Math.round(replacement*1.14)}const saveLow=replLow-restHigh,saveHigh=replHigh-restLow;replacementRange.textContent=compactRange(replLow,replHigh);restorationRange.textContent=compactRange(restLow,restHigh);const restDays=urgency>=1.35?'день в день':area<=6?'от нескольких часов':area<=20?'1–3 дня':'от 3 дней';restorationTime.textContent=restDays;replacementTime.textContent=area>20?'18–28 дней':'14–21 день';savingBlock.classList.remove('warning','negative');let verdict,percentText,moneyText;if(saveHigh<=0){const extraLow=Math.abs(saveHigh),extraHigh=Math.abs(saveLow);verdict='В этом случае замена может оказаться выгоднее';moneyText=`Восстановление дороже на ${compactRange(extraLow,extraHigh)}`;percentText='Нужны фотографии, чтобы не ошибиться с решением';savingBlock.classList.add('negative')}else if(saveLow<=0){verdict='Без фотографий решение принимать рано';moneyText=`Разница — от 0 до ${compact(saveHigh)}`;percentText='Диапазоны пересекаются: нужен осмотр или тест';savingBlock.classList.add('warning')}else{const pctLow=Math.min(67,Math.max(0,Math.round(saveLow/replHigh*100))),pctHigh=Math.min(67,Math.max(pctLow,Math.round(saveHigh/replLow*100)));verdict=saveHigh>90000?'По расчёту восстановление заметно выгоднее':'Стекло стоит проверить по фото';moneyText=compactRange(saveLow,saveHigh);percentText=pctLow===67?'экономия до 67% к стоимости замены':`экономия примерно ${pctLow}–${pctHigh}%`}calcVerdict.textContent=verdict;savingMoney.textContent=moneyText;savingPercent.textContent=percentText;return{d,replLow,replHigh,restLow,restHigh,saveLow,saveHigh,restDays,verdict};}
+function calculate(){
+  if(!form)return null;
+  const d=new FormData(form),object=Number(d.get('object')),area=Math.max(.2,Number(d.get('area'))||.2),pieces=Math.max(1,Number(d.get('pieces'))||1),damage=Number(d.get('damage')),access=Number(d.get('access')||1),urgency=Number(d.get('urgency')||1),known=Number(d.get('known'))||0;
+  const restoration=Math.max(4000,(6200*area+1800*pieces)*object*damage*access*urgency),restLow=Math.round(restoration*.9),restHigh=Math.round(restoration*1.14);
+  let replLow,replHigh;
+  if(known>0){replLow=Math.round(known*.97);replHigh=Math.round(known*1.03);}else{let replacement=(14800*area+23500*pieces+42000)*object*Math.max(1,.94*access);if(urgency>1.25)replacement*=1.08;replLow=Math.round(replacement*.9);replHigh=Math.round(replacement*1.14);}
+  const saveLow=replLow-restHigh,saveHigh=replHigh-restLow;
+  replacementRange.textContent=compactRange(replLow,replHigh);restorationRange.textContent=compactRange(restLow,restHigh);
+  const restDays=urgency>=1.35?'день в день':area<=6?'от нескольких часов':area<=20?'1–3 дня':'от 3 дней';restorationTime.textContent=restDays;replacementTime.textContent=area>20?'18–28 дней':'14–21 день';savingBlock.classList.remove('warning','negative');
+  let verdict,percentText,moneyText;
+  if(saveHigh<=0){const extraLow=Math.abs(saveHigh),extraHigh=Math.abs(saveLow);verdict='В этом случае замена может оказаться выгоднее';moneyText=`Восстановление дороже на ${compactRange(extraLow,extraHigh)}`;percentText='Нужны фотографии, чтобы не ошибиться с решением';savingBlock.classList.add('negative');}
+  else if(saveLow<=0){verdict='Без фотографий решение принимать рано';moneyText=`Разница — от 0 до ${compact(saveHigh)}`;percentText='Диапазоны пересекаются: нужен осмотр или тест';savingBlock.classList.add('warning');}
+  else{const pctLow=Math.min(67,Math.max(0,Math.round(saveLow/replHigh*100))),pctHigh=Math.min(67,Math.max(pctLow,Math.round(saveHigh/replLow*100)));verdict=saveHigh>90000?'По расчёту восстановление заметно выгоднее':'Стекло стоит проверить по фото';moneyText=compactRange(saveLow,saveHigh);percentText=pctLow===67?'экономия до 67% к стоимости замены':`экономия примерно ${pctLow}–${pctHigh}%`;}
+  calcVerdict.textContent=verdict;savingMoney.textContent=moneyText;savingPercent.textContent=percentText;
+  return{d,verdict};
+}
 form?.addEventListener('input',calculate);calculate();
-function sourceLine(){const p=new URLSearchParams(location.search),keys=['utm_source','utm_medium','utm_campaign','utm_content'],parts=keys.map(k=>p.get(k)?`${k.replace('utm_','')}: ${p.get(k)}`:'').filter(Boolean);return parts.length?'\nИсточник: '+parts.join(', '):''}
-$('#sendCalculation')?.addEventListener('click',async()=>{const r=calculate(),d=r.d,object=form.object.options[form.object.selectedIndex].text,damage=form.damage.options[form.damage.selectedIndex].text,access=form.access.options[form.access.selectedIndex].text,urgency=form.urgency.options[form.urgency.selectedIndex].text,text=`Здравствуйте. Хочу понять, можно ли восстановить стекло без замены.\n\nОбъект: ${object}\nПлощадь: ${d.get('area')} м²\nКоличество стёкол: ${d.get('pieces')}\nПовреждение: ${damage}\nДоступ: ${access}\nКогда нужно начать: ${urgency}\n\nОриентир по замене: ${replacementRange.textContent}\nОриентир по восстановлению: ${restorationRange.textContent}\nПо расчёту: ${r.verdict}\nРазница: ${savingMoney.textContent}${sourceLine()}\n\nСейчас пришлю фотографии.`;let copied=false;try{await navigator.clipboard.writeText(text);copied=true}catch(e){}if(copied){showToast('Расчёт скопирован. Вставьте его в сообщение Telegram.');setTimeout(()=>{location.href='https://t.me/zhukov_boss'},350)}else{location.href='https://t.me/zhukov_boss?text='+encodeURIComponent(text)}});
-const completion=$('#completionFlow');if(completion&&'IntersectionObserver'in window){const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){completion.classList.add('visible');io.disconnect()}},{threshold:.3});io.observe(completion)}
-const finalCta=$('#finalCta');if(finalCta&&mobileCta&&'IntersectionObserver'in window){new IntersectionObserver(es=>mobileCta.classList.toggle('hide',es[0].isIntersecting),{threshold:.12}).observe(finalCta)}
-$$('input,select').forEach(el=>{el.addEventListener('focus',()=>mobileCta?.classList.add('keyboard'));el.addEventListener('blur',()=>setTimeout(()=>mobileCta?.classList.remove('keyboard'),180))});
-$$('[data-track]').forEach(el=>el.addEventListener('click',()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:el.dataset.track})}));
+function sourceLine(){const p=new URLSearchParams(location.search),keys=['utm_source','utm_medium','utm_campaign','utm_content'],parts=keys.map(k=>p.get(k)?`${k.replace('utm_','')}: ${p.get(k)}`:'').filter(Boolean);return parts.length?'\nИсточник: '+parts.join(', '):'';}
+$('#sendCalculation')?.addEventListener('click',()=>{const r=calculate(),d=r.d,object=form.object.options[form.object.selectedIndex].text,damage=form.damage.options[form.damage.selectedIndex].text,access=form.access.options[form.access.selectedIndex].text,urgency=form.urgency.options[form.urgency.selectedIndex].text,text=`Здравствуйте. Хочу понять, можно ли восстановить стекло без замены.\n\nОбъект: ${object}\nПлощадь: ${d.get('area')} м²\nКоличество стёкол: ${d.get('pieces')}\nПовреждение: ${damage}\nДоступ: ${access}\nКогда нужно начать: ${urgency}\n\nОриентир по замене: ${replacementRange.textContent}\nОриентир по восстановлению: ${restorationRange.textContent}\nПо расчёту: ${r.verdict}\nРазница: ${savingMoney.textContent}${sourceLine()}\n\nСейчас пришлю фотографии.`;showToast('Открываем Telegram с готовым расчётом');location.href='https://t.me/zhukov_boss?text='+encodeURIComponent(text);});
+
+const completion=$('#completionFlow');if(completion&&'IntersectionObserver'in window){const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){completion.classList.add('visible');io.disconnect();}},{threshold:.3});io.observe(completion);}
+const finalCta=$('#finalCta');if(finalCta&&mobileCta&&'IntersectionObserver'in window){new IntersectionObserver(es=>mobileCta.classList.toggle('hide',es[0].isIntersecting),{threshold:.12}).observe(finalCta);}
+$$('input,select').forEach(el=>{el.addEventListener('focus',()=>mobileCta?.classList.add('keyboard'));el.addEventListener('blur',()=>setTimeout(()=>mobileCta?.classList.remove('keyboard'),180));});
+$$('[data-track]').forEach(el=>el.addEventListener('click',()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:el.dataset.track});}));
+
+function onScroll(){if(scrollRaf)return;scrollRaf=requestAnimationFrame(()=>{scrollRaf=0;const h=document.documentElement.scrollHeight-innerHeight;if(progress)progress.style.width=(h>0?scrollY/h*100:0)+'%';mobileCta?.classList.toggle('show',scrollY>520);updateLoss();});}
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll,{passive:true});
 onScroll();updateLoss();
 })();
