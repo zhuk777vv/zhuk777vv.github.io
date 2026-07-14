@@ -1,0 +1,1 @@
+Cinematic redesign: full landing page, motion interactions, responsive layout, and two demonstration project pages.
