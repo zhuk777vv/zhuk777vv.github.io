@@ -7,6 +7,12 @@ on:
       - 'premium-v14/**'
       - '.github/scripts/audit-premium-v14.mjs'
       - '.github/workflows/audit-premium-v14.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'premium-v14/**'
+      - '.github/scripts/audit-premium-v14.mjs'
+      - '.github/workflows/audit-premium-v14.yml'
 
 permissions:
   contents: read
