@@ -34,7 +34,7 @@ jobs:
           mkdir -p premium-v14/assets
           python -m pip install --quiet pillow
           SOURCE='premium-v14/assets/glass-source.webp'
-          URL1='https://www.odinlake.com/cdn/shop/articles/cool_color_palette_52.webp?crop=center&height=2400&v=1722497103&width=3200'
+          URL1='https://unsplash.com/photos/yAsddhTq1aY/download?force=true'
           URL2='https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2800&q=95'
           curl -L --fail --retry 3 --connect-timeout 20 "$URL1" -o "$SOURCE" || true
           if ! python - <<'PY'
@@ -54,8 +54,8 @@ jobs:
           rm -f premium-v14/assets/specialist.webp
           sed -i 's/assets\/specialist\.webp/assets\/specialist.jpg/g' premium-v14/index.html
           sed -i 's/ target="_blank" rel="noopener"//g' premium-v14/index.html
-          sed -E -i 's/styles\.css\?v=[^"]+/styles.css?v=20260714-10/' premium-v14/index.html
-          sed -E -i 's/app\.js\?v=[^"]+/app.js?v=20260714-10/' premium-v14/index.html
+          sed -E -i 's/styles\.css\?v=[^"]+/styles.css?v=20260714-11/' premium-v14/index.html
+          sed -E -i 's/app\.js\?v=[^"]+/app.js?v=20260714-11/' premium-v14/index.html
           cat premium-v14/css1.css premium-v14/css2.css premium-v14/css3.css premium-v14/css4.css premium-v14/css5.css > premium-v14/styles.css
           cat > premium-v14/assets/favicon.svg <<'SVG'
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#0b1015"/><path d="M17 13h13v38H17z" fill="#f2eee7"/><path d="M34 13h13v38H34z" fill="#9d744c"/><path d="M30 13h4v38h-4z" fill="#fff" opacity=".88"/></svg>
