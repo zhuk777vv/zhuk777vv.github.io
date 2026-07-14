@@ -23,14 +23,18 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p premium-v14/assets
-          base64 --decode premium-v12/before.b64 > premium-v14/assets/glass-before.webp
-          base64 --decode premium-v12/after.b64 > premium-v14/assets/glass-after.webp
+          python -m pip install --quiet pillow
+          SOURCE='premium-v14/assets/glass-source.jpg'
+          URL1='https://images.squarespace-cdn.com/content/v1/5820b938d482e9a9a7034dea/1637264694989-XOB64ZCR22W42FW85JG5/15%2B%2BCAD%2BDrawings%2Bfor%2BTouchless%2BInteractions.jpg'
+          URL2='https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2600&q=94'
+          curl -L --fail --retry 3 --connect-timeout 20 "$URL1" -o "$SOURCE" || curl -L --fail --retry 3 --connect-timeout 20 "$URL2" -o "$SOURCE"
+          python premium-v14/tools/build_glass_assets.py
           curl -L --fail --retry 3 --connect-timeout 15 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=84' -o premium-v14/assets/specialist.jpg
           rm -f premium-v14/assets/specialist.webp
           sed -i 's/assets\/specialist\.webp/assets\/specialist.jpg/g' premium-v14/index.html
           cat premium-v14/css1.css premium-v14/css2.css premium-v14/css3.css premium-v14/css4.css premium-v14/css5.css > premium-v14/styles.css
           cat > premium-v14/assets/favicon.svg <<'SVG'
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#0b1015"/><path d="M18 14h12v36H18z" fill="#d9edf1"/><path d="M34 14h12v36H34z" fill="#9fcbd5"/><path d="M30 14h4v36h-4z" fill="#fff" opacity=".85"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b1015"/><path d="M18 14h12v36H18z" fill="#efe9df"/><path d="M34 14h12v36H34z" fill="#b78a54"/><path d="M30 14h4v36h-4z" fill="#fff" opacity=".9"/></svg>
           SVG
           cat > premium-v14/robots.txt <<'TXT'
           User-agent: *
@@ -39,17 +43,28 @@ jobs:
           TXT
           cat > premium-v14/sitemap.xml <<'XML'
           <?xml version="1.0" encoding="UTF-8"?>
-          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://zhuk777vv.github.io/premium-v14/</loc><lastmod>2026-07-13</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://zhuk777vv.github.io/premium-v14/</loc><lastmod>2026-07-14</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>
           XML
           node --check premium-v14/app.js
           test -s premium-v14/index.html
           test -s premium-v14/styles.css
           test -s premium-v14/assets/glass-before.webp
           test -s premium-v14/assets/glass-after.webp
+          test -s premium-v14/assets/glass-before-detail.webp
+          test -s premium-v14/assets/glass-after-detail.webp
           test -s premium-v14/assets/specialist.jpg
           file premium-v14/assets/glass-before.webp | grep -qi webp
           file premium-v14/assets/glass-after.webp | grep -qi webp
-          file premium-v14/assets/specialist.jpg | grep -qi jpeg
+          python - <<'PY'
+          from PIL import Image, ImageChops, ImageStat
+          from pathlib import Path
+          a=Image.open('premium-v14/assets/glass-before.webp').convert('RGB')
+          b=Image.open('premium-v14/assets/glass-after.webp').convert('RGB')
+          assert a.size == b.size == (2200,1375), (a.size,b.size)
+          diff=ImageStat.Stat(ImageChops.difference(a,b)).mean
+          assert sum(diff)/3 > 1.6, diff
+          print('glass assets ok', a.size, diff)
+          PY
       - name: Commit finalized site
         shell: bash
         run: |
