@@ -1,5 +1,6 @@
 (()=>{
 'use strict';
+const trustFix=document.createElement('style');trustFix.textContent='.trust-photo{isolation:isolate}.trust-photo picture{position:absolute;inset:0;display:block;width:100%;height:100%}.trust-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}.trust-photo:after{z-index:1}.trust-caption{z-index:2}';document.head.appendChild(trustFix);
 const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
 const fullRub=n=>new Intl.NumberFormat('ru-RU').format(Math.round(n/1000)*1000)+' ₽';
 const compact=n=>{n=Math.max(0,n);if(n>=1e6)return (n/1e6).toLocaleString('ru-RU',{minimumFractionDigits:n<1e7?2:1,maximumFractionDigits:2})+' млн ₽';if(n>=1e5)return Math.round(n/1000).toLocaleString('ru-RU')+' тыс. ₽';return fullRub(n)};
