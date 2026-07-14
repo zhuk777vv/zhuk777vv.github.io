@@ -1,0 +1,89 @@
+name: Patch premium v14 PR
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'premium-v14/a11y-patch-trigger.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Apply accessibility patch
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index = Path('premium-v14/index.html')
+          text = index.read_text(encoding='utf-8')
+          pairs = [
+              ('<button id="splitHandle" type="button" aria-label="Переместить границу сравнения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="52">', '<button id="splitHandle" type="button" role="slider" aria-orientation="horizontal" aria-label="Переместить границу сравнения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="52">'),
+              ('<div class="completion-flow" id="completionFlow">', '<div class="completion-flow" id="completionFlow" tabindex="0" role="region" aria-label="Дополнительные работы — прокрутите по горизонтали">'),
+              ('<div class="audience-row">', '<div class="audience-row" tabindex="0" role="region" aria-label="Преимущества для разных типов клиентов — прокрутите по горизонтали">'),
+          ]
+          for old, new in pairs:
+              if old in text:
+                  text = text.replace(old, new, 1)
+              elif new not in text:
+                  raise SystemExit(f'Expected fragment missing: {old}')
+          index.write_text(text, encoding='utf-8')
+
+          audit = Path('.github/scripts/audit-premium-v14.mjs')
+          script = audit.read_text(encoding='utf-8')
+          old_block = """  const pageState = await page.evaluate(() => ({
+            title: document.title,
+            h1: document.querySelector('h1')?.textContent?.trim(),
+            brokenImages: [...document.images].filter(img => !img.complete || img.naturalWidth === 0).map(img => img.src),
+            overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+            linksWithoutHref: [...document.querySelectorAll('a')].filter(a => !a.getAttribute('href')).length,
+          }));
+          """
+          new_block = """  const pageState = await page.evaluate(() => ({
+            title: document.title,
+            h1: document.querySelector('h1')?.textContent?.trim(),
+            overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+            overflowElements: [...document.querySelectorAll('body *')].filter(el => {
+              const r = el.getBoundingClientRect();
+              return r.right > document.documentElement.clientWidth + 2 || r.left < -2;
+            }).slice(0, 12).map(el => `${el.tagName.toLowerCase()}.${el.className || ''} [${Math.round(el.getBoundingClientRect().left)}, ${Math.round(el.getBoundingClientRect().right)}]`),
+            linksWithoutHref: [...document.querySelectorAll('a')].filter(a => !a.getAttribute('href')).length,
+          }));
+          """
+          if old_block in script:
+              script = script.replace(old_block, new_block, 1)
+              script = script.replace("  if (pageState.brokenImages.length) failures.push(`${viewport.name}: broken images ${pageState.brokenImages.join(', ')}`);\n", "")
+              script = script.replace("  if (pageState.overflow > 2) failures.push(`${viewport.name}: horizontal overflow ${pageState.overflow}px`);", "  if (pageState.overflow > 2) failures.push(`${viewport.name}: horizontal overflow ${pageState.overflow}px — ${pageState.overflowElements.join(' | ')}`);")
+              marker = "  const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();\n"
+              insertion = """  await page.evaluate(async () => {
+            for (const y of [0, document.body.scrollHeight * .25, document.body.scrollHeight * .5, document.body.scrollHeight * .75, document.body.scrollHeight]) {
+              scrollTo(0, y);
+              await new Promise(resolve => setTimeout(resolve, 120));
+            }
+          });
+          await page.waitForTimeout(300);
+          const brokenImages = await page.evaluate(() => [...document.images].filter(img => !img.complete || img.naturalWidth === 0).map(img => img.src));
+          if (brokenImages.length) failures.push(`${viewport.name}: broken images ${brokenImages.join(', ')}`);
+
+          """ + marker
+              if marker not in script:
+                  raise SystemExit('Audit marker missing')
+              script = script.replace(marker, insertion, 1)
+          audit.write_text(script, encoding='utf-8')
+          PY
+      - name: Commit patched files
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add premium-v14/index.html .github/scripts/audit-premium-v14.mjs
+          git diff --cached --quiet || git commit -m 'Patch premium v14 accessibility and audit'
+          git push origin HEAD:${{ github.head_ref }}
