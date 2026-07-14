@@ -1,0 +1,40 @@
+name: Fix premium v14 button contrast inline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-v14-button-contrast-inline.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add final contrast rule to page
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('premium-v14/index.html')
+          text = p.read_text(encoding='utf-8')
+          rule = '<style id="launch-contrast">#sendCalculation{background:#63351a;color:#fff}#sendCalculation:hover{background:#512b16}</style>'
+          if 'id="launch-contrast"' not in text:
+              text = text.replace('</head>', f'  {rule}\n</head>', 1)
+          p.write_text(text, encoding='utf-8')
+          PY
+          grep -q 'id="launch-contrast"' premium-v14/index.html
+      - name: Commit contrast fix
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add premium-v14/index.html
+          git diff --cached --quiet || git commit -m 'Apply premium v14 launch button contrast'
+          git push
