@@ -3,50 +3,242 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#f3f0e9">
-  <title>Восстановление стекла без замены</title>
-  <meta name="description" content="Восстановление поцарапанного и загрязнённого стекла без демонтажа. Оценка по фото, срочный выезд, договор и гарантия.">
-  <meta property="og:title" content="Не меняйте стекло из-за царапин">
-  <meta property="og:description" content="Проверьте возможность восстановления до заказа нового стекла.">
+  <meta name="theme-color" content="#f2efe8">
+  <meta name="description" content="Инженерное восстановление повреждённого стекла без демонтажа и замены конструкции. Оценка по фото, работа на объекте, договор и гарантийные условия.">
+  <meta property="og:title" content="Восстановление стекла без замены конструкции">
+  <meta property="og:description" content="Перед заказом нового стекла проверьте, можно ли восстановить установленное.">
+  <title>GLASS RECOVERY ENGINEERING — восстановление стекла</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="scrollbar" id="scrollbar"></div>
-  <nav class="nav">
-    <a class="brand" href="#top"><span class="brand-mark"><i></i><i></i></span><span>КОМАНДА ВОССТАНОВЛЕНИЯ СТЕКЛА<small>СПБ · МОСКВА · ЕКАТЕРИНБУРГ</small></span></a>
-    <div class="nav-links"><a href="#demo">До / после</a><a href="#loss">Экономика</a><a href="#calc">Расчёт</a><a href="#process">Как работаем</a></div>
-    <a class="nav-cta" href="https://t.me/zhukov_boss" target="_blank" rel="noopener">Отправить фото</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Основная навигация">
+    <a class="brand" href="#top" aria-label="В начало страницы">
+      <span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>
+      <span class="brand-copy"><b>GLASS RECOVERY</b><small>ENGINEERING</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#economy">Экономика</a>
+      <a href="#result">Результат</a>
+      <a href="#scope">Возможности</a>
+      <a href="#process">Процесс</a>
+    </div>
+    <a class="nav-cta telegram-link" href="https://t.me/zhukov_boss" target="_blank" rel="noopener noreferrer">Оценить объект <span>↗</span></a>
   </nav>
+
   <main>
     <header class="hero" id="top">
-      <div class="hero-copy">
-        <div class="eyebrow">Восстановление установленного стекла</div>
-        <h1>Не меняйте стекло из-за царапин и следов ремонта</h1>
-        <p>Во многих случаях поверхность можно восстановить прямо на объекте — без демонтажа, ожидания производства и повторного монтажа.</p>
-        <div class="hero-actions"><a class="btn btn-primary" href="https://t.me/zhukov_boss" target="_blank" rel="noopener"><span>Получить оценку по фото</span><b>↗</b></a><a class="btn btn-secondary" href="#demo">Смотреть результат</a></div>
-        <div class="hero-proof"><article><b>в день обращения</b><span>предварительное заключение</span></article><article><b>1–3 дня</b><span>типовой срок работ</span></article><article><b>без демонтажа</b><span>работаем с установленным стеклом</span></article><article><b>24/7</b><span>возможен срочный выезд</span></article></div>
-      </div>
-      <section class="demo" id="demo">
-        <div class="demo-head"><div><span>01 · РЕЗУЛЬТАТ</span><h2>Одно и то же стекло. До и после восстановления.</h2></div><div class="demo-tabs" role="group" aria-label="Состояние стекла"><button data-state="before" type="button">До</button><button data-state="compare" class="active" type="button">Сравнить</button><button data-state="after" type="button">После</button></div></div>
-        <div class="glass-demo" id="glassDemo" style="--split:52%">
-          <div class="scene scene-before"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-b64="before.b64" alt="Стекло до восстановления"><canvas id="damageCanvas" aria-hidden="true"></canvas><div class="before-tone"></div><div class="state-badge badge-before"><b>ДО</b><span>царапины · краска · помутнение</span></div></div>
-          <div class="scene scene-after" id="afterScene"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-b64="after.b64" alt="Стекло после восстановления"><div class="clarity"></div><div class="state-badge badge-after"><b>ПОСЛЕ</b><span>чистая поверхность · сохранённое стекло</span></div></div>
-          <div class="split" id="split"><button id="splitHandle" type="button" aria-label="Переместить границу до и после" aria-valuemin="0" aria-valuemax="100" aria-valuenow="52"><span>↔</span></button></div><div class="gesture">Проведите пальцем по границе</div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="kicker">01 / ИНЖЕНЕРНОЕ ВОССТАНОВЛЕНИЕ СТЕКЛА</span>
+          <h1>Восстанавливаем повреждённое стекло <em>без замены конструкции</em></h1>
+          <p class="hero-lead">Убираем царапины, следы скребка, сварочную окалину, помутнение и строительные загрязнения прямо на объекте — без демонтажа и ожидания нового стекла.</p>
+          <div class="hero-actions">
+            <a class="button button-dark telegram-link" href="https://t.me/zhukov_boss" target="_blank" rel="noopener noreferrer">Получить оценку объекта <span>↗</span></a>
+            <a class="text-link" href="#result">Посмотреть принцип работы <span>↓</span></a>
+          </div>
+          <div class="hero-facts" aria-label="Ключевые условия">
+            <article><b>В день обращения</b><span>предварительная оценка по фото</span></article>
+            <article><b>Без демонтажа</b><span>в подходящих случаях</span></article>
+            <article><b>Договор и акт</b><span>для B2B-заказчиков</span></article>
+          </div>
         </div>
-        <div class="demo-economy"><article><span>Замена</span><b>312 000 ₽</b><small>18–21 день</small></article><i>→</i><article class="good"><span>Восстановление</span><b>96 000 ₽</b><small>около 2 дней</small></article><a href="https://t.me/zhukov_boss" target="_blank" rel="noopener">Проверить свой объект</a></div>
-      </section>
-      <section class="action-strip"><div><span>Что отправить</span><b>3–5 фотографий + размеры</b></div><div><span>Что получите</span><b>можно / нельзя + ориентир в рублях</b></div><div><span>Когда</span><b>в день обращения</b></div><a href="https://t.me/zhukov_boss" target="_blank" rel="noopener">Отправить фото сейчас</a></section>
+
+        <div class="hero-visual" aria-label="Схема восстановления стекла">
+          <div class="visual-caption"><span>Состояние поверхности</span><b>Диагностика / обработка / контроль</b></div>
+          <div class="glass-stage" id="glassStage">
+            <div class="architecture-lines" aria-hidden="true"></div>
+            <div class="damage-field" aria-hidden="true">
+              <i class="scratch s1"></i><i class="scratch s2"></i><i class="scratch s3"></i><i class="scratch s4"></i><i class="scratch s5"></i><i class="scratch s6"></i>
+              <i class="spot p1"></i><i class="spot p2"></i><i class="spot p3"></i><i class="spot p4"></i><i class="spot p5"></i>
+            </div>
+            <div class="clean-zone" aria-hidden="true"></div>
+            <div class="scan-line" aria-hidden="true"></div>
+            <div class="glass-label label-before"><small>ДО</small><b>Повреждённая поверхность</b></div>
+            <div class="glass-label label-after"><small>ПОСЛЕ</small><b>Восстановленное стекло</b></div>
+            <div class="visual-index">GR / 01</div>
+          </div>
+          <div class="visual-footer">
+            <span>Царапины</span><span>Окалина</span><span>Помутнение</span><span>Следы ремонта</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-band">
+        <div><small>География</small><b>Санкт-Петербург · Москва · Екатеринбург</b></div>
+        <div><small>Формат</small><b>Частные и коммерческие объекты</b></div>
+        <a class="telegram-link" href="https://t.me/zhukov_boss" target="_blank" rel="noopener noreferrer">Отправить 3–5 фото <span>↗</span></a>
+      </div>
     </header>
-    <section class="loss" id="loss"><div class="loss-copy"><span>02 · ЦЕНА РЕШЕНИЯ</span><h2>Одно повреждение может запустить цепочку расходов</h2><p>Новое стекло — только первая строка. Затем появляются логистика, демонтаж, монтаж, восстановление отделки и риск переноса сроков.</p><div class="loss-meter" id="lossMeter"><small>Сценарий полной замены</small><strong id="lossMoney">0 ₽</strong><div class="loss-meta"><b id="lossDays">0 дней</b><span id="lossLabel">Начало расчёта</span></div><div class="loss-bar"><i id="lossBar"></i></div></div></div><div class="loss-steps" id="lossSteps"><article data-money="190000" data-days="14" data-label="Производство"><b>01</b><div><h3>Изготовление нового стекла</h3><p>Замеры, согласование характеристик и ожидание производства.</p></div><strong>+190 000 ₽</strong></article><article data-money="38000" data-days="2" data-label="Логистика"><b>02</b><div><h3>Логистика и подъём</h3><p>Доставка, разгрузка, техника и повторный доступ на объект.</p></div><strong>+38 000 ₽</strong></article><article data-money="64000" data-days="2" data-label="Монтаж"><b>03</b><div><h3>Демонтаж и монтаж</h3><p>Разбор готовой конструкции, установка и герметизация.</p></div><strong>+64 000 ₽</strong></article><article data-money="20000" data-days="2" data-label="Отделка"><b>04</b><div><h3>Отделка и простой</h3><p>Повторное вмешательство в готовый объект и координация исполнителей.</p></div><strong>+20 000 ₽</strong></article></div></section>
-    <section class="decision"><div class="section-title"><span>03 · ДВА СЦЕНАРИЯ</span><h2>Одна задача. Совершенно разное влияние на объект.</h2><p>Переключите решение — этапы, бюджет и срок перестроятся прямо на экране.</p></div><div class="decision-toggle"><button class="active" data-mode="replace" type="button">Полная замена</button><button data-mode="restore" type="button">Восстановление</button></div><div class="decision-board" id="decisionBoard"><div class="decision-copy"><small id="decisionLabel">Сценарий A · Полная замена</small><h3 id="decisionTitle">Разбираем готовую конструкцию и собираем процесс заново</h3><div class="timeline" id="timeline"><div data-step="measure"><b>1</b><span>Диагностика и замеры</span><small>1–2 дня</small></div><div data-step="production"><b>2</b><span>Изготовление элемента</span><small>10–18 дней</small></div><div data-step="delivery"><b>3</b><span>Доставка и подъём</span><small>1–2 дня</small></div><div data-step="dismantle"><b>4</b><span>Демонтаж и монтаж</span><small>1–2 дня</small></div><div data-step="finish"><b>5</b><span>Сдача и документы</span><small>1 день</small></div></div></div><div class="decision-numbers"><article><span>Бюджет</span><b id="decisionMoney">312 000 ₽</b></article><article><span>Срок</span><b id="decisionDays">18–21 день</b></article><div class="decision-result"><b id="decisionResult">Риск переноса сроков</b><span id="decisionResultText">Пять этапов и несколько исполнителей</span></div></div></div></section>
-    <section class="completion"><div class="section-title"><span>04 · ОДИН ПОДРЯДЧИК</span><h2>Не только стекло. При необходимости закрываем объект целиком.</h2><p>Объединяем восстановление стекла, устранение замечаний, локальную отделку и финальный клининг в один график.</p></div><div class="completion-flow"><article><b>01</b><h3>Стекло</h3><p>Царапины, окалина, краска, потёртости и загрязнения.</p></article><i>+</i><article><b>02</b><h3>Замечания</h3><p>Локальные недоделки перед повторной приёмкой.</p></article><i>+</i><article><b>03</b><h3>Отделка</h3><p>Финишные и строительные доработки.</p></article><i>+</i><article><b>04</b><h3>Клининг</h3><p>Финальная подготовка перед передачей.</p></article><i>=</i><article class="completion-result"><b>РЕЗУЛЬТАТ</b><h3>Объект готов</h3><p>Один срок, один ответственный, понятный итог.</p></article></div></section>
-    <section class="calc-section" id="calc"><div class="calc-intro"><span>05 · РАСЧЁТ В ДЕНЬГАХ</span><h2>Посчитайте оба сценария до выезда специалиста</h2><p>Калькулятор показывает порядок бюджета, потенциальную экономию в рублях и разницу по сроку. Итоговая смета формируется после диагностики.</p><div class="calc-note"><b>Что нужно для точного ответа</b><span>3–5 фотографий, размеры, город и желаемый срок.</span></div></div><form class="calculator" id="calculator"><div class="fields"><label>Тип объекта<select name="object"><option value="1.16">Магазин / ресторан / гостиница</option><option value="1.12">БЦ / офис / управляющая компания</option><option value="1.22">Строящийся объект</option><option value="1">Частный объект</option></select></label><label>Площадь повреждённого стекла, м²<input name="area" type="number" min="0.2" step="0.1" inputmode="decimal" value="8"></label><label>Количество элементов<input name="pieces" type="number" min="1" step="1" inputmode="numeric" value="3"></label><label>Тип повреждения<select name="damage"><option value="1">Царапины / следы скребка</option><option value="1.28">Сварочная окалина</option><option value="0.88">Помутнение / потёртости</option><option value="0.82">Краска / строительные загрязнения</option></select></label><label>Доступ<select name="access"><option value="1">Свободный</option><option value="1.18">Есть ограничения</option><option value="1.46">Высота / сложный доступ</option></select></label><label>Срочность<select name="urgency"><option value="1">Планово</option><option value="1.15">Срочно, 1–3 дня</option><option value="1.35">День в день</option></select></label><label class="wide">Известная стоимость замены, ₽ <small>необязательно</small><input name="known" type="number" min="0" step="1000" inputmode="numeric" placeholder="Например, 300000"></label></div><div class="calc-result"><div class="calc-verdict"><span>Предварительный вывод</span><b id="calcVerdict">Восстановление имеет смысл рассмотреть</b></div><div class="calc-cards"><article><small>Полная замена</small><b id="replacementRange">—</b><span id="replacementTime">14–21 день</span></article><article class="rest"><small>Восстановление</small><b id="restorationRange">—</b><span id="restorationTime">1–3 дня</span></article></div><div class="saving"><small>Потенциальная экономия</small><b id="savingMoney">—</b><span id="savingPercent">—</span></div><button id="sendCalc" type="button" class="btn btn-calc">Отправить расчёт и фото в Telegram</button><p>Расчёт ориентировочный и не является публичной офертой.</p></div></form></section>
-    <section class="objects"><div class="section-title"><span>06 · ГДЕ РАБОТАЕМ</span><h2>От одной витрины до комплексного закрытия объекта</h2></div><div class="object-strip"><article><b>Витрины</b><span>магазины · рестораны · салоны</span></article><article><b>Окна и двери</b><span>частные и коммерческие объекты</span></article><article><b>Фасады</b><span>после монтажа и строительных работ</span></article><article><b>Перегородки</b><span>офисы · отели · общественные зоны</span></article><article><b>Комплексная сдача</b><span>стекло · отделка · клининг</span></article></div></section>
-    <section class="process" id="process"><div class="section-title"><span>07 · КАК РАБОТАЕМ</span><h2>Сначала проверяем. Потом фиксируем результат.</h2></div><div class="process-grid"><article><b>01</b><h3>Фото и вводные</h3><p>Получаем фотографии, размеры, город и задачу по сроку.</p></article><article><b>02</b><h3>Диагностика</h3><p>Определяем тип повреждения и целесообразность восстановления.</p></article><article><b>03</b><h3>Тестовый участок</h3><p>При необходимости показываем ожидаемый результат до полного объёма.</p></article><article><b>04</b><h3>Работы</h3><p>Согласовываем смету, срок и выполняем восстановление на объекте.</p></article><article><b>05</b><h3>Сдача</h3><p>Контроль результата, документы и гарантийные условия.</p></article></div><div class="limits"><div><span>Честное ограничение</span><h3>Не обещаем восстановить всё подряд</h3></div><ul><li>трещины и разбитое стекло;</li><li>сквозные повреждения;</li><li>дефекты, влияющие на безопасность;</li><li>случаи, где восстановление даст недопустимое искажение.</li></ul></div></section>
-    <section class="faq-section"><div class="section-title"><span>08 · ВАЖНЫЕ ВОПРОСЫ</span><h2>То, что обычно останавливает решение</h2></div><div class="faq"><details><summary>Не появятся ли оптические искажения?</summary><p>Риск зависит от глубины повреждения, толщины стекла и площади обработки. Поэтому сначала проводится диагностика, а при необходимости — тестовый участок.</p></details><details><summary>Можно ли понять по фотографиям, подойдёт ли восстановление?</summary><p>По фото можно дать предварительное заключение и понять, есть ли смысл выезжать. Окончательное решение принимается после осмотра или теста.</p></details><details><summary>Вы работаете на действующем объекте?</summary><p>Да. График, доступ, защита смежных поверхностей и требования площадки согласовываются до начала работ.</p></details><details><summary>Что будет зафиксировано до старта?</summary><p>Объём, стоимость, срок, технология, документы и гарантийные условия.</p></details></div></section>
-    <section class="final"><div class="final-copy"><span>ПРОВЕРКА ЗАНИМАЕТ НЕСКОЛЬКО МИНУТ</span><h2>До заказа нового стекла пришлите фотографии повреждения</h2><p>В день обращения скажем, есть ли смысл восстанавливать, какой порядок бюджета потребуется и насколько это рациональнее полной замены.</p><div class="final-actions"><a class="btn btn-primary" href="https://t.me/zhukov_boss" target="_blank" rel="noopener">Получить оценку по фото</a><a class="btn btn-secondary" href="tel:+79919917991">Позвонить</a></div></div><div class="contact"><div><small>Контактное лицо</small><b>Иван</b></div><div><small>Телефон</small><a href="tel:+79919917991">+7 991 991-79-91</a></div><div><small>Telegram</small><a href="https://t.me/zhukov_boss" target="_blank" rel="noopener">@zhukov_boss</a></div><div><small>E-mail</small><a href="mailto:zhukov_boss@mail.ru">zhukov_boss@mail.ru</a></div><div><small>География</small><b>СПб · Москва · Екатеринбург · другие города по согласованию</b></div></div></section>
+
+    <section class="economy" id="economy">
+      <div class="economy-intro">
+        <span class="kicker kicker-light">02 / ЦЕНА ПОЛНОЙ ЗАМЕНЫ</span>
+        <h2>Одно повреждение запускает <em>всю цепочку работ заново</em></h2>
+        <p>Цена нового стекла — только начало. Реальный бюджет складывается из производства, логистики, подъёма, демонтажа, монтажа, отделки и простоя объекта.</p>
+      </div>
+
+      <div class="economy-layout">
+        <aside class="economy-meter" aria-live="polite">
+          <small>Накопленная стоимость сценария замены</small>
+          <strong id="lossMoney">0 ₽</strong>
+          <div class="meter-meta"><b id="lossDays">0 дней</b><span id="lossLabel">Начало расчёта</span></div>
+          <div class="meter-line"><i id="lossBar"></i></div>
+          <p>Иллюстративный расчёт. Фактическая стоимость зависит от типа стекла, размеров, доступа и объекта.</p>
+        </aside>
+
+        <div class="cost-chain" id="costChain">
+          <article data-money="148000" data-days="12" data-label="Производство">
+            <div class="cost-number">01</div>
+            <div class="cost-copy"><small>НОВЫЙ ЭЛЕМЕНТ</small><h3>Изготовление стекла</h3><p>Повторные замеры, согласование характеристик, производство и ожидание готовности.</p></div>
+            <strong>+148 000 ₽</strong>
+          </article>
+          <article data-money="32000" data-days="2" data-label="Логистика">
+            <div class="cost-number">02</div>
+            <div class="cost-copy"><small>ДОСТАВКА</small><h3>Логистика и подъём</h3><p>Спецтранспорт, разгрузка, подъём и повторная организация доступа на объект.</p></div>
+            <strong>+32 000 ₽</strong>
+          </article>
+          <article data-money="54000" data-days="2" data-label="Демонтаж">
+            <div class="cost-number">03</div>
+            <div class="cost-copy"><small>ВМЕШАТЕЛЬСТВО</small><h3>Демонтаж готовой конструкции</h3><p>Разбор узлов, защита смежных поверхностей и вывоз повреждённого элемента.</p></div>
+            <strong>+54 000 ₽</strong>
+          </article>
+          <article data-money="62000" data-days="2" data-label="Монтаж">
+            <div class="cost-number">04</div>
+            <div class="cost-copy"><small>УСТАНОВКА</small><h3>Монтаж и герметизация</h3><p>Установка нового стекла, настройка конструкции, герметизация и контроль.</p></div>
+            <strong>+62 000 ₽</strong>
+          </article>
+          <article data-money="26000" data-days="2" data-label="Восстановление отделки">
+            <div class="cost-number">05</div>
+            <div class="cost-copy"><small>ПОСЛЕДСТВИЯ</small><h3>Отделка и повторная приёмка</h3><p>Локальные доработки, клининг, согласование замечаний и повторная сдача.</p></div>
+            <strong>+26 000 ₽</strong>
+          </article>
+          <article data-money="0" data-days="3" data-label="Простой объекта" class="cost-risk">
+            <div class="cost-number">06</div>
+            <div class="cost-copy"><small>СКРЫТАЯ ЦЕНА</small><h3>Простой и перенос сроков</h3><p>Задержка открытия, ограничение доступа и дополнительная координация подрядчиков.</p></div>
+            <strong>РИСК</strong>
+          </article>
+        </div>
+      </div>
+
+      <div class="economy-decision">
+        <div><small>СЦЕНАРИЙ А</small><span>Полная замена</span><b>322 000 ₽</b><em>до 23 дней</em></div>
+        <div class="decision-arrow" aria-hidden="true">→</div>
+        <div class="decision-good"><small>СЦЕНАРИЙ B</small><span>Восстановление</span><b>от 96 000 ₽</b><em>ориентир: около 2 дней</em></div>
+        <a class="button button-light telegram-link" href="https://t.me/zhukov_boss" target="_blank" rel="noopener noreferrer">Проверить свой объект <span>↗</span></a>
+      </div>
+    </section>
+
+    <section class="result" id="result">
+      <div class="section-heading">
+        <span class="kicker">03 / РЕЗУЛЬТАТ</span>
+        <h2>Работаем с установленным стеклом. <em>Геометрия объекта сохраняется.</em></h2>
+        <p>Сначала оцениваем глубину дефекта. При необходимости выполняем тестовый участок и только после этого согласовываем полный объём.</p>
+      </div>
+
+      <div class="result-frame">
+        <div class="result-toolbar"><span>Один и тот же элемент</span><div><button type="button" data-state="before">До</button><button type="button" data-state="compare" class="active">Сравнить</button><button type="button" data-state="after">После</button></div></div>
+        <div class="compare" id="compare" style="--split:52%">
+          <div class="compare-side compare-before">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-b64="before.b64" alt="Стекло до восстановления">
+            <div class="compare-overlay"></div>
+            <span class="compare-label">ДО / повреждение</span>
+          </div>
+          <div class="compare-side compare-after" id="afterSide">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-b64="after.b64" alt="Стекло после восстановления">
+            <span class="compare-label">ПОСЛЕ / восстановление</span>
+          </div>
+          <div class="compare-divider" id="compareDivider"><button id="compareHandle" type="button" aria-label="Переместить границу сравнения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="52">↔</button></div>
+          <span class="compare-hint">Перемещайте границу</span>
+        </div>
+        <div class="result-notes">
+          <article><small>01</small><b>Диагностика</b><span>Определяем глубину и допустимую зону обработки.</span></article>
+          <article><small>02</small><b>Тестовый участок</b><span>Показываем ожидаемый результат до полного объёма.</span></article>
+          <article><small>03</small><b>Контроль оптики</b><span>Не выполняем работу, если есть риск недопустимого искажения.</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="scope" id="scope">
+      <div class="scope-title">
+        <span class="kicker kicker-light">04 / ВОЗМОЖНОСТИ</span>
+        <h2>Закрываем не только стекло, <em>а готовность объекта к сдаче</em></h2>
+      </div>
+      <div class="scope-grid">
+        <article class="scope-primary"><span>ОСНОВНОЕ НАПРАВЛЕНИЕ</span><h3>Восстановление стекла</h3><p>Царапины, следы скребка, сварочная окалина, помутнение, краска, цемент, клей и последствия строительной уборки.</p><a class="telegram-link" href="https://t.me/zhukov_boss" target="_blank" rel="noopener noreferrer">Оценить повреждение ↗</a></article>
+        <article><span>ДОПОЛНИТЕЛЬНО</span><h3>Устранение замечаний</h3><p>Локальные недоделки перед повторной приёмкой.</p></article>
+        <article><span>ДОПОЛНИТЕЛЬНО</span><h3>Финишная отделка</h3><p>Точечные строительные и отделочные работы.</p></article>
+        <article><span>ДОПОЛНИТЕЛЬНО</span><h3>Финальный клининг</h3><p>Подготовка помещения перед передачей заказчику.</p></article>
+      </div>
+      <div class="scope-statement"><span>ОДИН ОТВЕТСТВЕННЫЙ</span><b>Один график. Один договор. Один контролируемый результат.</b></div>
+    </section>
+
+    <section class="calculator-section" id="calculator-section">
+      <div class="calculator-copy">
+        <span class="kicker">05 / ПРЕДВАРИТЕЛЬНАЯ ЭКОНОМИКА</span>
+        <h2>Сначала считаем, <em>потом предлагаем решение</em></h2>
+        <p>Расчёт показывает порядок бюджета. Финальная стоимость определяется после фотографий, размеров и диагностики.</p>
+        <div class="calculator-inputs">
+          <label>Площадь повреждения, м²<input id="area" type="number" min="0.2" step="0.1" value="8" inputmode="decimal"></label>
+          <label>Количество элементов<input id="pieces" type="number" min="1" step="1" value="3" inputmode="numeric"></label>
+          <label>Тип повреждения<select id="damage"><option value="1">Царапины / следы скребка</option><option value="1.28">Сварочная окалина</option><option value="0.86">Помутнение / потёртости</option><option value="0.82">Краска / строительные загрязнения</option></select></label>
+          <label>Доступ<select id="access"><option value="1">Свободный</option><option value="1.18">С ограничениями</option><option value="1.46">Высота / сложный доступ</option></select></label>
+        </div>
+      </div>
+      <div class="calculator-result">
+        <span>ПРЕДВАРИТЕЛЬНЫЙ РАСЧЁТ</span>
+        <div class="calc-row"><small>Полная замена</small><b id="replacementRange">—</b><em>14–21 день</em></div>
+        <div class="calc-row calc-row-good"><small>Восстановление</small><b id="restorationRange">—</b><em id="restorationTime">1–3 дня</em></div>
+        <div class="saving"><small>Потенциальная экономия</small><b id="savingMoney">—</b><span id="savingPercent">—</span></div>
+        <button class="button button-blue" id="sendCalc" type="button">Скопировать расчёт и открыть Telegram <span>↗</span></button>
+        <p id="telegramStatus">Текст расчёта будет скопирован — останется вставить его в сообщение Ивану.</p>
+      </div>
+    </section>
+
+    <section class="process" id="process">
+      <div class="section-heading">
+        <span class="kicker">06 / ПРОЦЕСС</span>
+        <h2>До начала работ фиксируем <em>объём, технологию и ожидаемый результат</em></h2>
+      </div>
+      <div class="process-line">
+        <article><b>01</b><h3>Фото и размеры</h3><p>Получаем 3–5 фотографий, размеры, город и желаемый срок.</p></article>
+        <article><b>02</b><h3>Диагностика</h3><p>Определяем тип дефекта и целесообразность восстановления.</p></article>
+        <article><b>03</b><h3>Тест</h3><p>При необходимости выполняем тестовый участок.</p></article>
+        <article><b>04</b><h3>Согласование</h3><p>Фиксируем стоимость, сроки, документы и условия.</p></article>
+        <article><b>05</b><h3>Работы и сдача</h3><p>Выполняем восстановление и контролируем результат.</p></article>
+      </div>
+      <div class="limits">
+        <div><span>ЧЕСТНОЕ ОГРАНИЧЕНИЕ</span><h3>Не обещаем восстановить всё подряд</h3></div>
+        <ul><li>трещины и разбитое стекло;</li><li>сквозные повреждения;</li><li>дефекты, влияющие на безопасность;</li><li>случаи с риском недопустимого оптического искажения.</li></ul>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="final-copy">
+        <span class="kicker kicker-light">ПЕРЕД ЗАКАЗОМ НОВОГО СТЕКЛА</span>
+        <h2>Проверьте, можно ли <em>сохранить уже установленное</em></h2>
+        <p>Отправьте фотографии повреждения. В день обращения дадим предварительный ответ и скажем, какие вводные нужны для точной сметы.</p>
+        <div class="final-actions">
+          <a class="button button-light telegram-link" href="https://t.me/zhukov_boss" target="_blank" rel="noopener noreferrer">Отправить фото Ивану <span>↗</span></a>
+          <a class="button button-outline" href="tel:+79919917991">Позвонить</a>
+        </div>
+      </div>
+      <div class="contacts">
+        <div><small>Контакт</small><b>Иван</b></div>
+        <div><small>Телефон</small><a href="tel:+79919917991">+7 991 991-79-91</a></div>
+        <div><small>Telegram</small><a class="telegram-link" href="https://t.me/zhukov_boss" target="_blank" rel="noopener noreferrer">@zhukov_boss ↗</a></div>
+        <div><small>E-mail</small><a href="mailto:zhukov_boss@mail.ru">zhukov_boss@mail.ru</a></div>
+        <div><small>География</small><b>СПб · Москва · Екатеринбург · другие города по согласованию</b></div>
+      </div>
+    </section>
   </main>
-  <div class="mobile-cta" id="mobileCta"><a href="https://t.me/zhukov_boss" target="_blank" rel="noopener">Получить оценку</a><a href="tel:+79919917991">☎</a></div>
+
+  <div class="mobile-cta" id="mobileCta">
+    <a class="telegram-link" href="https://t.me/zhukov_boss" target="_blank" rel="noopener noreferrer">Получить оценку <span>↗</span></a>
+    <a href="tel:+79919917991" aria-label="Позвонить">☎</a>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
