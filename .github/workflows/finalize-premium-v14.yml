@@ -34,12 +34,12 @@ jobs:
           rm -f premium-v14/assets/specialist.webp
           sed -i 's/assets\/specialist\.webp/assets\/specialist.jpg/g' premium-v14/index.html
           sed -i 's/ target="_blank" rel="noopener"//g' premium-v14/index.html
-          sed -i 's#styles.css?v=[^"]*#styles.css?v=20260714-11#g' premium-v14/index.html
-          sed -i 's#app.js?v=[^"]*#app.js?v=20260714-11#g' premium-v14/index.html
-          sed -i 's/src="assets\/glass-before.webp" width="960" height="720"/src="assets\/glass-before.webp" width="2400" height="1500"/g' premium-v14/index.html
-          sed -i 's/src="assets\/glass-after.webp" width="960" height="720"/src="assets\/glass-after.webp" width="2400" height="1500"/g' premium-v14/index.html
-          sed -i 's#class="macro-before-image" src="assets/glass-before.webp" width="960" height="720"#class="macro-before-image" src="assets/glass-before-detail.webp" width="1200" height="900"#g' premium-v14/index.html
-          sed -i 's#class="macro-after-image" src="assets/glass-after.webp" width="960" height="720"#class="macro-after-image" src="assets/glass-after-detail.webp" width="1200" height="900"#g' premium-v14/index.html
+          sed -i 's#styles.css?v=[^"]*#styles.css?v=20260714-12#g' premium-v14/index.html
+          sed -i 's#app.js?v=[^"]*#app.js?v=20260714-12#g' premium-v14/index.html
+          sed -E -i 's#src="assets/glass-before.webp" width="[0-9]+" height="[0-9]+"#src="assets/glass-before.webp" width="2400" height="1500"#g' premium-v14/index.html
+          sed -E -i 's#src="assets/glass-after.webp" width="[0-9]+" height="[0-9]+"#src="assets/glass-after.webp" width="2400" height="1500"#g' premium-v14/index.html
+          sed -E -i 's#class="macro-before-image" src="assets/[^"]+" width="[0-9]+" height="[0-9]+"#class="macro-before-image" src="assets/glass-before-detail.webp" width="1200" height="900"#g' premium-v14/index.html
+          sed -E -i 's#class="macro-after-image" src="assets/[^"]+" width="[0-9]+" height="[0-9]+"#class="macro-after-image" src="assets/glass-after-detail.webp" width="1200" height="900"#g' premium-v14/index.html
           sed -i 's/Скопировать расчёт и открыть Telegram/Открыть Telegram и отправить фото/g' premium-v14/index.html
           cat premium-v14/css1.css premium-v14/css2.css premium-v14/css3.css premium-v14/css4.css premium-v14/css5.css > premium-v14/styles.css
           node --check premium-v14/app.js
@@ -61,6 +61,9 @@ jobs:
           diff=sum(ImageStat.Stat(ImageChops.difference(before,after)).mean)/3
           assert 1.4 < diff < 18, diff
 
+          html=open('premium-v14/index.html',encoding='utf-8').read()
+          assert 'assets/glass-before-detail.webp' in html
+          assert 'assets/glass-after-detail.webp' in html
           class Parser(HTMLParser):
               def __init__(self): super().__init__(); self.telegram=[]; self.bad=[]
               def handle_starttag(self,tag,attrs):
@@ -69,7 +72,7 @@ jobs:
                   if 't.me/' in href:
                       self.telegram.append(href)
                       if 'target' in d: self.bad.append(d)
-          p=Parser(); p.feed(open('premium-v14/index.html',encoding='utf-8').read())
+          p=Parser(); p.feed(html)
           assert len(p.telegram)>=7,p.telegram
           assert all(x=='https://t.me/zhukov_boss' for x in p.telegram),p.telegram
           assert not p.bad,p.bad
