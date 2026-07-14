@@ -1,0 +1,88 @@
+name: Audit premium v14 compact
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'premium-v14/**'
+      - '.audit-v14-trigger'
+      - '.github/workflows/audit-premium-v14-compact.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Chromium
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --silent --no-audit --no-fund playwright @axe-core/playwright
+          npx playwright install chromium >/dev/null 2>&1
+      - name: Prepare audit
+        run: |
+          cat > /tmp/v14-audit.mjs <<'JS'
+          import {chromium} from 'playwright';
+          import AxeBuilder from '@axe-core/playwright';
+          import {spawn} from 'node:child_process';
+          const [width,height]=process.env.SIZE.split('x').map(Number);
+          const server=spawn('python3',['-m','http.server','8765','--bind','127.0.0.1'],{stdio:'ignore'});
+          await new Promise(r=>setTimeout(r,700));
+          const browser=await chromium.launch({headless:true});
+          const page=await browser.newPage({viewport:{width,height}});
+          const errors=[];
+          page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
+          page.on('pageerror',e=>errors.push('page:'+String(e)));
+          page.on('requestfailed',r=>errors.push('request:'+r.url()));
+          const fail=[];const check=(name,ok,detail='')=>{if(!ok)fail.push(name+(detail?' ['+detail+']':''))};
+          const res=await page.goto('http://127.0.0.1:8765/premium-v14/',{waitUntil:'networkidle'});
+          check('http',res?.status()===200,String(res?.status()));
+          check('runtime-errors',errors.length===0,errors.join(';'));
+          const dim=await page.evaluate(()=>({v:innerWidth,d:document.documentElement.scrollWidth,b:document.body.scrollWidth}));
+          check('overflow',dim.d<=dim.v+1&&dim.b<=dim.v+1,JSON.stringify(dim));
+          const broken=await page.evaluate(()=>[...document.images].filter(x=>!x.complete||!x.naturalWidth).map(x=>x.src));
+          check('images',broken.length===0,broken.join(','));
+          check('hero',(await page.locator('h1').innerText()).trim()==='Не меняйте стекло из-за царапин');
+          await page.locator('[data-state="before"]').click();
+          let split=await page.locator('#beforeAfter').evaluate(e=>parseFloat(getComputedStyle(e).getPropertyValue('--split')));
+          check('before',split>=99,String(split));
+          await page.locator('[data-state="after"]').click();
+          split=await page.locator('#beforeAfter').evaluate(e=>parseFloat(getComputedStyle(e).getPropertyValue('--split')));
+          check('after',split<=1,String(split));
+          check('slider-role',(await page.locator('#splitHandle').getAttribute('role'))==='slider');
+          check('restore-default',(await page.locator('#decisionMoney').innerText()).includes('96 000'));
+          await page.locator('[data-mode="replace"]').click();await page.waitForTimeout(600);
+          check('replace-switch',(await page.locator('#decisionMoney').innerText()).includes('312 000'));
+          const calc=await page.evaluate(()=>[document.querySelector('#replacementRange')?.textContent,document.querySelector('#restorationRange')?.textContent,document.querySelector('#savingMoney')?.textContent]);
+          check('calculator',!calc.some(v=>!v||v.includes('—')||v.includes('NaN')),JSON.stringify(calc));
+          await page.locator('input[name="known"]').fill('10000');await page.locator('input[name="known"]').dispatchEvent('input');
+          check('negative-case',(await page.locator('#savingBlock').getAttribute('class')).includes('negative'));
+          await page.evaluate(()=>window.scrollTo(0,document.querySelector('#economics').offsetTop+document.querySelector('#economics').offsetHeight));await page.waitForTimeout(700);
+          check('counter',(await page.locator('#lossMoney').innerText()).includes('312 000'),await page.locator('#lossMoney').innerText());
+          if(width<=430){await page.locator('#calculator').scrollIntoViewIfNeeded();await page.locator('input[name="area"]').focus();await page.waitForTimeout(150);check('mobile-keyboard',await page.locator('#mobileCta').evaluate(e=>e.classList.contains('keyboard')))}
+          if(process.env.AXE==='1'){const axe=await new AxeBuilder({page}).disableRules(['color-contrast']).analyze();const serious=axe.violations.filter(v=>['serious','critical'].includes(v.impact));check('axe',serious.length===0,serious.map(v=>v.id+':'+v.nodes.length).join(','))}
+          await browser.close();server.kill('SIGTERM');
+          if(fail.length){console.error('AUDIT_FAIL '+width+'x'+height+' :: '+fail.join(' | '));process.exit(1)}
+          console.log('AUDIT_PASS '+width+'x'+height+' calc='+calc.join(' / '));
+          JS
+      - name: Audit 360x800
+        env: {SIZE: '360x800'}
+        run: node /tmp/v14-audit.mjs
+      - name: Audit 390x844
+        env: {SIZE: '390x844'}
+        run: node /tmp/v14-audit.mjs
+      - name: Audit 430x932
+        env: {SIZE: '430x932'}
+        run: node /tmp/v14-audit.mjs
+      - name: Audit 1440x1000
+        env: {SIZE: '1440x1000'}
+        run: node /tmp/v14-audit.mjs
+      - name: Accessibility audit
+        env: {SIZE: '390x844', AXE: '1'}
+        run: node /tmp/v14-audit.mjs
