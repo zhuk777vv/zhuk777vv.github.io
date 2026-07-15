@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /oborot/
+Sitemap: https://zhuk777vv.github.io/oborot/sitemap.xml
