@@ -1,0 +1,54 @@
+:root{
+  --bg:#0b0d11;
+  --bg-2:#11151b;
+  --paper:#f4f6f8;
+  --paper-2:#e7ebef;
+  --ink:#171b21;
+  --text:#f5f7fa;
+  --muted:#9aa3ad;
+  --muted-dark:#66707b;
+  --red:#ff4438;
+  --red-dark:#d92f27;
+  --blue:#6cc8ff;
+  --green:#58c77b;
+  --line:rgba(255,255,255,.11);
+  --dark-line:rgba(17,21,27,.13);
+  --shell:min(1440px,calc(100vw - 32px));
+  --shadow:0 28px 90px rgba(0,0,0,.26);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;min-width:320px;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:3000;pointer-events:none;opacity:.018;mix-blend-mode:screen;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+button{border:0;color:inherit;background:none;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--red);outline-offset:4px}
+.shell{width:var(--shell);margin-inline:auto}
+.progress{position:fixed;z-index:4000;top:0;left:0;width:0;height:2px;background:var(--red)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .72s cubic-bezier(.22,1,.36,1),transform .72s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:none}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#ff8a82;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.16em}
+.eyebrow:before{content:"";width:22px;height:1px;background:linear-gradient(90deg,transparent,#ff766e)}
+.eyebrow--dark{color:var(--red)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 22px;border-radius:999px;font-size:14px;font-weight:760;transition:transform .22s,box-shadow .22s,background .22s,border-color .22s}
+.btn:hover{transform:translateY(-2px)}
+.btn--red{color:#fff;background:linear-gradient(135deg,#ff574c,#ff3327);box-shadow:0 16px 44px rgba(255,68,56,.32)}
+.btn--ghost,.btn--glass{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04)}
+.header{position:fixed;z-index:150;inset:0 0 auto;background:rgba(10,12,15,.82);border-bottom:1px solid rgba(255,255,255,.07);backdrop-filter:blur(18px) saturate(125%)}
+.header__inner{min-height:72px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand strong{font-size:24px;letter-spacing:-.055em}
+.brand span{max-width:120px;color:#8c95a0;font-size:8px;line-height:1.2;text-transform:uppercase;letter-spacing:.12em}
+.nav,.header .btn{display:none}.nav{align-items:center;justify-content:center;gap:30px}.nav a{position:relative;color:#aab2bc;font-size:13px;white-space:nowrap}.nav a:after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:1px;transform:scaleX(0);background:var(--red);transition:transform .22s}.nav a:hover{color:#fff}.nav a:hover:after{transform:scaleX(1)}
+.menu{display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.13);border-radius:50%;background:rgba(255,255,255,.04)}
+.menu i{display:block;width:18px;height:1px;margin:3px;background:#fff}
+.mobile-menu{position:fixed;z-index:220;inset:0;display:flex;flex-direction:column;gap:22px;padding:22px 16px 28px;transform:translateY(-103%);opacity:0;background:radial-gradient(circle at 100% 0,rgba(255,68,56,.18),transparent 35%),#0b0d11;transition:transform .38s cubic-bezier(.22,1,.36,1),opacity .28s}
+.mobile-menu.open{transform:none;opacity:1}
+.mobile-menu__top{display:flex;align-items:center;justify-content:space-between}
+.close{display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.13);border-radius:50%;background:rgba(255,255,255,.04);font-size:25px}
+.mobile-menu nav{display:grid;gap:10px}
+.mobile-menu nav a{display:grid;grid-template-columns:38px 1fr auto;align-items:center;min-height:61px;padding:0 16px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.035);font-weight:650}
+.mobile-menu nav small{color:#ff8279;font-size:10px}
+.mobile-menu p{margin:0;color:#9098a2;font-size:12px}
