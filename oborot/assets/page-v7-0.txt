@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>ОБОРОТ — система роста выручки автосервиса</title>
+  <meta name="description" content="Цифровой мастер-приёмщик 24/7, управление выручкой, возврат клиентов и премиальная упаковка автосервиса.">
+  <meta name="theme-color" content="#080807">
+  <meta property="og:title" content="ОБОРОТ — система роста выручки автосервиса">
+  <meta property="og:description" content="Добавляем автосервису выручку на каждом этапе работы с клиентом.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://zhuk777vv.github.io/oborot/">
+  <link rel="stylesheet" href="./assets/base-v7.css">
+  <link rel="stylesheet" href="./assets/visual-v7.css">
+  <link rel="stylesheet" href="./assets/solutions-v7.css">
+  <link rel="stylesheet" href="./assets/business-v7.css">
+  <link rel="stylesheet" href="./assets/mobile-v7.css">
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <header class="header">
+    <div class="shell header__inner">
+      <a href="#top" class="brand" aria-label="ОБОРОТ, на главную">
+        <b>ОБОРОТ</b><span>Система роста<br>выручки автосервиса</span>
+      </a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="#solutions">Решения</a><a href="#capabilities">Возможности</a><a href="#calculator">Расчёт выгоды</a><a href="#process">Как работаем</a><a href="#security">Безопасность</a><a href="#contacts">Контакты</a>
+      </nav>
+      <button class="btn btn--ghost js-contact">Обсудить внедрение</button>
+      <button class="menu-btn" id="menuOpen" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu__head"><div class="brand"><b>ОБОРОТ</b><span>Система роста<br>выручки автосервиса</span></div><button class="menu-close" id="menuClose" aria-label="Закрыть меню">×</button></div>
+    <nav aria-label="Мобильная навигация">
+      <a href="#solutions"><i>01</i>Решения<span>→</span></a><a href="#capabilities"><i>02</i>Возможности<span>→</span></a><a href="#calculator"><i>03</i>Расчёт выгоды<span>→</span></a><a href="#process"><i>04</i>Как работаем<span>→</span></a><a href="#security"><i>05</i>Безопасность<span>→</span></a><a href="#contacts"><i>06</i>Контакты<span>→</span></a>
+    </nav>
+    <button class="btn btn--primary js-contact">Обсудить внедрение</button>
+    <p>Работаем по всей России. Личная встреча возможна по предварительной договорённости.</p>
+  </div>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="shell hero__grid">
+        <div class="hero__copy reveal">
+          <div class="eyebrow">Комплексный партнёр по увеличению выручки автосервиса</div>
+          <h1>Добавляем автосервису выручку <em>на каждом этапе</em> работы с клиентом</h1>
+          <p class="hero__lead">Принимаем обращения 24/7, показываем руководителю точки роста, возвращаем клиентов на обслуживание и упаковываем сервис так, чтобы ему доверяли ещё до первого звонка.</p>
+          <div class="painline"><svg><use href="#i-car"/></svg>Поздний ответ, пустой пост, молчащая база и слабая упаковка — четыре места, где сервис теряет деньги уже сейчас.</div>
+          <div class="hero__actions"><button class="btn btn--primary js-contact">Обсудить внедрение <span>→</span></button><button class="btn btn--secondary" id="demoStart">▶ Посмотреть, как это работает</button><button class="sound" id="soundToggle">◔ Звук по нажатию</button></div>
+          <div class="potential"><small>Крупный денежный аргумент</small><strong>До 900 000 ₽</strong><span>дополнительного потенциала выручки в месяц для среднего и крупного СТО*</span></div>
+          <p class="hero__trust">Индивидуальная разработка · ООО и ИП · Договор, счёт и закрывающие документы · Вся Россия</p>
+          <p class="note">*Расчётный потенциал зависит от количества обращений, среднего заказ-наряда, клиентской базы, загрузки и процессов конкретного сервиса. Не является гарантией результата.</p>
+        </div>
+        <div class="hero__visual reveal">
+          <div class="garage">
+            <div class="bay-labels"><span>ПОСТ 01</span><span>ПОСТ 02</span><span>ПОСТ 03</span></div>
+            <div class="ceiling c1"></div><div class="ceiling c2"></div><div class="scan"></div><div class="floor"></div>
+            <svg class="car" viewBox="0 0 920 420" aria-hidden="true"><path d="M70 293c95-11 126-76 182-111 58-36 134-60 260-60 127 0 211 34 277 113l89 33c19 7 30 20 36 39"/><path d="M213 260c58-53 103-82 165-93 72-13 167-10 234 9 46 13 97 43 145 84"/><line x1="87" y1="324" x2="835" y2="324"/><circle cx="260" cy="312" r="54"/><circle cx="694" cy="312" r="54"/><circle cx="260" cy="312" r="22"/><circle cx="694" cy="312" r="22"/></svg>
+            <span class="tag t1">Диагностика</span><span class="tag t2">Ремзона</span><span class="tag t3">Контроль выручки</span>
+          </div>
+          <div class="float-card hero-chat"><div class="card-top"><span>◯</span><b>Цифровой мастер</b><small>21:47</small></div><p class="bubble dark">Нужно записать BMW X5 на ТО. Удобно после 15:00.</p><p class="bubble gold">Свободно во вторник 14:30 и в четверг 16:00. Какое окно закрепить?</p><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="float-card hero
