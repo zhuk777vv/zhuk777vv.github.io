@@ -1,0 +1,164 @@
+ght:250px}.return-demo__car svg{left:-8%;right:-8%;width:116%;bottom:26px}.service-history{grid-template-columns:1fr}.return-task{align-items:flex-start;flex-direction:column}.return-task button{width:100%}.brand-comparison{min-height:510px}.brand-view{padding:12px}.bad-site,.premium-site{width:100%;min-height:380px;padding:22px}.premium-site h3{font-size:2.65rem}.premium-site svg{right:-18%;width:90%}.economics{padding:78px 0}.economics__copy h2{font-size:clamp(2.35rem,11.5vw,3.8rem)}.calculator{padding:18px;border-radius:24px}.calculator__result strong{font-size:clamp(2.5rem,13vw,4rem)}.process{padding:78px 0}.process__heading{grid-template-columns:1fr}.process__heading h2{grid-column:1;font-size:clamp(2.35rem,11.5vw,3.8rem)}.process__steps{grid-template-columns:1fr}.footer{min-height:760px;padding:82px 0 120px}.footer__copy h2{font-size:clamp(2.65rem,13vw,4.2rem)}.footer__car{left:-25%;right:-35%;bottom:102px}.footer__legal{bottom:20px;flex-direction:column}.footer__legal span:last-child{text-align:left}.contact-modal__box{padding:23px 17px}.button{min-height:51px}.telegram-float{right:12px;bottom:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,:before,:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+
+/* Mobile-first cinematic correction: keep the car inside the first viewport */
+@media(max-width:760px){
+  .hero{padding-top:88px;padding-bottom:20px}
+  .hero__content{gap:14px}
+  .hero h1{max-width:none;margin-top:13px;font-size:clamp(2.15rem,9.6vw,2.65rem);line-height:.91;letter-spacing:-.06em}
+  .hero__lead{margin-top:14px;font-size:12.5px;line-height:1.45}
+  .hero__actions{margin-top:16px;gap:8px}
+  .hero__actions .button{min-height:44px;font-size:10.5px}
+  .sound-control{min-height:34px;font-size:10px}
+  .hero__potential{grid-template-columns:1fr auto;gap:2px 10px;align-items:end;margin-top:14px;padding:11px 13px;border-radius:17px}
+  .hero__potential small{grid-column:1/3;font-size:7.5px}
+  .hero__potential strong{font-size:2.35rem;white-space:nowrap}
+  .hero__potential span{max-width:100px;font-size:9px;line-height:1.2;text-align:right}
+  .disclaimer{display:none}
+  .hero-stage{min-height:250px}
+  .hero-stage__frame{border-radius:23px}
+  .hero-car{left:-12%;right:-12%;bottom:49px;width:124%}
+  .hero-stage__status{left:8px;right:8px;bottom:8px;padding:8px 10px;border-radius:13px}
+  .hero-stage__status span,.hero-stage__status b{font-size:8px}
+  .garage-backdrop__lamp{top:24px}
+  .floor-grid{bottom:-95px;height:220px}
+
+  .intake-demo{min-height:830px}
+  .intake-demo__car{height:285px}
+  .device{top:235px;bottom:auto}
+  .intake-demo__car svg{bottom:38px}
+  .chat{min-height:300px}
+}
+</style>
+</head>
+<body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <header class="topbar" id="topbar">
+    <a class="logo" href="#top" aria-label="a.srvc — на главную">
+      <strong>a.srvc</strong>
+      <span>Система роста выручки<br>автосервиса</span>
+    </a>
+    <nav class="desktop-nav" aria-label="Навигация">
+      <a href="#growth">4 точки роста</a>
+      <a href="#solutions">Решения</a>
+      <a href="#economics">Экономика</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <button class="button button--line js-open-contact">Обсудить внедрение</button>
+    <button class="burger" id="burger" aria-label="Открыть меню"><i></i><i></i></button>
+  </header>
+
+  <aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu__top">
+      <div class="logo"><strong>a.srvc</strong><span>Система роста выручки<br>автосервиса</span></div>
+      <button class="mobile-menu__close" id="mobileClose" aria-label="Закрыть меню">×</button>
+    </div>
+    <nav>
+      <a href="#growth"><small>01</small><span>4 точки роста</span><b>→</b></a>
+      <a href="#solutions"><small>02</small><span>Решения</span><b>→</b></a>
+      <a href="#economics"><small>03</small><span>Экономика</span><b>→</b></a>
+      <a href="#contacts"><small>04</small><span>Контакты</span><b>→</b></a>
+    </nav>
+    <button class="button button--red js-open-contact">Обсудить внедрение</button>
+    <p>Вся Россия · ООО и ИП · Договор, счёт и закрывающие документы</p>
+  </aside>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero__ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="hero__content container">
+        <div class="hero__copy reveal">
+          <div class="kicker">Комплексный партнёр по увеличению выручки</div>
+          <h1>Добавляем автосервису выручку <em>на каждом этапе</em> работы с клиентом</h1>
+          <p class="hero__lead">Закрываем четыре точки роста: приёмка 24/7, управление выручкой, повторные визиты и упаковка сервиса.</p>
+          <div class="hero__actions">
+            <button class="button button--red js-open-contact">Обсудить внедрение <span>→</span></button>
+            <button class="button button--glass" id="watchDemo">Посмотреть, как это работает</button>
+            <button class="sound-control" id="soundControl" aria-pressed="false">Звук по нажатию</button>
+          </div>
+          <div class="hero__potential">
+            <small>Потенциал для среднего и крупного СТО*</small>
+            <strong>До 900 000 ₽</strong>
+            <span>дополнительной выручки в месяц</span>
+          </div>
+          <p class="disclaimer">*Расчётный потенциал зависит от потока обращений, среднего заказ-наряда, клиентской базы, загрузки постов и процессов конкретного сервиса. Не является гарантией результата.</p>
+        </div>
+
+        <div class="hero-stage reveal" id="heroStage" aria-label="Интерактивная автомобильная сцена">
+          <div class="hero-stage__frame" id="heroFrame">
+            <div class="garage-backdrop" aria-hidden="true">
+              <span class="garage-backdrop__line l1"></span><span class="garage-backdrop__line l2"></span><span class="garage-backdrop__line l3"></span>
+              <span class="garage-backdrop__lamp p1"></span><span class="garage-backdrop__lamp p2"></span>
+              <div class="floor-grid"></div>
+            </div>
+            <div class="car-light-sweep" aria-hidden="true"></div>
+            <svg class="hero-car hero-car--sport" id="heroCar" viewBox="0 0 1000 420" role="img" aria-label="Спортивный автомобиль в современной ремзоне">
+              <defs>
+                <linearGradient id="sportBody" x1="0" y1="0" x2="1" y2=".8">
+                  <stop offset="0" stop-color="#171b22"/>
+                  <stop offset=".28" stop-color="#59616d"/>
+                  <stop offset=".48" stop-color="#111419"/>
+                  <stop offset=".73" stop-color="#343a44"/>
+                  <stop offset="1" stop-color="#090b0e"/>
+                </linearGradient>
+                <linearGradient id="sportGlass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#263847"/><stop offset="1" stop-color="#080a0e"/></linearGradient>
+                <radialGradient id="sportGlow"><stop stop-color="#ff493f" stop-opacity=".52"/><stop offset="1" stop-color="#ff493f" stop-opacity="0"/></radialGradient>
+                <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="12"/></filter>
+              </defs>
+              <ellipse class="svg-shadow" cx="510" cy="343" rx="390" ry="28"/>
+              <path class="svg-body" fill="url(#sportBody)" d="M55 302c57-12 92-50 131-93 51-56 118-91 224-107 129-20 271-4 369 56 45 27 75 65 102 96l68 20c26 8 42 25 48 50H50c-18 0-19-15 5-22Z"/>
+              <path class="svg-glass" fill="url(#sportGlass)" d="M239 237c47-63 103-94 187-109 108-19 227 0 303 48 23 15 46 35 66 61Z"/>
+              <path class="svg-highlight" d="M101 296c104-20 172-87 239-126 82-48 211-66 337-35 91 22 151 69 204 125"/>
+              <path class="svg-doorline" d="M442 161l-22 127M738 181l38 112M194 294h654"/>
+              <path class="svg-headlight" d="M850 260c40 3 76 13 105 30"/>
+              <path class="svg-taillight" d="M94 282c31-4 60-2 86 4"/>
+              <circle class="wheel-halo" fill="url(#sportGlow)" cx="272" cy="314" r="86"/><circle class="wheel-halo" fill="url(#sportGlow)" cx="758" cy="314" r="86"/>
+              <g class="wheel wheel--front" transform="translate(758 314)"><circle r="63"/><circle class="rim" r="39"/><circle class="hub" r="9"/><path d="M0-34V34M-34 0H34M-24-24L24 24M24-24L-24 24"/></g>
+              <g class="wheel wheel--rear" transform="translate(272 314)"><circle r="63"/><circle class="rim" r="39"/><circle class="hub" r="9"/><path d="M0-34V34M-34 0H34M-24-24L24 24M24-24L-24 24"/></g>
+            </svg>
+            <div class="hero-stage__label hero-stage__label--left"><small>Приёмка</small><b>24/7</b></div>
+            <div class="hero-stage__label hero-stage__label--right"><small>Контроль</small><b>в Telegram</b></div>
+            <div class="hero-stage__status"><i></i><span>Система активна</span><b>4 точки роста</b></div>
+          </div>
+        </div>
+      </div>
+      <a class="hero__scroll" href="#growth"><span>Прокрутите</span><b>↓</b></a>
+    </section>
+
+    <section class="growth" id="growth">
+      <div class="container growth__heading reveal">
+        <div class="kicker kicker--dark">Одна система. Четыре точки роста.</div>
+        <h2>Выручка теряется не только в рекламе. Она уходит внутри процессов сервиса.</h2>
+        <p>Нажмите на этап — увидите потерю, решение и денежный смысл.</p>
+      </div>
+      <div class="growth-stage container reveal">
+        <div class="growth-stage__visual">
+          <div class="growth-stage__garage" id="growthGarage">
+            <div class="growth-stage__beam"></div>
+            <svg class="growth-car active" data-car="0" viewBox="0 0 900 360" aria-hidden="true">
+              <path class="shape shape--sport" d="M50 261c47-8 78-45 116-82 53-52 128-82 236-91 119-10 231 17 315 79 29 21 52 48 76 74l64 18c24 7 36 20 42 41H44c-13 0-13-12 6-19Z"/>
+              <path class="window" d="M211 212c45-54 101-82 181-94 96-14 195 6 267 48 21 13 42 28 61 48Z"/>
+              <circle cx="250" cy="276" r="51"/><circle cx="696" cy="276" r="51"/>
+            </svg>
+            <svg class="growth-car" data-car="1" viewBox="0 0 900 360" aria-hidden="true">
+              <path class="shape shape--suv" d="M70 270V113c0-21 15-38 35-41l101-17h422c28 0 48 13 63 38l72 115 72 24c23 8 36 23 41 48H54c-10 0-12-10 16-10Z"/>
+              <path class="window" d="M235 80h366c27 0 41 11 54 34l48 88H205V108c0-17 10-26 30-28Z"/>
+              <circle cx="233" cy="276" r="55"/><circle cx="693" cy="276" r="55"/>
+            </svg>
+            <svg class="growth-car" data-car="2" viewBox="0 0 900 360" aria-hidden="true">
+              <path class="shape shape--sedan" d="M49 267c43-9 76-38 118-83 55-58 131-92 238-99 127-9 238 21 329 82l64 47 61 17c24 7 38 21 43 45H44c-12 0-12-8 5-9Z"/>
+              <path class="window" d="M220 213c52-63 110-91 187-99 101-10 198 15 267 63l37 35Z"/>
+              <circle cx="244" cy="277" r="52"/><circle cx="699" cy="277" r="52"/>
+            </svg>
+            <div class="growth-stage__reflection"></div>
+          </div>
+          <div class="growth-stage__metric" id="growthMetric"><small>Точка потери 01</small><strong>Заявка без ответа</strong><span>Клиент уходит до записи</span></div>
+        </div>
+        <div class="growth-tabs" id="growthTabs">
+          <button class="growth-tab active" data-index="0"><small>01</small><b>Приёмка 24/7</b><span>Не терять обращения</span></button>
+          <button class="growth-tab" data-index="1"><small>02</small><b>Управление выручкой</b><span>Видеть причины просадки</span></button>
+          <button class="growth-tab" data-index="2"><small>03</small><b>Повторные визиты</b><span>Возвращать клиентов</span></button>
+          <button class="growth-tab" data-index="3"><small>04</small><b>Упаковка сервиса</b><span>Выглядеть сильнее конкурентов</span></button>
+        </div>
+        <div class="growth-stage_
