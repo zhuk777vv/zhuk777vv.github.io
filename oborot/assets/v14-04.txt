@@ -1,0 +1,158 @@
+_copy" id="growthCopy">
+          <span class="section-number">01 / 04</span>
+          <h3>Клиент написал вечером. Ответ пришёл утром.</h3>
+          <p>Он уже записался в другой сервис. Потеря выглядит как один чат, но на деле это заказ-наряд и будущие визиты.</p>
+          <strong>Решение: цифровой мастер-приёмщик отвечает сразу и доводит обращение до записи.</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="solution solution--intake" id="solutions">
+      <div class="solution__bg-text" aria-hidden="true">24/7</div>
+      <div class="container solution__grid">
+        <div class="solution__copy reveal">
+          <span class="section-number">01 / Цифровой мастер-приёмщик 24/7</span>
+          <h2>Пока сотрудник занят, следующий клиент уже получает ответ</h2>
+          <p>Система понимает свободную речь, уточняет автомобиль и проблему, принимает VIN и фото, видит свободные окна и доводит обращение до записи.</p>
+          <blockquote>Не кнопочный бот. Дополнительная линия приёмки, которая не оставляет обращение без следующего шага.</blockquote>
+          <button class="text-action js-open-contact">Разобрать потерянные обращения <span>→</span></button>
+        </div>
+        <div class="intake-demo reveal">
+          <div class="intake-demo__car" id="intakeCarScene">
+            <svg viewBox="0 0 700 270" aria-hidden="true"><path d="M30 206c36-8 61-32 91-66 41-46 101-73 188-81 98-8 191 18 258 66 25 18 42 39 59 59l48 14c18 5 28 16 32 34H26c-10 0-10-8 4-10Z"/><path class="window" d="M161 160c38-48 84-70 148-78 79-10 154 10 211 47l32 31Z"/><circle cx="185" cy="214" r="39"/><circle cx="540" cy="214" r="39"/></svg>
+            <div class="bay-door"></div><div class="bay-light"></div>
+          </div>
+          <div class="device">
+            <div class="device__top"><i></i><b>Приёмка a.srvc</b><small>онлайн 24/7</small></div>
+            <div class="scenario-switch" id="scenarioSwitch"><button class="active" data-scenario="0">Плановое ТО</button><button data-scenario="1">VIN + неисправность</button><button data-scenario="2">Сложный вопрос</button></div>
+            <div class="chat" id="chat"></div>
+            <div class="booking" id="booking"><div><small>Автомобиль</small><b>Audi S8 · 2021</b></div><div><small>Следующий шаг</small><b>Запись создана · Вт 14:30</b></div><span>✓</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="solution solution--control">
+      <div class="container solution__grid solution__grid--reverse">
+        <div class="control-demo reveal">
+          <div class="control-demo__phone">
+            <div class="control-demo__head"><b>Telegram руководителя</b><small>сейчас</small></div>
+            <div class="control-demo__revenue"><small>Выручка сегодня</small><strong id="controlRevenue">718 000 ₽</strong><span id="controlDelta">−11% к прошлому вторнику</span></div>
+            <div class="control-demo__alerts" id="controlAlerts"></div>
+            <div class="period-switch" id="periodSwitch"><button class="active" data-period="day">Сегодня</button><button data-period="week">Неделя</button><button data-period="month">Месяц</button></div>
+          </div>
+          <div class="service-bays">
+            <div class="service-bays__head"><b>Ремзона</b><small>нажмите на пост</small></div>
+            <div class="service-bays__grid">
+              <button class="service-bay active" data-state="work"><small>ПОСТ 01</small><b>Audi S8</b><span>В работе</span></button>
+              <button class="service-bay idle" data-state="idle"><small>ПОСТ 02</small><b>—</b><span>Простой 2,1 ч</span></button>
+              <button class="service-bay wait" data-state="wait"><small>ПОСТ 03</small><b>G-Class</b><span>Согласование</span></button>
+              <button class="service-bay" data-state="work"><small>ПОСТ 04</small><b>Porsche 911</b><span>В работе</span></button>
+            </div>
+            <p id="serviceBayInfo">Audi S8 в работе. Система контролирует этап и время.</p>
+          </div>
+        </div>
+        <div class="solution__copy reveal">
+          <span class="section-number">02 / Управление выручкой автосервиса</span>
+          <h2>Руководитель видит причину просадки, пока её ещё можно исправить</h2>
+          <p>Система работает на данных CRM и учётной системы. В Telegram приходит не просто цифра, а причина и конкретное действие.</p>
+          <blockquote>Не ещё один дашборд. Оперативный контроль выручки, загрузки постов, задержек и свободных окон.</blockquote>
+          <button class="text-action text-action--light js-open-contact">Показать контроль на данных сервиса <span>→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="solution solution--return">
+      <div class="container solution__grid">
+        <div class="solution__copy reveal">
+          <span class="section-number">03 / Возврат клиентов на ТО и ремонт</span>
+          <h2>В CRM уже лежат следующие заказ-наряды. Их просто никто не поднял</h2>
+          <p>Система находит клиентов с реальным поводом вернуться: срок ТО, отложенная работа, пробег или рекомендация мастера.</p>
+          <blockquote>Сотруднику не нужно искать, кому звонить. Он получает готовую задачу, контекст и свободные окна.</blockquote>
+          <button class="text-action js-open-contact">Посчитать потенциал клиентской базы <span>→</span></button>
+        </div>
+        <div class="return-demo reveal">
+          <div class="return-demo__car">
+            <svg viewBox="0 0 900 320" aria-hidden="true"><path d="M46 235c42-9 72-34 111-75 53-55 127-87 232-93 120-7 229 24 314 82l58 42 59 16c23 7 35 20 41 43H40c-11 0-11-8 6-15Z"/><path class="window" d="M205 187c48-59 104-84 178-91 95-8 187 15 254 57l37 34Z"/><circle cx="233" cy="244" r="49"/><circle cx="677" cy="244" r="49"/></svg>
+            <div class="return-demo__scan"><i></i></div>
+            <span class="return-demo__model">Audi S8 · 2021</span>
+          </div>
+          <div class="service-history">
+            <article><small>10 месяцев назад</small><b>Последний визит</b><span>Регламентное ТО</span></article>
+            <article><small>Рекомендация</small><b>Диагностика тормозной системы</b><span>Работа отложена</span></article>
+            <article class="service-history__now"><small>Сейчас</small><b>Появился повод вернуть клиента</b><span>Срок ТО + отложенная работа</span></article>
+          </div>
+          <div class="return-task"><div><small>Готовая задача сотруднику</small><b>Позвонить клиенту и предложить Вт 14:00 или Чт 11:30</b></div><button id="createTask">Создать задачу →</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="solution solution--brand">
+      <div class="container brand-grid">
+        <div class="solution__copy reveal">
+          <span class="section-number">04 / Бренд и упаковка автосервиса</span>
+          <h2>Клиент ещё не видел ваших мастеров. Пока он оценивает сервис по экрану телефона</h2>
+          <p>Сайт, Авито, Яндекс Карты и 2ГИС собираются в единый сильный образ, который соответствует реальному уровню сервиса.</p>
+          <blockquote>Этот сайт — тоже демонстрация уровня, который можно создать для вашего автосервиса.</blockquote>
+          <button class="text-action text-action--light js-open-contact">Показать, как должен выглядеть сервис <span>→</span></button>
+        </div>
+        <div class="brand-showcase reveal">
+          <div class="brand-showcase__label"><span>До</span><span>После</span></div>
+          <div class="brand-comparison" id="brandComparison">
+            <div class="brand-view brand-view--before">
+              <div class="bad-site"><small>Автосервис</small><h3>Ремонт автомобилей</h3><p>Любые работы. Звоните.</p><button>Контакты</button></div>
+            </div>
+            <div class="brand-view brand-view--after" id="brandAfter">
+              <div class="premium-site">
+                <div class="premium-site__top"><b>DRIVE LAB</b><span>Диагностика · ТО · Ремонт</span></div>
+                <h3>Технический сервис без компромиссов</h3>
+                <p>Точная диагностика, прозрачный процесс и запись в удобное окно.</p>
+                <button>Записаться</button>
+                <svg viewBox="0 0 700 240" aria-hidden="true"><path d="M20 181c31-6 51-28 78-55 37-37 91-58 167-64 84-7 160 14 221 56 21 14 37 31 53 49l42 12c16 5 25 15 29 29H17c-7 0-7-7 3-7Z"/><path class="window" d="M113 145c33-39 70-57 126-64 65-8 129 8 176 40l27 24Z"/><circle cx="131" cy="188" r="31"/><circle cx="466" cy="188" r="31"/></svg>
+              </div>
+            </div>
+            <div class="brand-handle" id="brandHandle"><i></i></div>
+            <input id="brandRange" type="range" min="8" max="92" value="50" aria-label="Сравнить упаковку до и после">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="economics" id="economics">
+      <div class="container economics__grid">
+        <div class="economics__copy reveal">
+          <div class="kicker">Прозрачная экономика</div>
+          <h2>Посчитайте потенциал на своих цифрах</h2>
+          <p>Без скрытых коэффициентов. Калькулятор показывает простую связь между дополнительными заказ-нарядами и средним чеком.</p>
+          <div class="economics__formula" id="formula">20 заказ-нарядов × 22 000 ₽</div>
+        </div>
+        <div class="calculator reveal">
+          <label><span>Средний заказ-наряд <b id="avgValue">22 000 ₽</b></span><input id="avgOrder" type="range" min="5000" max="90000" step="1000" value="22000"></label>
+          <label><span>Дополнительных заказ-нарядов в месяц <b id="ordersValue">20</b></span><input id="extraOrders" type="range" min="1" max="60" value="20"></label>
+          <div class="calculator__result"><small>Потенциальная дополнительная выручка</small><strong id="resultValue">440 000 ₽</strong><div class="car-counter" id="carCounter"></div></div>
+          <p>*Не является гарантией результата. Фактический эффект зависит от процессов и исходных данных сервиса.</p>
+          <button class="button button--red js-open-contact">Обсудить внедрение</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="process">
+      <div class="container">
+        <div class="process__heading reveal"><div class="kicker kicker--dark">Как проходит работа</div><h2>Сначала находим, где теряются деньги. Потом внедряем только то, что имеет смысл.</h2></div>
+        <div class="process__steps reveal">
+          <article><small>01</small><h3>Разбираем процессы</h3><p>Каналы обращений, CRM, расписание, клиентскую базу и показатели.</p></article>
+          <article><small>02</small><h3>Проектируем решение</h3><p>Сценарии, интеграции, показатели и границы системы.</p></article>
+          <article><small>03</small><h3>Внедряем</h3><p>Настраиваем под конкретный сервис и проверяем рабочие сценарии.</p></article>
+          <article><small>04</small><h3>Запускаем и поддерживаем</h3><p>Контролируем работу и развиваем систему по фактическим данным.</p></article>
+        </div>
+        <div class="trust-line reveal"><span>Вся Россия</span><span>ООО и ИП</span><span>Договор</span><span>Счёт</span><span>Закрывающие документы</span><span>Поддержка после запуска</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contacts">
+    <div class="footer__car" aria-hidden="true">
+      <svg viewBox="0 0 1000 380"><path d="M55 276c51-11 84-43 127-87 58-59 139-94 257-104 133-12 258 22 351 88 31 22 56 48 81 75l69 20c26 8 42 24 48 49H49c-14 0-14-12 6-21Z"/><path class="window" d="M231 219c53-65 116-94 204-103 109-12 214 15 290 67l42 36Z"/><circle cx="270" cy="291" r="57"/><circle cx="758" cy="291" r="57"/></svg>
+    </div>
+    <div class="container footer__grid">
+      <div class="footer__copy reveal"><div class="kicker">Следующий шаг</div><h2>Покажем, где ваш автосервис теряет выручку</h2><p>Разберём процессы, действующие системы и определим, с какого решения разумнее начать.</p><button class="button button--red js-op
