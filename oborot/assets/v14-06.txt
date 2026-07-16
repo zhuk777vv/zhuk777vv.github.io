@@ -1,0 +1,5 @@
+calc=()=>{const a=+avg.value,o=+orders.value,total=a*o;$('#avgValue').textContent=fmt(a);$('#ordersValue').textContent=o;$('#resultValue').textContent=fmt(total);$('#formula').textContent=`${o} заказ-нарядов × ${fmt(a)}`;const count=Math.min(20,Math.ceil(o/3));$('#carCounter').innerHTML=Array.from({length:20},(_,i)=>`<i class="${i<count?'on':''}"></i>`).join('')};[avg,orders].forEach(x=>x?.addEventListener('input',calc));calc();
+})();
+</script>
+</body>
+</html>
