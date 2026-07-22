@@ -95,7 +95,7 @@
     .card.black{background:var(--deep);color:#fff;border:0;box-shadow:var(--shadow)}
     .card.black p{color:rgba(255,255,255,.62)}
     .card.black small{color:var(--lime)}
-    .flow{grid-template-columns:repeat(6,1fr)}
+    .flow{grid-template-columns:repeat(5,1fr)}
     .step{border:1px solid var(--line-dark);background:rgba(255,255,255,.04);border-radius:20px;padding:21px;min-height:194px}
     .step b{display:block;color:var(--lime);font-size:12px;margin-bottom:50px}
     .step strong{display:block;font-size:18px;margin-bottom:8px;letter-spacing:-.025em}
@@ -160,7 +160,8 @@
     .module h3{font-size:17px;margin:0 0 8px}
     .module p{font-size:13px;color:rgba(255,255,255,.56);line-height:1.46;margin:0;max-width:600px}
     .module-price{color:var(--lime);font-weight:900;white-space:nowrap;text-align:right}
-    .module-price.included{color:#fff;background:rgba(216,255,47,.14);border-radius:999px;padding:7px 10px;height:max-content;font-size:12px;text-transform:uppercase;letter-spacing:.07em}
+    .module-price.included{color:#fff;background:rgba(216,255,47,.14);border-radius:14px;padding:8px 11px;height:max-content;font-size:12px;text-transform:uppercase;letter-spacing:.07em;line-height:1.35}
+    .module-price.included small{display:block;color:var(--lime);font-size:11px;letter-spacing:0;text-transform:none;margin-top:3px}
     .module.hidden{display:none}
     .support{grid-template-columns:repeat(3,1fr)}
     .support article{min-height:230px}
@@ -215,26 +216,22 @@
 
       <div class="hero-grid">
         <div>
-          <div class="eyebrow">Не ещё один бот. Цифровой администратор клуба.</div>
+          <div class="eyebrow">Пилотный контур · один входящий канал</div>
           <h1>Больше запросов — в <span class="lime">оплаченную бронь.</span></h1>
-          <p class="lead">Система для Padel Friends принимает обращения в Telegram и MAX, работает с YCLIENTS, закрывает аренду корта до оплаты, возвращает незавершённые заявки и передаёт сотруднику уже подготовленные запросы на тренировку.</p>
+          <p class="lead">AI-администратор для Padel Friends принимает входящие текстовые обращения в одном выбранном канале — Telegram или MAX, отвечает 24/7, проверяет расписание в YCLIENTS, создаёт бронь корта и отправляет клиенту ссылку на оплату.</p>
           <div class="actions">
             <a class="btn primary" href="#price">Смотреть условия ↓</a>
             <a class="btn ghost" href="#architecture">Как это работает</a>
           </div>
           <div class="proof">
-            <div><b>Telegram + MAX</b>два ключевых текстовых канала</div>
+            <div><b>1 канал</b>Telegram или MAX на выбор</div>
             <div><b>24/7</b>ответ без ожидания администратора</div>
-            <div><b>6–8 недель</b>ориентир запуска после проверки</div>
+            <div><b>5–6 недель</b>ориентир запуска после проверки</div>
           </div>
         </div>
 
         <div class="demo reveal">
           <div class="demo-top"><b>Цифровой администратор</b><span class="online">● онлайн 24/7</span></div>
-          <div class="demo-tabs" role="tablist" aria-label="Сценарии диалога">
-            <button class="demo-tab active" data-scenario="court" role="tab" aria-selected="true">Аренда корта</button>
-            <button class="demo-tab" data-scenario="training" role="tab" aria-selected="false">Тренировка</button>
-          </div>
           <div class="phone">
             <div class="phone-head"><div class="avatar">PF</div><div><b>Padel Friends</b><br><small>цифровой администратор</small></div></div>
             <div class="messages scenario active" data-panel="court">
@@ -244,13 +241,6 @@
               <div class="message assistant">Отлично. Создаю запись в YCLIENTS и формирую оплату.</div>
               <div class="message system">Бронь создана · ссылка отправлена</div>
               <div class="message assistant">После оплаты пришлю подтверждение и правила посещения.</div>
-            </div>
-            <div class="messages scenario" data-panel="training">
-              <div class="message user">Хочу индивидуальную тренировку в субботу. Я новичок.</div>
-              <div class="message assistant">Подскажите удобный промежуток времени и есть ли пожелание по тренеру?</div>
-              <div class="message user">После 16:00, тренер любой.</div>
-              <div class="message assistant">Принято: индивидуальная тренировка, новичок, суббота после 16:00. Передаю администратору для финального подбора тренера и корта.</div>
-              <div class="message system">Заявка подготовлена · сотрудник уведомлён</div>
             </div>
           </div>
         </div>
@@ -263,13 +253,13 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div class="eyebrow">Контекст Padel Friends</div>
-          <div><h2>Не заменять YCLIENTS.<br>Закрыть разрыв до записи.</h2><p class="intro">Сайт, самостоятельная запись, онлайн-оплата и внутренний отчёт уже работают. Новый слой нужен там, где клиент сначала задаёт вопрос, сомневается, не завершает бронь или хочет записаться к тренеру.</p></div>
+          <div><h2>Не заменять YCLIENTS.<br>Автоматизировать стандартную аренду.</h2><p class="intro">Сайт, самостоятельная запись и онлайн-оплата уже работают. Пилот закрывает клиентов, которым удобнее сначала написать: уточнить условия, подобрать свободное время и оформить бронь в диалоге.</p></div>
         </div>
         <div class="metrics">
           <article class="metric reveal"><b>YCLIENTS</b><span>Остаётся основной системой расписания, записей и оплаты.</span></article>
-          <article class="metric reveal"><b>2 канала</b><span>Telegram и MAX входят в первый рабочий контур.</span></article>
-          <article class="metric reveal"><b>2 потери</b><span>Обратился, но не записался; записался, но не пришёл.</span></article>
-          <article class="metric reveal"><b>1 цель</b><span>Больше завершённых броней при меньшей ручной нагрузке.</span></article>
+          <article class="metric reveal"><b>1 канал</b><span>Telegram или MAX выбирается перед началом разработки.</span></article>
+          <article class="metric reveal"><b>Входящий</b><span>Робот начинает работу после сообщения клиента.</span></article>
+          <article class="metric reveal"><b>1 сценарий</b><span>Стандартная аренда корта от вопроса до оплаты.</span></article>
         </div>
       </div>
     </section>
@@ -277,8 +267,8 @@
     <section class="section" style="padding-top:0">
       <div class="wrap">
         <div class="cards">
-          <article class="card reveal"><small>СЕЙЧАС</small><h3>Администратор держит на себе всю переписку</h3><p>Цена, свободные слоты, тренеры, правила, уточнения, незавершённые заявки и повторные сообщения конкурируют за внимание сотрудника.</p></article>
-          <article class="card black reveal"><small>ПОСЛЕ ЗАПУСКА</small><h3>Рутинный диалог проходит без очереди</h3><p>Система отвечает, проверяет расписание, создаёт бронь, отправляет оплату и подключает человека только там, где действительно требуется решение сотрудника.</p></article>
+          <article class="card reveal"><small>СЕЙЧАС</small><h3>Стандартная аренда каждый раз требует сотрудника</h3><p>Уточнить дату и время, проверить расписание, предложить альтернативу, создать запись, отправить оплату и повторить правила клуба.</p></article>
+          <article class="card black reveal"><small>ПОСЛЕ ЗАПУСКА</small><h3>Входящий запрос проходит без очереди</h3><p>AI понимает свободный текст, работает с актуальными слотами YCLIENTS и самостоятельно доводит стандартную аренду до оплаты.</p></article>
         </div>
       </div>
     </section>
@@ -287,15 +277,14 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div class="eyebrow">Рабочий контур</div>
-          <div><h2>Шесть шагов от сообщения до результата</h2><p class="intro">Единая логика поверх текущей инфраструктуры клуба. Без второй CRM и без просьбы клиенту заново объяснять свой запрос.</p></div>
+          <div><h2>Пять шагов от сообщения до результата</h2><p class="intro">Один компактный процесс поверх YCLIENTS. Без второй CRM и без лишней нагрузки на команду клуба.</p></div>
         </div>
         <div class="flow">
-          <article class="step"><b>01</b><strong>Обращение</strong><p>Клиент пишет в Telegram или MAX.</p></article>
+          <article class="step"><b>01</b><strong>Обращение</strong><p>Клиент пишет в выбранный канал.</p></article>
           <article class="step"><b>02</b><strong>Понимание</strong><p>Система определяет цель и уточняет параметры.</p></article>
-          <article class="step"><b>03</b><strong>YCLIENTS</strong><p>Получает актуальные слоты, услуги и статусы.</p></article>
-          <article class="step"><b>04</b><strong>Действие</strong><p>Создаёт бронь или готовит заявку на тренировку.</p></article>
-          <article class="step"><b>05</b><strong>Оплата</strong><p>Отправляет ссылку и контролирует завершение.</p></article>
-          <article class="step"><b>06</b><strong>Возврат</strong><p>Напоминает или передаёт сотруднику с контекстом.</p></article>
+          <article class="step"><b>03</b><strong>YCLIENTS</strong><p>Получает актуальные свободные слоты.</p></article>
+          <article class="step"><b>04</b><strong>Бронь</strong><p>Предлагает варианты и создаёт запись.</p></article>
+          <article class="step"><b>05</b><strong>Оплата</strong><p>Отправляет ссылку и подтверждает результат.</p></article>
         </div>
       </div>
     </section>
@@ -303,30 +292,30 @@
     <section class="section">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="eyebrow">Два сценария</div>
-          <div><h2>Автоматизируем ровно настолько, насколько это безопасно</h2><p class="intro">Аренда корта имеет понятный результат и проходит полностью. Подбор тренера требует живого решения — система снимает рутину, но не обещает клиенту неподтверждённый слот.</p></div>
+          <div class="eyebrow">Границы пилота</div>
+          <div><h2>Один процесс — полностью, остальные не прячем в цену</h2><p class="intro">Так клуб быстрее получает рабочий результат, а стоимость не раздувается функциями, которые пока не нужны.</p></div>
         </div>
         <div class="scenario-grid">
           <article class="scenario-card reveal">
-            <span class="scenario-label">Полный сценарий</span>
-            <h3>Аренда корта</h3>
-            <p>Цифровой администратор самостоятельно проходит стандартный путь до подтверждённой оплаты.</p>
+            <span class="scenario-label">Входит в этап 1</span>
+            <h3>Входящая аренда</h3>
+            <p>Цифровой администратор самостоятельно проходит стандартный путь аренды в одном текстовом канале.</p>
             <div class="check-list">
               <div class="check"><i>✓</i><span>Уточняет дату, время и продолжительность.</span></div>
               <div class="check"><i>✓</i><span>Показывает свободные варианты и альтернативы.</span></div>
               <div class="check"><i>✓</i><span>Создаёт запись в YCLIENTS.</span></div>
-              <div class="check"><i>✓</i><span>Отправляет ссылку и сопровождает до оплаты.</span></div>
+              <div class="check"><i>✓</i><span>Отправляет ссылку на оплату и подтверждение.</span></div>
             </div>
           </article>
           <article class="scenario-card alt reveal">
-            <span class="scenario-label">Квалификация + передача</span>
-            <h3>Запись к тренеру</h3>
-            <p>Система собирает всё необходимое, чтобы администратор не начинал разговор с нуля.</p>
+            <span class="scenario-label">Подключается отдельно</span>
+            <h3>Расширение продукта</h3>
+            <p>Дополнительные процессы оцениваются отдельно и не увеличивают бюджет первого запуска.</p>
             <div class="check-list">
-              <div class="check"><i>✓</i><span>Уточняет формат, уровень и удобное время.</span></div>
-              <div class="check"><i>✓</i><span>Фиксирует пожелание по тренеру.</span></div>
-              <div class="check"><i>✓</i><span>Формирует краткое резюме заявки.</span></div>
-              <div class="check"><i>✓</i><span>Передаёт сотруднику вместе с историей диалога.</span></div>
+              <div class="check"><i>+</i><span>Поиск и запись к тренеру.</span></div>
+              <div class="check"><i>+</i><span>Второй текстовый канал и единое окно.</span></div>
+              <div class="check"><i>+</i><span>Возврат незавершённых обращений и старой базы.</span></div>
+              <div class="check"><i>+</i><span>Телефония, отчёты и передача сотруднику.</span></div>
             </div>
           </article>
         </div>
@@ -336,14 +325,14 @@
     <section class="section" style="padding-top:0">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="eyebrow">Не терять тёплый спрос</div>
-          <div><h2>Система замечает тех, кто не дошёл до результата</h2><p class="intro">YCLIENTS хорошо показывает состоявшуюся запись. Цифровой администратор добавляет контроль того, что произошло до неё и после неявки.</p></div>
+          <div class="eyebrow">Не FAQ-бот</div>
+          <div><h2>Входящий робот не просто отвечает — он действует</h2><p class="intro">Ограничение пилота относится к числу каналов и процессов, а не к качеству работы внутри сценария аренды.</p></div>
         </div>
         <div class="loss-grid">
-          <article class="loss-card reveal"><span class="number">01 · НЕ ЗАВЕРШИЛ</span><h3>Клиент написал, но не забронировал</h3><p>Система фиксирует остановившийся диалог и делает согласованный follow-up без бесконечного спама.</p></article>
-          <article class="loss-card reveal"><span class="number">02 · НЕ ОПЛАТИЛ</span><h3>Бронь создана, но оплата не прошла</h3><p>Клиент получает напоминание, а при необходимости горячее обращение уходит сотруднику.</p></article>
-          <article class="loss-card reveal"><span class="number">03 · НЕ ПРИШЁЛ</span><h3>Запись была, посещения не было</h3><p>После получения статуса система предлагает вернуться и выбрать другое подходящее время.</p></article>
-          <article class="loss-card result reveal"><span class="number">РЕЗУЛЬТАТ</span><h3>Больше обработанных запросов без расширения смены</h3><p>Администраторы подключаются к решениям, а не повторяют одни и те же ответы и действия.</p></article>
+          <article class="loss-card reveal"><span class="number">01 · ПОНИМАЕТ</span><h3>Работает со свободной формулировкой</h3><p>Клиент пишет привычным языком, без кнопочного меню и жёсткой команды.</p></article>
+          <article class="loss-card reveal"><span class="number">02 · ПРОВЕРЯЕТ</span><h3>Показывает актуальные слоты</h3><p>Получает доступное время из YCLIENTS и предлагает ближайшие альтернативы.</p></article>
+          <article class="loss-card reveal"><span class="number">03 · БРОНИРУЕТ</span><h3>Создаёт запись в системе клуба</h3><p>После выбора клиента фиксирует корт и время непосредственно в YCLIENTS.</p></article>
+          <article class="loss-card result reveal"><span class="number">04 · ЗАВЕРШАЕТ</span><h3>Отправляет оплату и подтверждение</h3><p>Клиент получает ссылку, подтверждение брони и согласованную информацию по посещению.</p></article>
         </div>
       </div>
     </section>
@@ -352,16 +341,16 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div class="eyebrow">Первый этап</div>
-          <div><h2>Что входит в 345 000 ₽</h2><p class="intro">Один законченный рабочий контур для локации Padel Friends в Казани — с границами, которые можно проверить при приёмке.</p></div>
+          <div><h2>Что входит в 120 000 ₽</h2><p class="intro">Компактный, но законченный рабочий контур для одной локации Padel Friends — с понятными критериями приёмки.</p></div>
         </div>
         <div class="included">
-          <article class="included-card reveal"><span class="tag">Включено</span><h3>Telegram + MAX</h3><p>Приём и обработка текстовых обращений в двух заявленных каналах.</p></article>
-          <article class="included-card reveal"><span class="tag">Включено</span><h3>Интеграция YCLIENTS</h3><p>Расписание, свободные слоты, записи и доступные платёжные статусы.</p></article>
-          <article class="included-card reveal"><span class="tag">Включено</span><h3>База знаний</h3><p>Цены, адрес, график, правила, инвентарь, отмены и согласованные вопросы.</p></article>
-          <article class="included-card reveal"><span class="tag">Включено</span><h3>Аренда до оплаты</h3><p>Подбор слота, альтернативы, создание брони и отправка ссылки.</p></article>
-          <article class="included-card reveal"><span class="tag">Включено</span><h3>Заявка на тренировку</h3><p>Сбор параметров, резюме и передача сотруднику для подтверждения.</p></article>
-          <article class="included-card reveal"><span class="tag">Включено</span><h3>Незавершённая бронь</h3><p>Согласованные напоминания и остановка цепочки после ответа.</p></article>
-          <article class="included-card reveal"><span class="tag">Включено</span><h3>Передача человеку</h3><p>Контекст диалога, уведомление и ручное подключение в исключениях.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Один канал</h3><p>Telegram или MAX на выбор после технической проверки подключения.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Интеграция YCLIENTS</h3><p>Корты, расписание, свободные слоты и создание записи.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>База по аренде</h3><p>Цены, адрес, режим, правила, инвентарь, отмена и перенос.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Подбор слота</h3><p>Уточнение параметров, свободные варианты и ближайшие альтернативы.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Создание брони</h3><p>Фиксация выбранного корта и времени в YCLIENTS.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Платёжный сценарий</h3><p>Получение или формирование ссылки и отправка клиенту.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Подтверждение</h3><p>Статус результата и согласованная информация по посещению.</p></article>
           <article class="included-card reveal"><span class="tag">Включено</span><h3>Настройка и запуск</h3><p>Тестирование сценариев, исправления и запуск на реальных обращениях.</p></article>
         </div>
       </div>
@@ -372,17 +361,17 @@
         <div class="price-grid">
           <div class="price-card reveal">
             <small>Этап 1 · одна локация</small>
-            <div class="sum">345 000 ₽</div>
-            <p class="price-note">Фиксированная стоимость за согласованный контур: Telegram + MAX, YCLIENTS, аренда и оплата, база знаний, незавершённые заявки и подготовленная передача сложных обращений сотруднику.</p>
+            <div class="sum">120 000 ₽</div>
+            <p class="price-note">Фиксированная стоимость пилота: один выбранный входящий текстовый канал, YCLIENTS, базовые консультации по аренде, подбор слота, создание брони, ссылка на оплату, настройка и запуск.</p>
             <div class="payment-bar"><i></i><i></i><i></i></div>
             <div class="payments">
-              <div class="payment">Старт проекта<b>30% · 103 500 ₽</b>после фиксации ТЗ</div>
-              <div class="payment">Тестовая готовность<b>50% · 172 500 ₽</b>рабочий контур собран</div>
-              <div class="payment">Полный запуск<b>20% · 69 000 ₽</b>приёмка завершена</div>
+              <div class="payment">Старт проекта<b>30% · 36 000 ₽</b>после фиксации ТЗ</div>
+              <div class="payment">Тестовая готовность<b>50% · 60 000 ₽</b>рабочий контур собран</div>
+              <div class="payment">Полный запуск<b>20% · 24 000 ₽</b>приёмка завершена</div>
             </div>
           </div>
           <div class="discount reveal">
-            <div><div class="eyebrow">Полная предоплата</div><h3>Скидка 7%</h3><div class="old">345 000 ₽</div><div class="new">320 850 ₽</div></div>
+            <div><div class="eyebrow">Полная предоплата</div><h3>Скидка 7%</h3><div class="old">120 000 ₽</div><div class="new">111 600 ₽</div></div>
             <p>Минимальная стоимость при оплате проекта целиком до начала работ.</p>
           </div>
         </div>
@@ -412,7 +401,7 @@
     <section class="section dark">
       <div class="wrap">
         <div class="modules-head reveal">
-          <div><div class="eyebrow">Развитие продукта</div><h2 style="margin-top:20px">14 модулей — видно, что уже оплачено</h2></div>
+          <div><div class="eyebrow">Развитие продукта</div><h2 style="margin-top:20px">14 модулей — у каждого есть ориентир цены</h2></div>
           <div class="module-controls" aria-label="Фильтр модулей">
             <button class="filter active" data-filter="all">Все</button>
             <button class="filter" data-filter="included">Уже включено</button>
@@ -420,19 +409,19 @@
           </div>
         </div>
         <div class="modules">
-          <article class="module included-module reveal" data-status="included"><div><h3>1. Дополнительный стандартный канал</h3><p>Второй заявленный канал MAX сверх Telegram уже учтён в первом этапе.</p></div><div class="module-price included">включено</div></article>
-          <article class="module reveal" data-status="optional"><div><h3>2. WhatsApp или Instagram</h3><p>Подключение с учётом требований, тарифов и ограничений выбранной платформы.</p></div><div class="module-price">после оценки</div></article>
-          <article class="module reveal" data-status="optional"><div><h3>3. Полная автоматизация тренировок</h3><p>Подтверждённый подбор тренера, корта, времени, индивидуальных и групповых занятий. Квалификация и передача уже входят.</p></div><div class="module-price">от 90 000 ₽</div></article>
-          <article class="module included-module reveal" data-status="included"><div><h3>4. Расширенные консультации</h3><p>Цены, тренеры, правила, инвентарь, услуги и другие согласованные вопросы клуба.</p></div><div class="module-price included">включено</div></article>
-          <article class="module included-module reveal" data-status="included"><div><h3>5. Напоминания и незавершённые заявки</h3><p>Follow-up, контроль оплаты, реакция на неявку и остановка сообщений после ответа.</p></div><div class="module-price included">включено</div></article>
-          <article class="module reveal" data-status="optional"><div><h3>6. Реактивация старой клиентской базы</h3><p>Сегментация и согласованные сценарии возврата клиентов, которые давно не посещали клуб.</p></div><div class="module-price">после оценки</div></article>
-          <article class="module reveal" data-status="optional"><div><h3>7. Telegram-отчёты руководителю</h3><p>Обращения, брони, незавершённые диалоги, причины передачи и выбранные показатели.</p></div><div class="module-price">после оценки</div></article>
-          <article class="module included-module reveal" data-status="included"><div><h3>8. Передача диалога сотруднику</h3><p>Уведомление, краткое резюме и история общения без повторного опроса клиента.</p></div><div class="module-price included">включено</div></article>
-          <article class="module reveal" data-status="optional"><div><h3>9. Админ-панель</h3><p>Просмотр диалогов, показателей, ошибок, базы знаний и настроек системы.</p></div><div class="module-price">после оценки</div></article>
-          <article class="module reveal" data-status="optional"><div><h3>10. Дополнительная локация</h3><p>Ещё один адрес с собственным расписанием, правилами, услугами и процессами.</p></div><div class="module-price">после оценки</div></article>
-          <article class="module included-module reveal" data-status="included"><div><h3>11. Платёжный сценарий</h3><p>Получение или формирование ссылки, отправка клиенту и доступный контроль статуса.</p></div><div class="module-price included">включено</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>1. Дополнительный стандартный канал</h3><p>Подключение второго канала: Telegram, MAX, VK или чат на сайте.</p></div><div class="module-price">от 45 000 ₽</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>2. WhatsApp или Instagram</h3><p>Подключение с учётом требований, тарифов и ограничений выбранной платформы.</p></div><div class="module-price">от 60 000 ₽</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>3. Запись на тренировки</h3><p>Подбор тренера, корта и времени для индивидуальных и групповых занятий. Сложные правила уточняются в ТЗ.</p></div><div class="module-price">от 90 000 ₽</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>4. Расширенные консультации</h3><p>Тренеры, абонементы, акции, турниры, мероприятия и другие услуги клуба сверх аренды.</p></div><div class="module-price">от 60 000 ₽</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>5. Напоминания и незавершённые заявки</h3><p>Follow-up, контроль оплаты, реакция на неявку и остановка сообщений после ответа.</p></div><div class="module-price">от 75 000 ₽</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>6. Реактивация старой клиентской базы</h3><p>Сегментация и согласованные сценарии возврата клиентов, которые давно не посещали клуб.</p></div><div class="module-price">от 90 000 ₽</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>7. Telegram-отчёты руководителю</h3><p>Обращения, брони, незавершённые диалоги, ошибки и выбранные показатели.</p></div><div class="module-price">от 45 000 ₽</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>8. Передача диалога сотруднику</h3><p>Уведомление, краткое резюме и история общения без повторного опроса клиента.</p></div><div class="module-price">от 75 000 ₽</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>9. Админ-панель</h3><p>Просмотр диалогов, показателей, ошибок, базы знаний и настроек системы.</p></div><div class="module-price">от 90 000 ₽</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>10. Дополнительная локация</h3><p>Ещё один адрес с собственным расписанием, правилами, услугами и процессами.</p></div><div class="module-price">от 60 000 ₽</div></article>
+          <article class="module included-module reveal" data-status="included"><div><h3>11. Платёжный сценарий</h3><p>Получение или формирование ссылки, отправка клиенту и доступный контроль результата.</p></div><div class="module-price included">включено<small>отдельно от 45 000 ₽</small></div></article>
           <article class="module reveal" data-status="optional"><div><h3>12. Голосовой AI-администратор</h3><p>Обработка входящих звонков и выполнение согласованных сценариев голосом.</p></div><div class="module-price">от 120 000 ₽</div></article>
-          <article class="module included-module reveal" data-status="included"><div><h3>13. Единый контур через Wazzup</h3><p>Интеграционная работа для Telegram и MAX учтена. Тариф сервиса оплачивается отдельно.</p></div><div class="module-price included">включено</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>13. Единый контур через Wazzup</h3><p>Объединение подключённых каналов в одном рабочем окне. Тариф сервиса оплачивается отдельно.</p></div><div class="module-price">от 45 000 ₽</div></article>
           <article class="module reveal" data-status="optional"><div><h3>14. Контроль дублей клиентов</h3><p>Поиск существующей карточки и снижение числа повторных записей в CRM.</p></div><div class="module-price">от 60 000 ₽</div></article>
         </div>
       </div>
@@ -457,7 +446,7 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div class="eyebrow">Реализация</div>
-          <div><h2>Ориентир запуска — 6–8 недель</h2><p class="intro">Финальный календарный план фиксируется после технической проверки API YCLIENTS, способов подключения Telegram/MAX и платёжного сценария клуба.</p></div>
+          <div><h2>Ориентир запуска — 5–6 недель</h2><p class="intro">Финальный календарный план фиксируется после технической проверки API YCLIENTS, выбранного текстового канала и платёжного сценария клуба.</p></div>
         </div>
         <div class="timeline">
           <article class="time-card reveal"><b>01</b><h3>Техническая сессия</h3><p>Фиксируем доступы, правила, исключения и критерии приёмки.</p></article>
@@ -474,7 +463,7 @@
           <div class="eyebrow">Границы первого этапа</div>
           <div><h2>Что намеренно не включено</h2><p class="intro">Это защищает срок, бюджет и качество запуска. Расширение подключается после того, как базовый контур уже работает.</p></div>
         </div>
-        <div class="boundary reveal"><strong>Отдельно оцениваются:</strong> входящие телефонные звонки, полностью автоматический подбор и подтверждение тренера, автоматическая комплектация групп, массовая реактивация старой базы, отдельная админ-панель и расширенная управленческая аналитика. Турниры и нестандартные договорённости на первом этапе остаются за сотрудником.</div>
+        <div class="boundary reveal"><strong>Первый этап работает только с входящими текстовыми обращениями:</strong> клиент сам начинает диалог, после чего AI ведёт стандартную аренду до брони и оплаты. Поиск тренера, второй канал, передача диалога сотруднику, исходящие напоминания, возврат незавершённых заявок, реактивация старой базы, звонки, отчёты и админ-панель подключаются отдельными модулями. Турниры и нестандартные договорённости остаются за командой клуба.</div>
       </div>
     </section>
 
@@ -506,18 +495,6 @@
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     }
 
-    document.querySelectorAll('.demo-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.demo-tab').forEach(item => {
-          item.classList.remove('active');
-          item.setAttribute('aria-selected', 'false');
-        });
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected', 'true');
-        document.querySelectorAll('.scenario').forEach(panel => panel.classList.toggle('active', panel.dataset.panel === tab.dataset.scenario));
-      });
-    });
-
     const formatNumber = value => new Intl.NumberFormat('ru-RU').format(value);
     const ticket = document.getElementById('ticket');
     const bookings = document.getElementById('bookings');
@@ -525,12 +502,12 @@
       const ticketValue = Number(ticket.value);
       const bookingsPerDay = Number(bookings.value);
       const monthly = ticketValue * bookingsPerDay * 30;
-      const months = 345000 / monthly;
+      const months = 120000 / monthly;
       document.getElementById('ticketValue').textContent = formatNumber(ticketValue);
       document.getElementById('bookingsValue').textContent = bookingsPerDay;
       document.getElementById('monthlyRevenue').textContent = formatNumber(monthly) + ' ₽';
       document.getElementById('payback').textContent = months.toLocaleString('ru-RU', {minimumFractionDigits:1,maximumFractionDigits:1}) + ' мес.';
-      document.getElementById('bookingsNeeded').textContent = Math.ceil(345000 / ticketValue);
+      document.getElementById('bookingsNeeded').textContent = Math.ceil(120000 / ticketValue);
     }
     ticket.addEventListener('input', updateCalculator);
     bookings.addEventListener('input', updateCalculator);
