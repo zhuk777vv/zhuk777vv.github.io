@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#062f2d">
+  <title>Цифровой администратор для Padel Friends</title>
+  <meta name="description" content="Персональное предложение для Padel Friends: обработка обращений, бронирование и оплата через YCLIENTS, Telegram и MAX.">
+  <style>
+    :root{
+      --ink:#092c2a;
+      --deep:#052f2c;
+      --deep-2:#021d1c;
+      --paper:#f4f5ed;
+      --white:#fff;
+      --lime:#d8ff2f;
+      --lime-soft:#e9ff8e;
+      --teal:#0a796d;
+      --muted:#687670;
+      --line:rgba(9,44,42,.14);
+      --line-dark:rgba(255,255,255,.15);
+      --radius:28px;
+      --shadow:0 30px 90px rgba(2,29,28,.18);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    body::selection{background:var(--lime);color:var(--deep)}
+    a{color:inherit}
+    button,input{font:inherit}
+    .wrap{width:min(1180px,calc(100% - 40px));margin-inline:auto}
+    .section{padding:104px 0}
+    .dark{background:var(--deep);color:var(--white)}
+    .deepest{background:var(--deep-2);color:var(--white)}
+    .eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+    .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 7px rgba(216,255,47,.13)}
+    .section-head{display:grid;grid-template-columns:.64fr 1.36fr;gap:38px;align-items:end;margin-bottom:46px}
+    h1,h2,h3,p{overflow-wrap:break-word}
+    h1{font-size:clamp(56px,7.7vw,108px);line-height:.9;letter-spacing:-.068em;margin:22px 0 24px;max-width:900px}
+    h2{font-size:clamp(42px,5.4vw,74px);line-height:.96;letter-spacing:-.057em;margin:0}
+    h3{letter-spacing:-.035em}
+    .intro{color:var(--muted);font-size:18px;line-height:1.58;max-width:720px;margin:17px 0 0}
+    .dark .intro,.deepest .intro{color:rgba(255,255,255,.62)}
+    .lime{color:var(--lime)}
+    .hero{min-height:94vh;background:var(--deep);color:var(--white);position:relative;overflow:hidden;padding:22px 0 64px}
+    .hero::before{content:"";position:absolute;width:880px;height:880px;border-radius:50%;background:radial-gradient(circle,rgba(216,255,47,.21),rgba(10,121,109,.08) 42%,transparent 69%);right:-240px;top:-340px}
+    .hero::after{content:"";position:absolute;inset:0;opacity:.12;background-image:linear-gradient(rgba(255,255,255,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(#000,transparent 91%)}
+    nav,.hero-grid,.price-grid,.roi,.cta-grid{display:grid;position:relative;z-index:1}
+    nav{grid-template-columns:1fr auto;align-items:center;gap:22px}
+    .brand{display:flex;gap:13px;align-items:center;font-weight:900;letter-spacing:-.02em}
+    .brand-mark{width:64px;height:64px;border-radius:18px;background:linear-gradient(145deg,#0a8274,#07594f);display:flex;align-items:center;padding:9px;box-shadow:0 16px 38px rgba(0,0,0,.3);position:relative;overflow:hidden}
+    .brand-mark::after{content:"";position:absolute;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);right:-7px;top:-7px}
+    .brand-words{font-size:12px;font-style:italic;font-weight:1000;line-height:.84;letter-spacing:-.07em;transform:skew(-7deg);position:relative;z-index:1}
+    .brand-words b{display:block;color:var(--lime);font-size:15px}.brand-words span{display:block;color:#fff;font-size:15px}
+    .petals{position:absolute;right:7px;top:12px;width:18px;height:18px;z-index:1}
+    .petals i{position:absolute;width:8px;height:8px;background:var(--lime);border-radius:8px 2px 8px 2px;transform-origin:9px 9px}
+    .petals i:nth-child(1){transform:rotate(0deg)}.petals i:nth-child(2){transform:rotate(90deg)}.petals i:nth-child(3){transform:rotate(180deg)}.petals i:nth-child(4){transform:rotate(270deg)}
+    .pill{font-size:12px;color:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:10px 14px;white-space:nowrap}
+    .hero-grid{grid-template-columns:1.12fr .88fr;gap:60px;align-items:center;padding-top:74px}
+    .hero .lead{font-size:clamp(18px,2vw,24px);line-height:1.47;color:rgba(255,255,255,.7);max-width:780px;margin:0}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:31px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-weight:900;padding:15px 22px;border-radius:999px;border:0;cursor:pointer;transition:transform .2s ease,background .2s ease}
+    .btn:hover{transform:translateY(-2px)}
+    .primary{background:var(--lime);color:var(--deep)}
+    .ghost{border:1px solid rgba(255,255,255,.2);color:#fff;background:rgba(255,255,255,.03)}
+    .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:44px}
+    .proof div{border-top:1px solid rgba(255,255,255,.18);padding:16px 0;color:rgba(255,255,255,.55);font-size:13px;line-height:1.4}
+    .proof b{display:block;color:#fff;font-size:21px;margin-bottom:5px;letter-spacing:-.03em}
+    .demo{border:1px solid rgba(255,255,255,.14);background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.035));border-radius:32px;padding:18px;box-shadow:0 34px 100px rgba(0,0,0,.43);backdrop-filter:blur(16px)}
+    .demo-top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;padding:4px 4px 15px}
+    .online{color:var(--lime)}
+    .demo-tabs{display:flex;gap:6px;margin:0 0 10px;background:rgba(255,255,255,.08);padding:5px;border-radius:13px}
+    .demo-tab{border:0;border-radius:9px;padding:8px 10px;background:transparent;color:rgba(255,255,255,.58);font-size:12px;font-weight:800;cursor:pointer;flex:1}
+    .demo-tab.active{background:#fff;color:var(--deep)}
+    .phone{background:#f0f3ec;color:var(--ink);border-radius:24px;padding:18px;min-height:510px;position:relative;overflow:hidden}
+    .phone-head{display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:14px}
+    .avatar{width:39px;height:39px;border-radius:12px;background:var(--deep);color:var(--lime);display:grid;place-items:center;font-weight:1000;font-size:12px}
+    .messages{display:flex;flex-direction:column;gap:10px;padding-top:18px}
+    .message{padding:12px 14px;border-radius:17px;max-width:88%;font-size:14px;line-height:1.42;box-shadow:0 3px 10px rgba(9,44,42,.04)}
+    .user{align-self:flex-end;background:var(--deep);color:#fff;border-bottom-right-radius:4px}
+    .assistant{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+    .system{align-self:center;background:rgba(216,255,47,.55);font-weight:900;text-align:center}
+    .scenario{display:none}.scenario.active{display:flex}
+    .metrics,.cards,.flow,.included,.modules,.support,.timeline,.loss-grid,.scenario-grid{display:grid;gap:13px}
+    .metrics{grid-template-columns:repeat(4,1fr)}
+    .metric,.card,.included-card,.support article,.time-card,.loss-card{border:1px solid var(--line);border-radius:21px;background:rgba(255,255,255,.72);padding:25px}
+    .metric b{display:block;font-size:36px;letter-spacing:-.05em;margin-bottom:10px}
+    .metric span,.card p,.included-card p,.support p,.time-card p,.loss-card p{color:var(--muted);line-height:1.5;font-size:14px}
+    .cards,.scenario-grid,.loss-grid{grid-template-columns:1fr 1fr}
+    .card{min-height:260px;padding:31px}
+    .card small{font-size:11px;font-weight:900;letter-spacing:.12em;color:var(--teal)}
+    .card h3{font-size:29px;margin:58px 0 11px}
+    .card.black{background:var(--deep);color:#fff;border:0;box-shadow:var(--shadow)}
+    .card.black p{color:rgba(255,255,255,.62)}
+    .card.black small{color:var(--lime)}
+    .flow{grid-template-columns:repeat(6,1fr)}
+    .step{border:1px solid var(--line-dark);background:rgba(255,255,255,.04);border-radius:20px;padding:21px;min-height:194px}
+    .step b{display:block;color:var(--lime);font-size:12px;margin-bottom:50px}
+    .step strong{display:block;font-size:18px;margin-bottom:8px;letter-spacing:-.025em}
+    .step p{margin:0;color:rgba(255,255,255,.57);font-size:13px;line-height:1.45}
+    .scenario-card{border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:32px;position:relative;overflow:hidden}
+    .scenario-card::before{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(216,255,47,.28);right:-60px;top:-80px}
+    .scenario-card.alt{background:var(--deep);color:#fff;border:0}
+    .scenario-card.alt::before{background:rgba(216,255,47,.11)}
+    .scenario-label{display:inline-flex;padding:8px 10px;border-radius:999px;background:rgba(216,255,47,.6);color:var(--deep);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .scenario-card h3{font-size:32px;margin:48px 0 11px}
+    .scenario-card p{color:var(--muted);line-height:1.55}
+    .scenario-card.alt p{color:rgba(255,255,255,.63)}
+    .check-list{display:grid;gap:12px;margin-top:24px}
+    .check{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start;line-height:1.45}
+    .check i{font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--lime);color:var(--deep);font-size:12px;font-weight:1000}
+    .loss-card{padding:29px;min-height:225px}
+    .loss-card .number{font-size:12px;font-weight:900;color:var(--teal)}
+    .loss-card h3{font-size:27px;margin:46px 0 10px}
+    .loss-card.result{background:var(--lime);border:0}
+    .loss-card.result p{color:rgba(9,44,42,.7)}
+    .included{grid-template-columns:repeat(4,1fr)}
+    .included-card{min-height:190px;position:relative;overflow:hidden}
+    .included-card .tag{font-size:11px;text-transform:uppercase;font-weight:900;letter-spacing:.1em;color:#617414}
+    .included-card h3{font-size:21px;margin:42px 0 9px}
+    .price-grid{grid-template-columns:1.08fr .92fr;gap:16px}
+    .price-card{background:var(--deep);color:#fff;border-radius:34px;padding:42px;overflow:hidden;position:relative}
+    .price-card::after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(216,255,47,.19),transparent 70%);right:-130px;top:-140px}
+    .price-card small{color:var(--lime);font-weight:900;letter-spacing:.12em;text-transform:uppercase;position:relative;z-index:1}
+    .sum{font-size:clamp(65px,7.2vw,96px);line-height:.95;letter-spacing:-.072em;margin:24px 0 11px;position:relative;z-index:1}
+    .price-note{color:rgba(255,255,255,.62);line-height:1.52;max-width:720px;position:relative;z-index:1}
+    .payment-bar{display:grid;grid-template-columns:30fr 50fr 20fr;gap:5px;margin:31px 0 18px;position:relative;z-index:1}
+    .payment-bar i{height:9px;background:rgba(255,255,255,.16);border-radius:999px}.payment-bar i:first-child{background:var(--lime)}
+    .payments{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:1}
+    .payment{border-top:1px solid rgba(255,255,255,.15);padding-top:12px;color:rgba(255,255,255,.5);font-size:12px;line-height:1.4}
+    .payment b{display:block;color:#fff;font-size:18px;margin:5px 0}
+    .discount{background:var(--lime);border-radius:34px;padding:39px;display:flex;flex-direction:column;justify-content:space-between;min-height:100%}
+    .discount h3{font-size:38px;margin:17px 0 8px}
+    .old{text-decoration:line-through;color:#607014}
+    .new{font-size:clamp(48px,5vw,66px);font-weight:1000;letter-spacing:-.064em}
+    .discount p{color:rgba(9,44,42,.7);line-height:1.5}
+    .roi{grid-template-columns:.86fr 1.14fr;gap:36px;margin-top:16px;border:1px solid var(--line);border-radius:34px;padding:38px;background:#fff}
+    .roi h3{font-size:38px;margin:18px 0 10px}
+    .roi p{color:var(--muted);line-height:1.56}
+    .calculator{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:23px}
+    .range-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:13px;margin-bottom:6px}
+    .range-row + .range-row{margin-top:20px}
+    .range-row small{color:var(--muted)}
+    .range-row b{font-size:27px;letter-spacing:-.04em}
+    input[type="range"]{width:100%;accent-color:var(--deep)}
+    .results{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}
+    .result{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px}
+    .result small{display:block;color:var(--muted);min-height:31px;margin-bottom:7px;line-height:1.3}
+    .result b{font-size:23px;letter-spacing:-.04em}
+    .fine{font-size:11px;color:var(--muted);line-height:1.52;margin-top:13px}
+    .modules-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:34px}
+    .module-controls{display:flex;gap:7px;flex-wrap:wrap}
+    .filter{border:1px solid rgba(255,255,255,.17);background:transparent;color:rgba(255,255,255,.66);border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800;cursor:pointer}
+    .filter.active{background:var(--lime);color:var(--deep);border-color:var(--lime)}
+    .modules{grid-template-columns:1fr 1fr}
+    .module{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);border-radius:20px;padding:21px;display:grid;grid-template-columns:1fr auto;gap:18px;min-height:132px;transition:opacity .2s ease,transform .2s ease}
+    .module.included-module{border-color:rgba(216,255,47,.35)}
+    .module h3{font-size:17px;margin:0 0 8px}
+    .module p{font-size:13px;color:rgba(255,255,255,.56);line-height:1.46;margin:0;max-width:600px}
+    .module-price{color:var(--lime);font-weight:900;white-space:nowrap;text-align:right}
+    .module-price.included{color:#fff;background:rgba(216,255,47,.14);border-radius:999px;padding:7px 10px;height:max-content;font-size:12px;text-transform:uppercase;letter-spacing:.07em}
+    .module.hidden{display:none}
+    .support{grid-template-columns:repeat(3,1fr)}
+    .support article{min-height:230px}
+    .support article b{display:block;font-size:36px;margin-bottom:48px;letter-spacing:-.05em}
+    .support h3{font-size:21px;margin:0 0 8px}
+    .terms{margin-top:18px;border:1px solid var(--line);border-radius:20px;padding:20px 23px;color:var(--muted);font-size:12px;line-height:1.58}
+    .timeline{grid-template-columns:repeat(4,1fr)}
+    .time-card{min-height:220px}
+    .time-card b{color:#607414;font-size:12px}
+    .time-card h3{font-size:21px;margin:54px 0 9px}
+    .boundary{margin-top:16px;padding:24px;border-radius:22px;background:rgba(216,255,47,.13);border:1px solid rgba(216,255,47,.23);color:rgba(255,255,255,.7);line-height:1.55}
+    .boundary strong{color:#fff}
+    .cta{background:var(--lime);padding:88px 0}
+    .cta-grid{grid-template-columns:1.28fr .72fr;gap:44px;align-items:end}
+    .cta h2{font-size:clamp(50px,6.2vw,86px)}
+    .cta-box{background:var(--deep);color:#fff;border-radius:28px;padding:28px}
+    .cta-box p{color:rgba(255,255,255,.62);line-height:1.52;margin-top:0}
+    .cta-box .btn{width:100%;background:#fff;color:var(--deep);margin-top:8px}
+    footer{background:var(--deep-2);color:rgba(255,255,255,.48);padding:27px 0;font-size:12px}
+    .footer-row{display:flex;justify-content:space-between;gap:20px}
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
+    .reveal.visible{opacity:1;transform:none}
+    @media(max-width:1040px){
+      .hero-grid,.section-head,.price-grid,.roi,.cta-grid{grid-template-columns:1fr}
+      .hero-grid{gap:42px}.phone{min-height:470px}.flow{grid-template-columns:repeat(3,1fr)}.included{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:760px){
+      .wrap{width:calc(100% - 26px)}.section{padding:76px 0}.hero{padding-top:14px}.hero-grid{padding-top:50px}.pill{display:none}
+      .brand-mark{width:57px;height:57px;border-radius:16px}.proof,.metrics,.cards,.scenario-grid,.loss-grid,.modules,.support,.timeline,.results{grid-template-columns:1fr}
+      .flow{grid-template-columns:1fr 1fr}.demo{padding:12px;border-radius:26px}.phone{min-height:500px;padding:15px}.price-card,.discount,.roi{padding:27px}.payments{grid-template-columns:1fr}.payment{padding:12px 0}.modules-head{align-items:flex-start;flex-direction:column}.module{grid-template-columns:1fr}.module-price{text-align:left}.footer-row{flex-direction:column}.cta{padding:72px 0}
+      h1{font-size:clamp(52px,16vw,78px)}.hero .lead{font-size:18px}.included-card{min-height:165px}.support article{min-height:195px}
+    }
+    @media(max-width:430px){
+      .flow{grid-template-columns:1fr}.step{min-height:164px}.step b{margin-bottom:34px}.actions .btn{width:100%}.sum{font-size:58px}.new{font-size:45px}.result small{min-height:auto}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <nav>
+        <div class="brand">
+          <div class="brand-mark" aria-label="Padel Friends">
+            <div class="brand-words"><b>PADEL</b><span>FRIENDS</span></div>
+            <div class="petals" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          </div>
+          <span>PADEL FRIENDS × AI</span>
+        </div>
+        <span class="pill">Персональное предложение · конфиденциально</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Не ещё один бот. Цифровой администратор клуба.</div>
+          <h1>Больше запросов — в <span class="lime">оплаченную бронь.</span></h1>
+          <p class="lead">Система для Padel Friends принимает обращения в Telegram и MAX, работает с YCLIENTS, закрывает аренду корта до оплаты, возвращает незавершённые заявки и передаёт сотруднику уже подготовленные запросы на тренировку.</p>
+          <div class="actions">
+            <a class="btn primary" href="#price">Смотреть условия ↓</a>
+            <a class="btn ghost" href="#architecture">Как это работает</a>
+          </div>
+          <div class="proof">
+            <div><b>Telegram + MAX</b>два ключевых текстовых канала</div>
+            <div><b>24/7</b>ответ без ожидания администратора</div>
+            <div><b>6–8 недель</b>ориентир запуска после проверки</div>
+          </div>
+        </div>
+
+        <div class="demo reveal">
+          <div class="demo-top"><b>Цифровой администратор</b><span class="online">● онлайн 24/7</span></div>
+          <div class="demo-tabs" role="tablist" aria-label="Сценарии диалога">
+            <button class="demo-tab active" data-scenario="court" role="tab" aria-selected="true">Аренда корта</button>
+            <button class="demo-tab" data-scenario="training" role="tab" aria-selected="false">Тренировка</button>
+          </div>
+          <div class="phone">
+            <div class="phone-head"><div class="avatar">PF</div><div><b>Padel Friends</b><br><small>цифровой администратор</small></div></div>
+            <div class="messages scenario active" data-panel="court">
+              <div class="message user">Нужен корт завтра после 19:00 на два часа.</div>
+              <div class="message assistant">Проверяю актуальное расписание. Есть варианты в 19:30 и 21:00. Какой удобнее?</div>
+              <div class="message user">19:30.</div>
+              <div class="message assistant">Отлично. Создаю запись в YCLIENTS и формирую оплату.</div>
+              <div class="message system">Бронь создана · ссылка отправлена</div>
+              <div class="message assistant">После оплаты пришлю подтверждение и правила посещения.</div>
+            </div>
+            <div class="messages scenario" data-panel="training">
+              <div class="message user">Хочу индивидуальную тренировку в субботу. Я новичок.</div>
+              <div class="message assistant">Подскажите удобный промежуток времени и есть ли пожелание по тренеру?</div>
+              <div class="message user">После 16:00, тренер любой.</div>
+              <div class="message assistant">Принято: индивидуальная тренировка, новичок, суббота после 16:00. Передаю администратору для финального подбора тренера и корта.</div>
+              <div class="message system">Заявка подготовлена · сотрудник уведомлён</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Контекст Padel Friends</div>
+          <div><h2>Не заменять YCLIENTS.<br>Закрыть разрыв до записи.</h2><p class="intro">Сайт, самостоятельная запись, онлайн-оплата и внутренний отчёт уже работают. Новый слой нужен там, где клиент сначала задаёт вопрос, сомневается, не завершает бронь или хочет записаться к тренеру.</p></div>
+        </div>
+        <div class="metrics">
+          <article class="metric reveal"><b>YCLIENTS</b><span>Остаётся основной системой расписания, записей и оплаты.</span></article>
+          <article class="metric reveal"><b>2 канала</b><span>Telegram и MAX входят в первый рабочий контур.</span></article>
+          <article class="metric reveal"><b>2 потери</b><span>Обратился, но не записался; записался, но не пришёл.</span></article>
+          <article class="metric reveal"><b>1 цель</b><span>Больше завершённых броней при меньшей ручной нагрузке.</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <div class="cards">
+          <article class="card reveal"><small>СЕЙЧАС</small><h3>Администратор держит на себе всю переписку</h3><p>Цена, свободные слоты, тренеры, правила, уточнения, незавершённые заявки и повторные сообщения конкурируют за внимание сотрудника.</p></article>
+          <article class="card black reveal"><small>ПОСЛЕ ЗАПУСКА</small><h3>Рутинный диалог проходит без очереди</h3><p>Система отвечает, проверяет расписание, создаёт бронь, отправляет оплату и подключает человека только там, где действительно требуется решение сотрудника.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" id="architecture">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Рабочий контур</div>
+          <div><h2>Шесть шагов от сообщения до результата</h2><p class="intro">Единая логика поверх текущей инфраструктуры клуба. Без второй CRM и без просьбы клиенту заново объяснять свой запрос.</p></div>
+        </div>
+        <div class="flow">
+          <article class="step"><b>01</b><strong>Обращение</strong><p>Клиент пишет в Telegram или MAX.</p></article>
+          <article class="step"><b>02</b><strong>Понимание</strong><p>Система определяет цель и уточняет параметры.</p></article>
+          <article class="step"><b>03</b><strong>YCLIENTS</strong><p>Получает актуальные слоты, услуги и статусы.</p></article>
+          <article class="step"><b>04</b><strong>Действие</strong><p>Создаёт бронь или готовит заявку на тренировку.</p></article>
+          <article class="step"><b>05</b><strong>Оплата</strong><p>Отправляет ссылку и контролирует завершение.</p></article>
+          <article class="step"><b>06</b><strong>Возврат</strong><p>Напоминает или передаёт сотруднику с контекстом.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Два сценария</div>
+          <div><h2>Автоматизируем ровно настолько, насколько это безопасно</h2><p class="intro">Аренда корта имеет понятный результат и проходит полностью. Подбор тренера требует живого решения — система снимает рутину, но не обещает клиенту неподтверждённый слот.</p></div>
+        </div>
+        <div class="scenario-grid">
+          <article class="scenario-card reveal">
+            <span class="scenario-label">Полный сценарий</span>
+            <h3>Аренда корта</h3>
+            <p>Цифровой администратор самостоятельно проходит стандартный путь до подтверждённой оплаты.</p>
+            <div class="check-list">
+              <div class="check"><i>✓</i><span>Уточняет дату, время и продолжительность.</span></div>
+              <div class="check"><i>✓</i><span>Показывает свободные варианты и альтернативы.</span></div>
+              <div class="check"><i>✓</i><span>Создаёт запись в YCLIENTS.</span></div>
+              <div class="check"><i>✓</i><span>Отправляет ссылку и сопровождает до оплаты.</span></div>
+            </div>
+          </article>
+          <article class="scenario-card alt reveal">
+            <span class="scenario-label">Квалификация + передача</span>
+            <h3>Запись к тренеру</h3>
+            <p>Система собирает всё необходимое, чтобы администратор не начинал разговор с нуля.</p>
+            <div class="check-list">
+              <div class="check"><i>✓</i><span>Уточняет формат, уровень и удобное время.</span></div>
+              <div class="check"><i>✓</i><span>Фиксирует пожелание по тренеру.</span></div>
+              <div class="check"><i>✓</i><span>Формирует краткое резюме заявки.</span></div>
+              <div class="check"><i>✓</i><span>Передаёт сотруднику вместе с историей диалога.</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Не терять тёплый спрос</div>
+          <div><h2>Система замечает тех, кто не дошёл до результата</h2><p class="intro">YCLIENTS хорошо показывает состоявшуюся запись. Цифровой администратор добавляет контроль того, что произошло до неё и после неявки.</p></div>
+        </div>
+        <div class="loss-grid">
+          <article class="loss-card reveal"><span class="number">01 · НЕ ЗАВЕРШИЛ</span><h3>Клиент написал, но не забронировал</h3><p>Система фиксирует остановившийся диалог и делает согласованный follow-up без бесконечного спама.</p></article>
+          <article class="loss-card reveal"><span class="number">02 · НЕ ОПЛАТИЛ</span><h3>Бронь создана, но оплата не прошла</h3><p>Клиент получает напоминание, а при необходимости горячее обращение уходит сотруднику.</p></article>
+          <article class="loss-card reveal"><span class="number">03 · НЕ ПРИШЁЛ</span><h3>Запись была, посещения не было</h3><p>После получения статуса система предлагает вернуться и выбрать другое подходящее время.</p></article>
+          <article class="loss-card result reveal"><span class="number">РЕЗУЛЬТАТ</span><h3>Больше обработанных запросов без расширения смены</h3><p>Администраторы подключаются к решениям, а не повторяют одни и те же ответы и действия.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section deepest">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Первый этап</div>
+          <div><h2>Что входит в 345 000 ₽</h2><p class="intro">Один законченный рабочий контур для локации Padel Friends в Казани — с границами, которые можно проверить при приёмке.</p></div>
+        </div>
+        <div class="included">
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Telegram + MAX</h3><p>Приём и обработка текстовых обращений в двух заявленных каналах.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Интеграция YCLIENTS</h3><p>Расписание, свободные слоты, записи и доступные платёжные статусы.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>База знаний</h3><p>Цены, адрес, график, правила, инвентарь, отмены и согласованные вопросы.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Аренда до оплаты</h3><p>Подбор слота, альтернативы, создание брони и отправка ссылки.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Заявка на тренировку</h3><p>Сбор параметров, резюме и передача сотруднику для подтверждения.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Незавершённая бронь</h3><p>Согласованные напоминания и остановка цепочки после ответа.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Передача человеку</h3><p>Контекст диалога, уведомление и ручное подключение в исключениях.</p></article>
+          <article class="included-card reveal"><span class="tag">Включено</span><h3>Настройка и запуск</h3><p>Тестирование сценариев, исправления и запуск на реальных обращениях.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="price">
+      <div class="wrap">
+        <div class="price-grid">
+          <div class="price-card reveal">
+            <small>Этап 1 · одна локация</small>
+            <div class="sum">345 000 ₽</div>
+            <p class="price-note">Фиксированная стоимость за согласованный контур: Telegram + MAX, YCLIENTS, аренда и оплата, база знаний, незавершённые заявки и подготовленная передача сложных обращений сотруднику.</p>
+            <div class="payment-bar"><i></i><i></i><i></i></div>
+            <div class="payments">
+              <div class="payment">Старт проекта<b>30% · 103 500 ₽</b>после фиксации ТЗ</div>
+              <div class="payment">Тестовая готовность<b>50% · 172 500 ₽</b>рабочий контур собран</div>
+              <div class="payment">Полный запуск<b>20% · 69 000 ₽</b>приёмка завершена</div>
+            </div>
+          </div>
+          <div class="discount reveal">
+            <div><div class="eyebrow">Полная предоплата</div><h3>Скидка 7%</h3><div class="old">345 000 ₽</div><div class="new">320 850 ₽</div></div>
+            <p>Минимальная стоимость при оплате проекта целиком до начала работ.</p>
+          </div>
+        </div>
+
+        <div class="roi reveal">
+          <div>
+            <div class="eyebrow">Сценарная экономика</div>
+            <h3>Сколько записей возвращают инвестицию</h3>
+            <p>Расчёт показывает выручку от дополнительных завершённых броней. Можно поставить собственный средний чек и реалистичное число возвращённых записей в день.</p>
+          </div>
+          <div class="calculator">
+            <div class="range-row"><div><strong>Средний чек аренды</strong><br><small>укажите фактическое значение клуба</small></div><b><span id="ticketValue">3 500</span> ₽</b></div>
+            <input id="ticket" type="range" min="2500" max="6000" step="100" value="3500" aria-label="Средний чек аренды">
+            <div class="range-row"><div><strong>Дополнительных броней в день</strong><br><small>сверх текущего результата</small></div><b><span id="bookingsValue">2</span></b></div>
+            <input id="bookings" type="range" min="1" max="6" step="1" value="2" aria-label="Дополнительных броней в день">
+            <div class="results">
+              <div class="result"><small>Доп. выручка в месяц</small><b id="monthlyRevenue">210 000 ₽</b></div>
+              <div class="result"><small>Срок возврата вложений</small><b id="payback">1,6 мес.</b></div>
+              <div class="result"><small>Броней на сумму внедрения</small><b id="bookingsNeeded">99</b></div>
+            </div>
+            <div class="fine">Это сценарный расчёт выручки, а не гарантия прибыли. Результат зависит от числа входящих обращений, загрузки, конверсии и соблюдения процесса клубом.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark">
+      <div class="wrap">
+        <div class="modules-head reveal">
+          <div><div class="eyebrow">Развитие продукта</div><h2 style="margin-top:20px">14 модулей — видно, что уже оплачено</h2></div>
+          <div class="module-controls" aria-label="Фильтр модулей">
+            <button class="filter active" data-filter="all">Все</button>
+            <button class="filter" data-filter="included">Уже включено</button>
+            <button class="filter" data-filter="optional">Дополнительно</button>
+          </div>
+        </div>
+        <div class="modules">
+          <article class="module included-module reveal" data-status="included"><div><h3>1. Дополнительный стандартный канал</h3><p>Второй заявленный канал MAX сверх Telegram уже учтён в первом этапе.</p></div><div class="module-price included">включено</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>2. WhatsApp или Instagram</h3><p>Подключение с учётом требований, тарифов и ограничений выбранной платформы.</p></div><div class="module-price">после оценки</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>3. Полная автоматизация тренировок</h3><p>Подтверждённый подбор тренера, корта, времени, индивидуальных и групповых занятий. Квалификация и передача уже входят.</p></div><div class="module-price">от 90 000 ₽</div></article>
+          <article class="module included-module reveal" data-status="included"><div><h3>4. Расширенные консультации</h3><p>Цены, тренеры, правила, инвентарь, услуги и другие согласованные вопросы клуба.</p></div><div class="module-price included">включено</div></article>
+          <article class="module included-module reveal" data-status="included"><div><h3>5. Напоминания и незавершённые заявки</h3><p>Follow-up, контроль оплаты, реакция на неявку и остановка сообщений после ответа.</p></div><div class="module-price included">включено</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>6. Реактивация старой клиентской базы</h3><p>Сегментация и согласованные сценарии возврата клиентов, которые давно не посещали клуб.</p></div><div class="module-price">после оценки</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>7. Telegram-отчёты руководителю</h3><p>Обращения, брони, незавершённые диалоги, причины передачи и выбранные показатели.</p></div><div class="module-price">после оценки</div></article>
+          <article class="module included-module reveal" data-status="included"><div><h3>8. Передача диалога сотруднику</h3><p>Уведомление, краткое резюме и история общения без повторного опроса клиента.</p></div><div class="module-price included">включено</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>9. Админ-панель</h3><p>Просмотр диалогов, показателей, ошибок, базы знаний и настроек системы.</p></div><div class="module-price">после оценки</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>10. Дополнительная локация</h3><p>Ещё один адрес с собственным расписанием, правилами, услугами и процессами.</p></div><div class="module-price">после оценки</div></article>
+          <article class="module included-module reveal" data-status="included"><div><h3>11. Платёжный сценарий</h3><p>Получение или формирование ссылки, отправка клиенту и доступный контроль статуса.</p></div><div class="module-price included">включено</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>12. Голосовой AI-администратор</h3><p>Обработка входящих звонков и выполнение согласованных сценариев голосом.</p></div><div class="module-price">от 120 000 ₽</div></article>
+          <article class="module included-module reveal" data-status="included"><div><h3>13. Единый контур через Wazzup</h3><p>Интеграционная работа для Telegram и MAX учтена. Тариф сервиса оплачивается отдельно.</p></div><div class="module-price included">включено</div></article>
+          <article class="module reveal" data-status="optional"><div><h3>14. Контроль дублей клиентов</h3><p>Поиск существующей карточки и снижение числа повторных записей в CRM.</p></div><div class="module-price">от 60 000 ₽</div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">После запуска</div>
+          <div><h2>Настраиваем на реальных диалогах клуба</h2><p class="intro">Первый месяц нужен, чтобы аккуратно довести формулировки, исключения и поведение системы на живых обращениях Padel Friends.</p></div>
+        </div>
+        <div class="support">
+          <article class="reveal"><b>100</b><h3>небольших корректировок бесплатно</h3><p>После сдачи — в рамках согласованной логики и технического задания.</p></article>
+          <article class="reveal"><b>1 месяц</b><h3>сопровождения в подарок</h3><p>Анализируем первые диалоги и корректируем сценарии в пределах ТЗ.</p></article>
+          <article class="reveal"><b>0%</b><h3>наценки на AI-расходы</h3><p>Предварительная оценка появится после выбора точной модели и архитектуры.</p></article>
+        </div>
+        <div class="terms reveal">Wazzup, YCLIENTS, сервер, AI-модель и иные внешние сервисы при необходимости оплачиваются клиентом напрямую. Итоговая схема инфраструктуры и хранения данных фиксируется в ТЗ. Новые функции и изменение бизнес-процессов за границами согласованного контура оцениваются отдельно.</div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Реализация</div>
+          <div><h2>Ориентир запуска — 6–8 недель</h2><p class="intro">Финальный календарный план фиксируется после технической проверки API YCLIENTS, способов подключения Telegram/MAX и платёжного сценария клуба.</p></div>
+        </div>
+        <div class="timeline">
+          <article class="time-card reveal"><b>01</b><h3>Техническая сессия</h3><p>Фиксируем доступы, правила, исключения и критерии приёмки.</p></article>
+          <article class="time-card reveal"><b>02</b><h3>Сборка контура</h3><p>Каналы, YCLIENTS, база знаний, бронирование, оплата и follow-up.</p></article>
+          <article class="time-card reveal"><b>03</b><h3>Тестирование</h3><p>Типовые, пограничные и ошибочные запросы, записи и передача сотруднику.</p></article>
+          <article class="time-card reveal"><b>04</b><h3>Рабочий запуск</h3><p>Подключаем реальные обращения и начинаем месяц сопровождения.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section deepest">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Границы первого этапа</div>
+          <div><h2>Что намеренно не включено</h2><p class="intro">Это защищает срок, бюджет и качество запуска. Расширение подключается после того, как базовый контур уже работает.</p></div>
+        </div>
+        <div class="boundary reveal"><strong>Отдельно оцениваются:</strong> входящие телефонные звонки, полностью автоматический подбор и подтверждение тренера, автоматическая комплектация групп, массовая реактивация старой базы, отдельная админ-панель и расширенная управленческая аналитика. Турниры и нестандартные договорённости на первом этапе остаются за сотрудником.</div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="wrap cta-grid">
+        <div><div class="eyebrow">Следующий шаг</div><h2>Зафиксировать контур и начать техническую сессию.</h2></div>
+        <div class="cta-box"><p>После согласования состава закрепляем ТЗ, доступы, календарный план, этапы оплаты и критерии готовности.</p><a class="btn" href="https://t.me/zhukov_boss" target="_blank" rel="noopener noreferrer">Обсудить запуск в Telegram ↗</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row"><div>Padel Friends × цифровой администратор · персональное предложение</div><div>Иван Жуков · @zhukov_boss · 2026</div></div>
+  </footer>
+
+  <script>
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    } else {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .1 });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    document.querySelectorAll('.demo-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.demo-tab').forEach(item => {
+          item.classList.remove('active');
+          item.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        document.querySelectorAll('.scenario').forEach(panel => panel.classList.toggle('active', panel.dataset.panel === tab.dataset.scenario));
+      });
+    });
+
+    const formatNumber = value => new Intl.NumberFormat('ru-RU').format(value);
+    const ticket = document.getElementById('ticket');
+    const bookings = document.getElementById('bookings');
+    function updateCalculator() {
+      const ticketValue = Number(ticket.value);
+      const bookingsPerDay = Number(bookings.value);
+      const monthly = ticketValue * bookingsPerDay * 30;
+      const months = 345000 / monthly;
+      document.getElementById('ticketValue').textContent = formatNumber(ticketValue);
+      document.getElementById('bookingsValue').textContent = bookingsPerDay;
+      document.getElementById('monthlyRevenue').textContent = formatNumber(monthly) + ' ₽';
+      document.getElementById('payback').textContent = months.toLocaleString('ru-RU', {minimumFractionDigits:1,maximumFractionDigits:1}) + ' мес.';
+      document.getElementById('bookingsNeeded').textContent = Math.ceil(345000 / ticketValue);
+    }
+    ticket.addEventListener('input', updateCalculator);
+    bookings.addEventListener('input', updateCalculator);
+    updateCalculator();
+
+    document.querySelectorAll('.filter').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.filter').forEach(item => item.classList.remove('active'));
+        button.classList.add('active');
+        const filter = button.dataset.filter;
+        document.querySelectorAll('.module').forEach(module => module.classList.toggle('hidden', filter !== 'all' && module.dataset.status !== filter));
+      });
+    });
+  </script>
+</body>
+</html>
