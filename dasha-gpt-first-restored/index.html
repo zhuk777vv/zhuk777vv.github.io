@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07090d">
+<title>Восстановленная первая GPT-версия</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07090d}iframe{display:block;width:100%;height:100dvh;border:0;background:#07090d}.badge{position:fixed;z-index:30;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));transform:translate(-50%,140%);opacity:0;padding:10px 13px;border-radius:13px;background:#e8e1d4;color:#101319;font:700 12px/1.25 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;transition:.35s;pointer-events:none;white-space:nowrap}.badge.show{transform:translate(-50%,0);opacity:1}
+</style>
+</head>
+<body>
+<iframe id="game" src="../dasha-investigation/?gpt-restored=1" title="Восстановленная первая GPT-версия" allow="autoplay; fullscreen" loading="eager"></iframe>
+<div class="badge" id="badge">первая GPT-версия восстановлена</div>
+<script>
+const frame=document.getElementById('game'),badge=document.getElementById('badge');
+function flash(t){badge.textContent=t;badge.classList.add('show');setTimeout(()=>badge.classList.remove('show'),1500)}
+frame.addEventListener('load',()=>{
+ try{
+  const w=frame.contentWindow,d=frame.contentDocument;
+  const scenes=[...d.querySelectorAll('.scene')];
+  scenes[0].querySelector('h1').textContent='Дело, которое не закрылось';
+  scenes[0].querySelector('p').textContent='Система нашла историю, которая начиналась как случайность, но почему-то продолжила оставлять следы.';
+  const rows=scenes[0].querySelectorAll('.row');
+  rows[0].querySelector('span').textContent='Объект';rows[0].querySelector('b').textContent='неизвестная связь';
+  rows[1].querySelector('span').textContent='Первый сбой';rows[1].querySelector('b').textContent='зафиксирован';
+  rows[2].querySelector('span').textContent='Причина';rows[2].querySelector('b').textContent='скрыта';
+  scenes[2].querySelector('h2').textContent='Найди точку, с которой всё пошло не по плану';
+  scenes[2].querySelector('p').textContent='Веди сканер пальцем по салону. Чем ближе нужная деталь, тем сильнее сигнал.';
+  d.getElementById('clue').innerHTML='<b>АНОМАЛИЯ ЗАФИКСИРОВАНА</b>Случайная встреча. Почти никакого разговора. И сенсорный свет, который кто-то упорно включал головой.';
+  scenes[3].querySelector('h2').textContent='Поймай частоту, на которой случайность не закончилась';
+  scenes[3].querySelector('p').textContent='Правильный канал откроет то, что продолжалось уже после первой встречи.';
+  const channelButtons=scenes[3].querySelectorAll('.poll button');
+  channelButtons[0].textContent='Сообщения каждый день';channelButtons[1].textContent='Голосовые и кружочки';channelButtons[2].textContent='Флирт, подколы и личные разговоры';
+  scenes[4].querySelector('.kicker').textContent='материал 03 · устойчивый след';
+  scenes[4].querySelector('h2').textContent='Восстанови, как сигнал не исчез';
+  scenes[4].querySelector('p').textContent='Здесь нет мест и дат. Только то, что система смогла доказать.';
+  const names=['контакт','интерес','переписка','привычка','расстояние'];
+  scenes[4].querySelectorAll('.node em').forEach((e,i)=>e.textContent=names[i]);
+  scenes[5].querySelector('h2').textContent='Почему дело всё ещё не закрылось?';
+  scenes[5].querySelector('p').textContent='Выбери версию. Система проверит её по найденным следам.';
+  const why=scenes[5].querySelectorAll('.poll button');
+  why[0].textContent='Совпадений стало слишком много';why[1].textContent='Кто-то так и не сказал главное';why[2].textContent='Расстояние ничего не отменило';
+  scenes[6].querySelector('h2').textContent='Источник сигнала — Иван';
+  d.getElementById('redacted').innerHTML='Он сделал эту <span>игру</span>, потому что ему надоело делать вид, будто Даша для него — <span>просто случайная встреча</span>.';
+  scenes[7].querySelector('.kicker').textContent='личное сообщение';
+  scenes[7].querySelector('h2').textContent='Ладно. Без расследования.';
+  const fp=scenes[7].querySelectorAll('p');
+  fp[0].textContent='Ты зацепила меня ещё тогда, когда мы почти не разговаривали. А всё, что было после, только сильнее это подтвердило.';
+  fp[1].textContent='Ты мне очень нравишься. Я не хотел говорить это как попало, поэтому получилось вот так.';
+  d.getElementById('finalTap').textContent='Оставить дело открытым';
+
+  const style=d.createElement('style');
+  style.textContent=`
+   .scanbox{touch-action:none!important;cursor:crosshair}.radar{left:22%;top:68%;touch-action:none!important;z-index:8;transition:box-shadow .1s,border-color .1s}.sensor{transition:.2s;z-index:5}.sensor.hot{border-color:#e7c486;box-shadow:0 0 0 6px rgba(231,196,134,.11),0 0 35px rgba(231,196,134,.45)}
+   .scan-meter{position:absolute;right:14px;top:15px;width:105px;padding:10px;border-radius:13px;background:rgba(5,8,12,.75);border:1px solid rgba(255,255,255,.09);z-index:10;pointer-events:none}.scan-meter span{display:block;font:800 7px/1 ui-monospace,Menlo,monospace;letter-spacing:.13em;color:#8f98a8;margin-bottom:7px}.scan-meter i{display:block;height:4px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}.scan-meter i:after{content:"";display:block;width:var(--p,0%);height:100%;background:linear-gradient(90deg,#687485,#e7c486);transition:.08s}
+   .sensor.hint{animation:hint 1s ease-in-out 3}@keyframes hint{50%{box-shadow:0 0 0 12px rgba(231,196,134,.08),0 0 30px rgba(231,196,134,.4);border-color:#e7c486}}
+   .node.bad{animation:bad .3s}@keyframes bad{25%{transform:translate(-57%,-50%)}75%{transform:translate(-43%,-50%)}}
+  `;d.head.appendChild(style);
+  const box=d.getElementById('scanbox'),radar=d.getElementById('radar'),sensor=d.getElementById('sensor'),clue=d.getElementById('clue'),next=d.getElementById('scanNext'),hint=d.getElementById('scanHint');
+  radar.onclick=null;hint.onclick=null;hint.textContent='Показать подсказку';
+  const meter=d.createElement('div');meter.className='scan-meter';meter.innerHTML='<span>УРОВЕНЬ СИГНАЛА</span><i></i>';box.appendChild(meter);
+  let active=false,done=false,ox=0,oy=0;const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  function complete(){if(done)return;done=true;active=false;radar.style.left='50%';radar.style.top='23%';sensor.classList.add('hot');meter.style.setProperty('--p','100%');clue.classList.add('show');next.disabled=false;if(typeof w.tone==='function')w.tone(880,.22);if(typeof w.haptic==='function')w.haptic([20,30,70]);flash('точка сбоя найдена')}
+  function move(x,y){if(done)return;const r=box.getBoundingClientRect(),px=clamp(x-r.left-ox,40,r.width-40),py=clamp(y-r.top-oy,40,r.height-40);radar.style.left=px+'px';radar.style.top=py+'px';const a=radar.getBoundingClientRect(),b=sensor.getBoundingClientRect(),dist=Math.hypot(a.left+a.width/2-b.left-b.width/2,a.top+a.height/2-b.top-b.height/2),p=clamp(1-dist/240,0,1);meter.style.setProperty('--p',Math.round(p*100)+'%');sensor.classList.toggle('hot',p>.72);radar.style.boxShadow=`0 0 ${12+p*42}px rgba(231,196,134,${.08+p*.42})`;if(dist<60)complete()}
+  radar.addEventListener('pointerdown',e=>{if(done)return;e.preventDefault();active=true;const r=radar.getBoundingClientRect();ox=e.clientX-(r.left+r.width/2);oy=e.clientY-(r.top+r.height/2);radar.setPointerCapture(e.pointerId)});radar.addEventListener('pointermove',e=>{if(active)move(e.clientX,e.clientY)});radar.addEventListener('pointerup',()=>active=false);radar.addEventListener('pointercancel',()=>active=false);
+  box.addEventListener('pointerdown',e=>{if(done||e.target===radar)return;e.preventDefault();active=true;ox=oy=0;move(e.clientX,e.clientY)});box.addEventListener('pointermove',e=>{if(active&&e.target!==radar)move(e.clientX,e.clientY)});box.addEventListener('pointerup',()=>active=false);box.addEventListener('pointercancel',()=>active=false);
+  hint.addEventListener('click',()=>{sensor.classList.remove('hint');void sensor.offsetWidth;sensor.classList.add('hint');flash('смотри сверху по центру')});
+  d.querySelectorAll('.node').forEach(n=>n.addEventListener('click',()=>setTimeout(()=>{if(!n.classList.contains('unlocked')){n.classList.remove('bad');void n.offsetWidth;n.classList.add('bad')}},0)));
+  const tuner=d.getElementById('tuner'),freq=d.getElementById('freqText');tuner.addEventListener('input',()=>{const v=+tuner.value;if(v>78&&v<91){freq.textContent='КАНАЛ НАЙДЕН';freq.style.color='#e7c486'}else{freq.style.color=''}});
+  flash('первая GPT-версия восстановлена');
+ }catch(e){console.error(e);flash('ошибка восстановления')}
+});
+</script>
+</body>
+</html>
