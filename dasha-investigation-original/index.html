@@ -4,13 +4,103 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07090d">
-<title>Первое расследование — архивная копия</title>
+<title>Первое расследование — исправленная архивная версия</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07090d}iframe{display:block;width:100%;height:100dvh;border:0;background:#07090d}noscript{position:fixed;inset:0;display:grid;place-items:center;padding:24px;color:#f3efe7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center}a{color:#e7c486}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07090d}iframe{display:block;width:100%;height:100dvh;border:0;background:#07090d}.patch-status{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));z-index:20;transform:translate(-50%,140%);opacity:0;padding:10px 13px;border-radius:13px;background:#e8e1d4;color:#101319;font:700 12px/1.25 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;transition:.35s;pointer-events:none;white-space:nowrap}.patch-status.show{transform:translate(-50%,0);opacity:1}noscript{position:fixed;inset:0;display:grid;place-items:center;padding:24px;color:#f3efe7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center}a{color:#e7c486}
 </style>
 </head>
 <body>
-<iframe src="../dasha-investigation/" title="Первое расследование для Даши" allow="autoplay; fullscreen" loading="eager"></iframe>
+<iframe id="game" src="../dasha-investigation/?archive-fix=2" title="Первое расследование для Даши" allow="autoplay; fullscreen" loading="eager"></iframe>
+<div class="patch-status" id="patchStatus">сканер обновлён</div>
 <noscript>Для открытия игры нужен JavaScript. <a href="../dasha-investigation/">Открыть оригинал</a></noscript>
+<script>
+const frame=document.getElementById('game');
+const status=document.getElementById('patchStatus');
+function flash(text){status.textContent=text;status.classList.add('show');setTimeout(()=>status.classList.remove('show'),1500)}
+frame.addEventListener('load',()=>{
+  try{
+    const w=frame.contentWindow,d=frame.contentDocument;
+    const box=d.getElementById('scanbox'),radar=d.getElementById('radar'),sensor=d.getElementById('sensor'),clue=d.getElementById('clue'),next=d.getElementById('scanNext'),hint=d.getElementById('scanHint');
+    if(!box||!radar||!sensor||!clue||!next||!hint) return;
+    const style=d.createElement('style');
+    style.textContent=`
+      .scanbox{touch-action:none!important;cursor:crosshair;box-shadow:inset 0 0 0 1px rgba(231,196,134,.03)}
+      .scanbox:after{content:"ВЕДИ СКАНЕР ПАЛЬЦЕМ";position:absolute;left:50%;top:15px;transform:translateX(-50%);font:800 9px/1 ui-monospace,Menlo,monospace;letter-spacing:.15em;color:rgba(231,196,134,.68);pointer-events:none;transition:.3s;white-space:nowrap}
+      .scanbox.scanning:after{content:"ПОИСК СИГНАЛА…";color:#e7c486}
+      .scanbox.found:after{content:"ТОЧКА СБОЯ НАЙДЕНА";color:#f2d79e}
+      .radar{left:22%;top:68%;touch-action:none!important;cursor:grab;transition:box-shadow .12s,border-color .12s,background .12s;z-index:8}
+      .radar.dragging{cursor:grabbing;animation-duration:.7s}
+      .sensor{transition:.2s;z-index:5}
+      .sensor.signal{border-color:#e7c486;box-shadow:0 0 0 5px rgba(231,196,134,.12),0 0 32px rgba(231,196,134,.45)}
+      .sensor.hint{animation:targetHint 1s ease-in-out 3}
+      @keyframes targetHint{50%{box-shadow:0 0 0 12px rgba(231,196,134,.08),0 0 30px rgba(231,196,134,.38);border-color:#e7c486}}
+      .scan-strength{position:absolute;right:14px;top:47px;width:92px;padding:9px 10px;border-radius:12px;background:rgba(7,9,13,.72);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(10px);z-index:10;pointer-events:none}
+      .scan-strength span{display:block;font:800 7px/1 ui-monospace,Menlo,monospace;letter-spacing:.13em;color:#8f98a8;margin-bottom:7px}
+      .scan-strength i{display:block;height:4px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+      .scan-strength i:after{content:"";display:block;height:100%;width:var(--signal,0%);background:linear-gradient(90deg,#7b8492,#e7c486);box-shadow:0 0 12px rgba(231,196,134,.35);transition:.08s}
+      #scanHint{background:rgba(255,255,255,.055)!important;color:#f3efe7!important}
+      .node.wrong{animation:wrongTap .32s ease}
+      @keyframes wrongTap{25%{transform:translate(-55%,-50%)}75%{transform:translate(-45%,-50%)}}
+    `;
+    d.head.appendChild(style);
+    hint.textContent='Показать, где искать';
+    radar.onclick=null;
+    hint.onclick=null;
+    const meter=d.createElement('div');
+    meter.className='scan-strength';meter.innerHTML='<span>УРОВЕНЬ СИГНАЛА</span><i></i>';box.appendChild(meter);
+    let active=false,found=false,offsetX=0,offsetY=0;
+    const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+    function complete(){
+      if(found)return;found=true;active=false;
+      box.classList.remove('scanning');box.classList.add('found');
+      radar.classList.remove('dragging');radar.style.left='50%';radar.style.top='23%';
+      radar.style.borderColor='#f2d79e';radar.style.background='rgba(231,196,134,.12)';
+      sensor.classList.add('signal');meter.style.setProperty('--signal','100%');
+      clue.classList.add('show');next.disabled=false;
+      if(typeof w.tone==='function')w.tone(880,.22);
+      if(typeof w.haptic==='function')w.haptic([20,30,70]);
+      flash('точка сбоя найдена');
+    }
+    function place(clientX,clientY){
+      if(found)return;
+      const r=box.getBoundingClientRect();
+      const x=clamp(clientX-r.left-offsetX,36,r.width-36),y=clamp(clientY-r.top-offsetY,36,r.height-36);
+      radar.style.left=x+'px';radar.style.top=y+'px';
+      const sr=sensor.getBoundingClientRect(),rr=radar.getBoundingClientRect();
+      const dx=(rr.left+rr.width/2)-(sr.left+sr.width/2),dy=(rr.top+rr.height/2)-(sr.top+sr.height/2),dist=Math.hypot(dx,dy);
+      const power=clamp(1-dist/240,0,1);
+      meter.style.setProperty('--signal',(power*100).toFixed(0)+'%');
+      radar.style.borderColor=`rgba(231,196,134,${.3+power*.7})`;
+      radar.style.boxShadow=`0 0 ${12+power*42}px rgba(231,196,134,${.08+power*.42})`;
+      sensor.classList.toggle('signal',power>.72);
+      if(dist<58)complete();
+    }
+    radar.addEventListener('pointerdown',e=>{
+      if(found)return;e.preventDefault();active=true;radar.classList.add('dragging');box.classList.add('scanning');
+      const rr=radar.getBoundingClientRect();offsetX=e.clientX-(rr.left+rr.width/2);offsetY=e.clientY-(rr.top+rr.height/2);
+      radar.setPointerCapture(e.pointerId);
+    });
+    radar.addEventListener('pointermove',e=>{if(active)place(e.clientX,e.clientY)});
+    function end(){active=false;radar.classList.remove('dragging');if(!found)box.classList.remove('scanning')}
+    radar.addEventListener('pointerup',end);radar.addEventListener('pointercancel',end);
+    box.addEventListener('pointerdown',e=>{
+      if(found||e.target===radar)return;e.preventDefault();active=true;offsetX=0;offsetY=0;box.classList.add('scanning');radar.classList.add('dragging');place(e.clientX,e.clientY)
+    });
+    box.addEventListener('pointermove',e=>{if(active&&e.target!==radar)place(e.clientX,e.clientY)});
+    box.addEventListener('pointerup',end);box.addEventListener('pointercancel',end);
+    hint.addEventListener('click',()=>{
+      sensor.classList.remove('hint');void sensor.offsetWidth;sensor.classList.add('hint');
+      flash('ищи сверху по центру');
+      if(typeof w.tone==='function')w.tone(360,.1,'triangle');
+    });
+    d.querySelectorAll('.node').forEach(node=>node.addEventListener('click',()=>{
+      setTimeout(()=>{if(!node.classList.contains('unlocked')){node.classList.remove('wrong');void node.offsetWidth;node.classList.add('wrong')}},0)
+    }));
+    const tuner=d.getElementById('tuner'),freq=d.getElementById('freqText');
+    if(tuner&&freq)tuner.addEventListener('input',()=>{const v=+tuner.value;if(v>78&&v<91){freq.textContent='КАНАЛ НАЙДЕН';freq.style.color='#e7c486'}else{freq.style.color=''}});
+    flash('архивная версия исправлена');
+  }catch(err){console.error(err);flash('не удалось применить исправление')}
+});
+</script>
 </body>
 </html>
