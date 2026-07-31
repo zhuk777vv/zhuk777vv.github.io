@@ -10,8 +10,8 @@
 </style>
 </head>
 <body>
-<iframe id="game" src="../dasha-investigation/?archive-fix=2" title="Первое расследование для Даши" allow="autoplay; fullscreen" loading="eager"></iframe>
-<div class="patch-status" id="patchStatus">сканер обновлён</div>
+<iframe id="game" src="../dasha-investigation/?archive-fix=3" title="Первое расследование для Даши" allow="autoplay; fullscreen" loading="eager"></iframe>
+<div class="patch-status" id="patchStatus">исправление загружено</div>
 <noscript>Для открытия игры нужен JavaScript. <a href="../dasha-investigation/">Открыть оригинал</a></noscript>
 <script>
 const frame=document.getElementById('game');
@@ -21,9 +21,15 @@ frame.addEventListener('load',()=>{
   try{
     const w=frame.contentWindow,d=frame.contentDocument;
     const box=d.getElementById('scanbox'),radar=d.getElementById('radar'),sensor=d.getElementById('sensor'),clue=d.getElementById('clue'),next=d.getElementById('scanNext'),hint=d.getElementById('scanHint');
-    if(!box||!radar||!sensor||!clue||!next||!hint) return;
+    if(!box||!radar||!sensor||!clue||!next||!hint){flash('элементы игры не найдены');return}
+
     const style=d.createElement('style');
     style.textContent=`
+      html,body,#app{height:100%!important;min-height:100%!important}
+      .scene{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain;padding-bottom:calc(38px + env(safe-area-inset-bottom))!important}
+      .scene[data-step="2"]{display:block!important}
+      .scene[data-step="2"] .scanbox{height:min(48vh,390px)!important;min-height:300px!important;max-height:390px!important;flex:none!important;margin-bottom:18px!important}
+      .scene[data-step="2"] .actions{padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;margin-top:16px!important}
       .scanbox{touch-action:none!important;cursor:crosshair;box-shadow:inset 0 0 0 1px rgba(231,196,134,.03)}
       .scanbox:after{content:"ВЕДИ СКАНЕР ПАЛЬЦЕМ";position:absolute;left:50%;top:15px;transform:translateX(-50%);font:800 9px/1 ui-monospace,Menlo,monospace;letter-spacing:.15em;color:rgba(231,196,134,.68);pointer-events:none;transition:.3s;white-space:nowrap}
       .scanbox.scanning:after{content:"ПОИСК СИГНАЛА…";color:#e7c486}
@@ -38,18 +44,31 @@ frame.addEventListener('load',()=>{
       .scan-strength span{display:block;font:800 7px/1 ui-monospace,Menlo,monospace;letter-spacing:.13em;color:#8f98a8;margin-bottom:7px}
       .scan-strength i{display:block;height:4px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
       .scan-strength i:after{content:"";display:block;height:100%;width:var(--signal,0%);background:linear-gradient(90deg,#7b8492,#e7c486);box-shadow:0 0 12px rgba(231,196,134,.35);transition:.08s}
-      #scanHint{background:rgba(255,255,255,.055)!important;color:#f3efe7!important}
+      #scanHint{background:rgba(255,255,255,.055)!important;color:#f3efe7!important;position:relative!important;z-index:20!important}
+      #scanHint.ready{background:#f3efe7!important;color:#090c12!important;box-shadow:0 13px 35px rgba(0,0,0,.35)!important}
+      #scanNext{display:none!important}
       .node.wrong{animation:wrongTap .32s ease}
       @keyframes wrongTap{25%{transform:translate(-55%,-50%)}75%{transform:translate(-45%,-50%)}}
+      @media(max-height:760px){
+        .scene{padding-top:calc(70px + env(safe-area-inset-top))!important}
+        .scene h2{font-size:clamp(36px,10vw,50px)!important}
+        .scene p{margin-top:12px!important}
+        .scene[data-step="2"] .scanbox{height:360px!important;min-height:285px!important}
+      }
     `;
     d.head.appendChild(style);
+
     hint.textContent='Показать, где искать';
-    radar.onclick=null;
-    hint.onclick=null;
+    radar.onclick=null;hint.onclick=null;
     const meter=d.createElement('div');
     meter.className='scan-strength';meter.innerHTML='<span>УРОВЕНЬ СИГНАЛА</span><i></i>';box.appendChild(meter);
+
     let active=false,found=false,offsetX=0,offsetY=0;
     const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+    function proceed(){
+      if(typeof w.go==='function'){w.go(3);return}
+      next.disabled=false;next.click();
+    }
     function complete(){
       if(found)return;found=true;active=false;
       box.classList.remove('scanning');box.classList.add('found');
@@ -57,9 +76,11 @@ frame.addEventListener('load',()=>{
       radar.style.borderColor='#f2d79e';radar.style.background='rgba(231,196,134,.12)';
       sensor.classList.add('signal');meter.style.setProperty('--signal','100%');
       clue.classList.add('show');next.disabled=false;
+      hint.textContent='Продолжить расследование';hint.classList.add('ready');
+      hint.scrollIntoView({behavior:'smooth',block:'center'});
       if(typeof w.tone==='function')w.tone(880,.22);
       if(typeof w.haptic==='function')w.haptic([20,30,70]);
-      flash('точка сбоя найдена');
+      flash('улика найдена — можно продолжать');
     }
     function place(clientX,clientY){
       if(found)return;
@@ -89,16 +110,18 @@ frame.addEventListener('load',()=>{
     box.addEventListener('pointermove',e=>{if(active&&e.target!==radar)place(e.clientX,e.clientY)});
     box.addEventListener('pointerup',end);box.addEventListener('pointercancel',end);
     hint.addEventListener('click',()=>{
+      if(found){proceed();return}
       sensor.classList.remove('hint');void sensor.offsetWidth;sensor.classList.add('hint');
       flash('ищи сверху по центру');
       if(typeof w.tone==='function')w.tone(360,.1,'triangle');
     });
+
     d.querySelectorAll('.node').forEach(node=>node.addEventListener('click',()=>{
       setTimeout(()=>{if(!node.classList.contains('unlocked')){node.classList.remove('wrong');void node.offsetWidth;node.classList.add('wrong')}},0)
     }));
     const tuner=d.getElementById('tuner'),freq=d.getElementById('freqText');
     if(tuner&&freq)tuner.addEventListener('input',()=>{const v=+tuner.value;if(v>78&&v<91){freq.textContent='КАНАЛ НАЙДЕН';freq.style.color='#e7c486'}else{freq.style.color=''}});
-    flash('архивная версия исправлена');
+    flash('исправленная версия загружена');
   }catch(err){console.error(err);flash('не удалось применить исправление')}
 });
 </script>
