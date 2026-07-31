@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#080706">
+<meta name="description" content="История, которая не должна была сохраниться">
+<title>Это не должно было сохраниться</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">ARCHIVE / D</div>
+    <div class="progress"><i id="progress"></i></div>
+    <button class="sound" id="sound" aria-label="Звук">◌</button>
+  </header>
+
+  <section class="scene active" data-step="0">
+    <div class="kicker">неизвестный личный архив</div>
+    <h1>Это не должно было сохраниться</h1>
+    <p>Но некоторые случайности почему-то запоминаются слишком точно.</p>
+    <div class="intro-mark"><i></i><b>D</b></div>
+    <div class="grow"></div>
+    <button class="btn" onclick="go(1)">Проверить, что внутри</button>
+  </section>
+
+  <section class="scene" data-step="1">
+    <div class="kicker">доступ ограничен</div>
+    <h2>Архив узнаёт только одного человека</h2>
+    <p>Даша, удерживай палец. Система сверит не отпечаток, а реакцию.</p>
+    <div class="lock-panel">
+      <div class="finger" id="finger"><div class="fill"></div></div>
+      <div class="small" id="fingerText">удерживай 2 секунды</div>
+    </div>
+    <div class="grow"></div>
+    <button class="btn" id="fingerNext" disabled onclick="go(2)">Открыть первый фрагмент</button>
+  </section>
+
+  <section class="scene" data-step="2">
+    <div class="kicker">фрагмент 01 · точка начала</div>
+    <h2>Всё началось максимально нелепо</h2>
+    <p>Никакой красивой сцены. Просто машина знакомых и свободное место рядом.</p>
+    <div class="memory-screen">
+      <div class="clue-toast" id="carClue"><b>СОВПАДЕНИЕ НАЙДЕНО</b>Ты оказалась рядом. Я тогда ещё не понял, что именно этот момент запомнится.</div>
+      <div class="car-window"><div class="road"></div><i class="light" style="left:18%;top:28%"></i><i class="light" style="left:28%;top:42%"></i><i class="light" style="right:18%;top:31%"></i><i class="light" style="right:31%;top:48%"></i></div>
+      <div class="seat-zone"><div class="seat"></div><button class="seat right" id="rightSeat" aria-label="Место рядом"></button></div>
+    </div>
+    <div class="actions"><button class="btn ghost" id="seatHint">Найти точку начала</button><button class="btn" id="carNext" disabled onclick="go(3)">Сохранить фрагмент</button></div>
+  </section>
+
+  <section class="scene" data-step="3">
+    <div class="kicker">фрагмент 02 · первая встреча</div>
+    <h2>Маршрут, который сложно придумать специально</h2>
+    <p>Восстанови порядок. Да, первое нормальное свидание выглядело именно так.</p>
+    <div class="choice-grid">
+      <button class="choice" data-choice="2"><span class="icon">🥞</span><small>ТОЧКА B</small><strong>Теремок</strong></button>
+      <button class="choice" data-choice="1"><span class="icon">🔧</span><small>ТОЧКА A</small><strong>Автомагазин</strong></button>
+      <button class="choice wide" data-choice="3"><span class="icon">🚗</span><small>ПОСЛЕ</small><strong>Просто кататься и говорить обо всём</strong></button>
+    </div>
+    <div class="sequence" id="sequence">выбери первую точку маршрута</div>
+    <div class="grow"></div>
+    <button class="btn" id="routeNext" disabled onclick="go(4)">Маршрут совпал</button>
+  </section>
+
+  <section class="scene" data-step="4">
+    <div class="kicker">фрагмент 03 · потерянное время</div>
+    <h2>Ночь почему-то заканчивалась слишком быстро</h2>
+    <p>Проведи время вперёд. Посмотрим, когда вы наконец разъезжались.</p>
+    <div class="drive">
+      <div class="skyline"></div><div class="drive-road"></div>
+      <div class="lamps"><i class="lamp" style="left:25%;top:63%"></i><i class="lamp" style="right:25%;top:63%"></i><i class="lamp" style="left:14%;top:78%"></i><i class="lamp" style="right:14%;top:78%"></i></div>
+      <div class="time-card"><b id="clock">22:40</b><span>НОЧНАЯ ПОЕЗДКА</span></div>
+      <div class="drive-copy" id="driveCopy">Разговоры обо всём. Мои тупые истории. И ни одной нормальной причины заканчивать вечер.</div>
+    </div>
+    <div class="slider-wrap"><input id="timeSlider" type="range" min="0" max="100" value="0"><div class="slider-meta"><span>ВЕЧЕР</span><span>ДО УТРА</span></div></div>
+    <div class="actions"><button class="btn" id="driveNext" disabled onclick="go(5)">Кажется, уже утро</button></div>
+  </section>
+
+  <section class="scene" data-step="5">
+    <div class="kicker">фрагмент 04 · Маза Парк</div>
+    <h2>Не все огни включаются сами</h2>
+    <p>Зажги пять кабинок. Воспоминание откроется полностью.</p>
+    <div class="park">
+      <div class="park-hint"><span>MAZA PARK</span><span><b class="counter" id="lightsCount">0</b> / 5</span></div>
+      <div class="wheel" id="wheel"></div>
+      <div class="park-msg" id="parkMsg">Иногда место вообще не важно. Важно, с кем ты там оказался.</div>
+    </div>
+    <div class="grow"></div>
+    <button class="btn" id="parkNext" disabled onclick="go(6)">Сохранить этот вечер</button>
+  </section>
+
+  <section class="scene" data-step="6">
+    <div class="kicker">текущий статус · временно</div>
+    <h2>Сейчас между вами два города</h2>
+    <p>Проведи сигнал через расстояние. Оно здесь — единственная временная помеха.</p>
+    <div class="distance" id="distanceBox">
+      <svg viewBox="0 0 400 420" preserveAspectRatio="none"><defs><linearGradient id="lineGrad"><stop stop-color="#d9b77a"/><stop offset="1" stop-color="#aebcd1"/></linearGradient></defs><path d="M78 108 C125 190 260 194 318 306"/><path class="live" id="livePath" pathLength="560" stroke-dasharray="560" d="M78 108 C125 190 260 194 318 306"/></svg>
+      <div class="city a"><div class="dot"></div><b>Твой город</b><small>СЕЙЧАС</small></div>
+      <div class="city b"><div class="dot"></div><b>Мой город</b><small>СЕЙЧАС</small></div>
+      <div class="packet" id="packet"></div>
+      <div class="distance-copy" id="distanceCopy">Нажми и удерживай линию. Некоторые вещи расстоянием не выключаются.</div>
+    </div>
+    <div class="grow"></div>
+    <button class="btn" id="distanceNext" disabled onclick="go(7)">Сигнал дошёл</button>
+  </section>
+
+  <section class="scene" data-step="7">
+    <div class="kicker">системная ошибка</div>
+    <h2>Архив перестал быть нейтральным</h2>
+    <p>Слишком много деталей совпало. Автоматическая версия произошедшего больше не работает.</p>
+    <div class="system" id="systemBox">
+      <div class="system-head"><span>ANALYSIS</span><span>FAILED</span></div>
+      <div class="terminal" id="terminal"></div>
+    </div>
+    <div class="grow"></div>
+    <button class="btn" id="systemNext" disabled onclick="go(8)">Показать настоящую причину</button>
+  </section>
+
+  <section class="scene" data-step="8">
+    <div class="kicker">без системы · от меня</div>
+    <div class="final-card">
+      <h2>Даш, короче.</h2>
+      <div class="final-text">
+        Я мог бы красиво написать, что это была судьба. Но правда проще: <span>ты случайно оказалась рядом — и теперь тебя слишком много в моей голове.</span><br><br>
+        Я скучаю по ночным поездкам, по разговорам обо всём и ни о чём, даже по своим тупым историям, которые ты почему-то слушала.<br><br>
+        Сейчас между нами разные города. Но расстояние меня не пугает. <span>Оно просто бесит.</span>
+      </div>
+      <div class="final-punch">Я не собираюсь делать вид, что мне всё равно. Ты мне чертовски нравишься. Сильнее, чем было запланировано.</div>
+      <div class="signature">— тот самый пассажир рядом</div>
+      <div class="heart"></div>
+    </div>
+    <div class="grow"></div>
+    <button class="btn ghost" onclick="restart()">Пройти ещё раз</button>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
