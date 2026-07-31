@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
 <meta charset="utf-8"/>
@@ -10,20 +11,166 @@
 <body>
 <div id="app">
 <header class="topbar"><div class="case-id">ДЕЛО №4592</div><div class="progress"><i id="progress"></i></div><button class="sound" id="sound">◌</button></header>
-<section class="scene active" data-step="0"><div class="hero"><div class="kicker">закрытый архив · доступ только для Даши</div><div class="folder-wrap"><div class="folder" id="folder"></div><div class="hero-copy"><h1>Дело о расстоянии</h1><p>Открыто повторно из-за новых обстоятельств.</p><div class="status"><span>Статус</span><b class="red">НЕ ЗАКРЫТО</b><span>Фигуранты</span><b>ты / я</b><span>Официальная версия</span><b>случайность</b><span>Причина пересмотра</span><b>слишком много совпадений</b></div><button class="btn" id="openCase">Открыть дело</button></div></div></div></section>
-<section class="scene" data-step="1"><div class="kicker">материал 01 · доска улик</div><h2>Случайность оставила слишком много следов</h2><p>Открой минимум четыре улики. Не обязательно по порядку.</p><div class="board"><svg class="thread-svg" preserveaspectratio="none" viewbox="0 0 400 760"><path d="M90 120 C155 160 245 170 312 130"></path><path d="M310 130 C280 255 260 300 95 355"></path><path d="M95 355 C175 405 240 425 310 380"></path><path d="M310 380 C248 520 180 550 90 610"></path></svg><div class="evidence-grid">
-<button class="ev" data-copy="Ты просто оказалась в машине. Я просто подсел рядом. В тот момент это выглядело как обычная случайность. Теперь это первая точка дела." data-title="Машина знакомых" style="--r:-3deg"><div class="artifact seat-file"><div class="artifact-top">СХЕМА САЛОНА · 01</div><div class="seat-plan"><i></i><i class="marked"></i><i></i><i></i></div><div class="artifact-note">СВОБОДНОЕ МЕСТО РЯДОМ</div></div><b>Машина знакомых</b><small>УЛИКА 01 · ТОЧКА НАЧАЛА</small></button>
-<button class="ev" data-copy="Первая встреча. И вместо красивого маршрута — автомагазин. Не романтично. Зато это было по-настоящему и теперь вспоминается сразу." data-title="Автомагазин" style="--r:2deg"><div class="artifact receipt auto-receipt"><div class="receipt-title">АВТОМАГАЗИН</div><div class="receipt-row"><span>Визит</span><b>№ 01</b></div><div class="receipt-row"><span>План</span><b>отсутствует</b></div><div class="receipt-row"><span>Статус</span><b>запомнилось</b></div><div class="receipt-total">ПЕРВАЯ ВСТРЕЧА</div></div><b>Автомагазин</b><small>УЛИКА 02 · ПЕРВАЯ ВСТРЕЧА</small></button>
-<button class="ev" data-copy="После автомагазина мы поехали в Теремок. На этом этапе стало понятно: нормальный сценарий нам вообще не нужен." data-title="Теремок" style="--r:4deg"><div class="artifact receipt cafe-receipt"><div class="receipt-title scripted">Теремок</div><div class="receipt-row"><span>Точка B</span><b>после магазина</b></div><div class="receipt-row"><span>Компания</span><b>правильная</b></div><div class="receipt-total">МАРШРУТ ПРОДОЛЖЕН</div></div><b>Теремок</b><small>УЛИКА 03 · ПРОДОЛЖЕНИЕ</small></button>
-<button class="ev" data-copy="Мы катались, говорили обо всём, а я рассказывал тупые истории. Время шло как-то слишком быстро, и домой никто особенно не торопился." data-title="До самого утра" style="--r:-2deg"><div class="artifact log-file"><div class="artifact-top">ЖУРНАЛ ПОЕЗДКИ</div><div class="time-pair"><b>22:41</b><span>→</span><b>05:40</b></div><div class="log-lines"><i></i><i></i><i></i><i></i></div><div class="artifact-note">РАЗГОВОР НЕ ЗАВЕРШЁН</div></div><b>Катались до утра</b><small>УЛИКА 04 · ПОВТОРЯЮЩИЙСЯ ЭПИЗОД</small></button>
-<button class="ev" data-copy="Маза Парк был просто местом. Запомнился он не из-за аттракционов, а из-за того, с кем я там был." data-title="Маза Парк" style="--r:3deg"><div class="artifact ticket-file"><div class="ticket-cut"></div><div class="ticket-name">MAZA<br/>PARK</div><div class="ticket-code">ENTRY / 05</div><div class="ticket-note">ВАЖНО НЕ МЕСТО</div></div><b>Маза Парк</b><small>УЛИКА 05 · ОСОБАЯ ЛОКАЦИЯ</small></button>
-<button class="ev" data-copy="Потом появились разные города. Расстояние есть. Но интерес, желание общаться и скучать никуда не делись." data-title="Два города" style="--r:-4deg"><div class="artifact map-file"><div class="artifact-top">КАРТА · ТЕКУЩИЙ СТАТУС</div><div class="mini-map"><i class="mroad r1"></i><i class="mroad r2"></i><i class="mroad r3"></i><span class="mdot a"></span><span class="mdot b"></span><em></em></div><div class="artifact-note">ЛИНИЯ НЕ ПРЕРВАНА</div></div><b>Разные города</b><small>УЛИКА 06 · ВРЕМЕННАЯ ПОМЕХА</small></button></div></div><div class="counter" id="counter">ИЗУЧЕНО: 0 / 4</div><div class="actions"><button class="btn" disabled="" id="boardNext">Перейти к восстановлению событий</button></div></section>
-<section class="scene" data-step="2"><div class="kicker">материал 02 · хронология</div><h2>Восстанови первую встречу</h2><p>Выбери события в том порядке, в котором они произошли.</p><div class="route-paper"><div class="route-options"><button class="route-item" data-order="2"><small>ОБЪЕКТ B</small><b>Теремок</b></button><button class="route-item" data-order="3"><small>ПОСЛЕ</small><b>Кататься и говорить обо всём</b></button><button class="route-item" data-order="1"><small>ОБЪЕКТ A</small><b>Автомагазин</b></button></div><div class="route-seq" id="routeSeq">Первый пункт пока не выбран.</div></div><div class="actions"><button class="btn" disabled="" id="routeNext">Хронология подтверждена</button></div></section>
-<section class="scene" data-step="3"><div class="kicker">материал 03 · ночной эпизод</div><h2>Перемотай ночь до рассвета</h2><p>Удерживай кнопку. Как тогда: ещё немного, ещё один разговор, ещё одна история.</p><div class="drive" id="drive"><div class="windshield"><div class="night-sky"></div><div class="road-depth"><i></i></div><span class="road-light l1"></span><span class="road-light l2"></span><span class="road-light l3"></span><span class="road-light r1"></span><span class="road-light r2"></span><span class="road-light r3"></span><div class="dash-glow"></div></div><div class="drive-text" id="driveText">Разговоры обо всём. Мои тупые истории. И ни одной нормальной причины заканчивать вечер.</div><div class="drive-clock"><div><b id="clock">22:41</b><span id="clockLabel">НОЧНАЯ ПОЕЗДКА</span></div></div></div><div class="hold"><button class="btn dark" id="holdDrive">Удерживать до утра</button><div class="meter"><i id="driveMeter"></i></div></div><div class="actions"><button class="btn" disabled="" id="driveNext">Эпизод зафиксирован</button></div></section>
-<section class="scene" data-step="4"><div class="kicker">материал 04 · особая локация</div><h2>Зажги Маза Парк</h2><p>Проведи пальцем по колесу. Свет включится только после твоего движения.</p><div class="park" id="park"><div class="park-sky"></div><div class="ferris" id="ferris"><div class="ferris-ring"></div><div class="ferris-spokes"></div><i style="--a:0deg"></i><i style="--a:45deg"></i><i style="--a:90deg"></i><i style="--a:135deg"></i><i style="--a:180deg"></i><i style="--a:225deg"></i><i style="--a:270deg"></i><i style="--a:315deg"></i></div><div class="park-ground"></div><i class="spark" style="left:28%;top:52%;--d:.1s"></i><i class="spark" style="left:44%;top:28%;--d:.25s"></i><i class="spark" style="left:67%;top:40%;--d:.4s"></i><i class="spark" style="left:78%;top:65%;--d:.55s"></i><div class="park-copy"><b>Маза Парк</b><p id="parkText">Не все места важны сами по себе. Некоторые становятся важными, потому что там был нужный человек.</p></div></div><div class="actions"><button class="btn" disabled="" id="parkNext">Локация восстановлена</button></div></section>
-<section class="scene" data-step="5"><div class="kicker">материал 05 · расстояние</div><h2>Соедини два города</h2><p>Зажми левую точку и протяни линию до правой.</p><div class="distance" id="distance"><div class="distance-map"><i class="map-road a"></i><i class="map-road b"></i><i class="map-road c"></i><i class="map-road d"></i><span class="map-block b1"></span><span class="map-block b2"></span><span class="map-block b3"></span><span class="map-block b4"></span></div><svg class="map-svg"><path class="ghost" d="M70 115 C135 175 245 245 325 325"></path><path class="live" d="M70 115 C70 115 70 115 70 115" id="liveLine"></path></svg><div class="city-label a"><b>Твой город</b><small>временно</small></div><div class="city-label b"><b>Мой город</b><small>временно</small></div><div class="city-point a" id="pointA"></div><div class="city-point b" id="pointB"></div><div class="drag-hint" id="dragHint">Протяни нить до второй точки</div></div><div class="actions"><button class="btn" disabled="" id="distanceNext">Расстояние не справилось</button></div></section>
-<section class="scene" data-step="6"><div class="kicker">материал 06 · анализ дела</div><h2>Официальная версия разваливается</h2><p>Система проверяет, можно ли всё ещё считать это обычной случайностью.</p><div class="analysis"><div class="analysis-head"><span>CASE ANALYSIS</span><span>№4592</span></div><div class="checks"><div class="check"><i>✓</i><span>Случайное знакомство</span><em>ПОДТВЕРЖДЕНО</em></div><div class="check"><i>✓</i><span>Повторяющиеся встречи</span><em>ПОДТВЕРЖДЕНО</em></div><div class="check"><i>✓</i><span>Эмоциональная значимость</span><em>ПОДТВЕРЖДЕНО</em></div><div class="check"><i>✓</i><span>Расстояние между городами</span><em>ПОДТВЕРЖДЕНО</em></div><div class="check error"><i>!</i><span>Классификация как случайность</span><em>ОШИБКА</em></div></div><div class="stamp" id="stamp">рассекречено</div></div><div class="actions"><button class="btn" disabled="" id="analysisNext">Открыть заключение</button></div></section>
-<section class="scene" data-step="7"><div class="kicker">материал 07 · протокол разговоров</div><h2>Один фрагмент система всё-таки восстановила</h2><p>Нажми на запись. Это не настоящая аудиозапись — только то, как система собрала наши ночные разговоры.</p><div class="audio-file"><div class="audio-head"><span>RECOVERED AUDIO</span><span>22:41—05:40</span></div><div class="wave" id="conversationWave"></div><button class="audio-play" id="playConversation"><i></i><span>Восстановить фрагмент</span></button><div class="transcript" id="transcript"><p>«Ещё одна тупая история — и по домам».</p><p>Через час: «Ладно, ещё немного».</p><p>Фактически домой никто не торопился.</p></div><div class="audio-result" id="audioResult">Время потеряно. Разговор сохранён.</div></div><div class="actions"><button class="btn" disabled="" id="conversationNext">Перейти к заключению</button></div></section>
-<section class="scene" data-step="8"><div class="kicker">рассекреченное заключение</div><h2>Если убрать всю красивую хрень</h2><div class="verdict" id="verdict"><div class="verdict-line">Убрать папку.</div><div class="verdict-line">Убрать улики и красные нитки.</div><div class="verdict-line">Убрать попытки назвать всё случайностью.</div><div class="verdict-line red">Остаётся одна причина.</div></div><div class="actions"><button class="btn" disabled="" id="verdictNext">Прочитать лично</button></div></section>
-<section class="scene" data-step="9"><div class="kicker">личное сообщение · без системы</div><div class="letter"><h2>Даш, всё просто.</h2><p>Даш, мне не хочется прятать это за красивыми формулировками.<br/><br/>Мне очень легко и интересно рядом с тобой. Я скучаю по нашим ночным поездкам, разговорам обо всём и тому, как быстро рядом с тобой проходило время.<br/><br/>Сейчас мы в разных городах, и меня это бесит. Но ничего не отменяет.<br/><br/><strong>Ты мне правда очень нравишься.</strong><br/><br/>Я хочу увидеть тебя снова — как только сможем.</p><div class="signature">Иван</div><div class="keys-mark">⌁</div></div><div class="actions final-action"><button class="btn dark" id="closeCase">Оставить дело открытым</button></div></section>
-</div><div class="modal" id="modal"><div class="modal-card"><img id="modalImg" class="legacy-modal-img" alt=""/><div class="modal-artifact" id="modalArtifact"></div><div class="modal-copy"><small>УЛИКА ИЗУЧЕНА</small><h3 id="modalTitle"></h3><p id="modalText"></p></div><button class="btn dark" id="modalClose">Вернуться к доске</button></div></div><div class="toast" id="toast"></div><script src="app.js?v=1"></script><script src="patch.js?v=3"></script></body></html>
+<section class="scene active" data-step="0">
+<div class="hero">
+<div class="kicker">закрытый архив · доступ только для Даши</div>
+<div class="folder-wrap">
+<div class="folder" id="folder"></div>
+<div class="hero-copy">
+<h1>Дело о расстоянии</h1>
+<p>Открыто повторно из-за новых обстоятельств.</p>
+<div class="status">
+<span>Статус</span><b class="red">НЕ ЗАКРЫТО</b>
+<span>Фигуранты</span><b>ты / я</b>
+<span>Официальная версия</span><b>случайность</b>
+<span>Причина пересмотра</span><b>слишком много совпадений</b>
+</div>
+<button class="btn" id="openCase">Открыть дело</button>
+</div>
+</div>
+</div>
+</section>
+<section class="scene" data-step="1">
+<div class="kicker">материал 01 · доска улик</div>
+<h2>Случайность оставила слишком много следов</h2>
+<p>Открой минимум четыре улики. Не обязательно по порядку.</p>
+<div class="board">
+<svg class="thread-svg" preserveaspectratio="none" viewbox="0 0 400 760">
+<path d="M90 120 C155 160 245 170 312 130"></path>
+<path d="M310 130 C280 255 260 300 95 355"></path>
+<path d="M95 355 C175 405 240 425 310 380"></path>
+<path d="M310 380 C248 520 180 550 90 610"></path>
+</svg>
+<div class="evidence-grid"><button class="ev" data-copy="Ты просто оказалась в машине. Я просто подсел рядом. В тот момент это выглядело как обычная случайность. Теперь это первая точка дела." data-title="Машина знакомых" style="--r:-3deg">
+<div class="artifact seat-file"><div class="artifact-top">СХЕМА САЛОНА · 01</div><div class="seat-plan"><i></i><i class="marked"></i><i></i><i></i></div><div class="artifact-note">СВОБОДНОЕ МЕСТО РЯДОМ</div></div><b>Машина знакомых</b><small>УЛИКА 01 · ТОЧКА НАЧАЛА</small></button><button class="ev" data-copy="Первая встреча. И вместо красивого маршрута — автомагазин. Не романтично. Зато это было по-настоящему и теперь вспоминается сразу." data-title="Автомагазин" style="--r:2deg">
+<div class="artifact receipt auto-receipt"><div class="receipt-title">АВТОМАГАЗИН</div><div class="receipt-row"><span>Визит</span><b>№ 01</b></div><div class="receipt-row"><span>План</span><b>отсутствует</b></div><div class="receipt-row"><span>Статус</span><b>запомнилось</b></div><div class="receipt-total">ПЕРВАЯ ВСТРЕЧА</div></div><b>Автомагазин</b><small>УЛИКА 02 · ПЕРВАЯ ВСТРЕЧА</small></button><button class="ev" data-copy="После автомагазина мы поехали в Теремок. На этом этапе стало понятно: нормальный сценарий нам вообще не нужен." data-title="Теремок" style="--r:4deg">
+<div class="artifact receipt cafe-receipt"><div class="receipt-title scripted">Теремок</div><div class="receipt-row"><span>Точка B</span><b>после магазина</b></div><div class="receipt-row"><span>Компания</span><b>правильная</b></div><div class="receipt-total">МАРШРУТ ПРОДОЛЖЕН</div></div><b>Теремок</b><small>УЛИКА 03 · ПРОДОЛЖЕНИЕ</small></button><button class="ev" data-copy="Мы катались, говорили обо всём, а я рассказывал тупые истории. Время шло как-то слишком быстро, и домой никто особенно не торопился." data-title="До самого утра" style="--r:-2deg">
+<div class="artifact log-file"><div class="artifact-top">ЖУРНАЛ ПОЕЗДКИ</div><div class="time-pair"><b>22:41</b><span>→</span><b>05:40</b></div><div class="log-lines"><i></i><i></i><i></i><i></i></div><div class="artifact-note">РАЗГОВОР НЕ ЗАВЕРШЁН</div></div><b>Катались до утра</b><small>УЛИКА 04 · ПОВТОРЯЮЩИЙСЯ ЭПИЗОД</small></button><button class="ev" data-copy="Маза Парк был просто местом. Запомнился он не из-за аттракционов, а из-за того, с кем я там был." data-title="Маза Парк" style="--r:3deg">
+<div class="artifact ticket-file"><div class="ticket-cut"></div><div class="ticket-name">MAZA<br/>PARK</div><div class="ticket-code">ENTRY / 05</div><div class="ticket-note">ВАЖНО НЕ МЕСТО</div></div><b>Маза Парк</b><small>УЛИКА 05 · ОСОБАЯ ЛОКАЦИЯ</small></button><button class="ev" data-copy="Потом появились разные города. Расстояние есть. Но интерес, желание общаться и скучать никуда не делись." data-title="Два города" style="--r:-4deg">
+<div class="artifact map-file"><div class="artifact-top">КАРТА · ТЕКУЩИЙ СТАТУС</div><div class="mini-map"><i class="mroad r1"></i><i class="mroad r2"></i><i class="mroad r3"></i><span class="mdot a"></span><span class="mdot b"></span><em></em></div><div class="artifact-note">ЛИНИЯ НЕ ПРЕРВАНА</div></div><b>Разные города</b><small>УЛИКА 06 · ВРЕМЕННАЯ ПОМЕХА</small></button></div>
+</div>
+<div class="counter" id="counter">ИЗУЧЕНО: 0 / 4</div>
+<div class="actions"><button class="btn" disabled="" id="boardNext">Перейти к восстановлению событий</button></div>
+</section>
+<section class="scene" data-step="2">
+<div class="kicker">материал 02 · хронология</div>
+<h2>Восстанови первую встречу</h2>
+<p>Выбери события в том порядке, в котором они произошли.</p>
+<div class="route-paper">
+<div class="route-options">
+<button class="route-item" data-order="2"><small>ОБЪЕКТ B</small><b>Теремок</b></button>
+<button class="route-item" data-order="3"><small>ПОСЛЕ</small><b>Кататься и говорить обо всём</b></button>
+<button class="route-item" data-order="1"><small>ОБЪЕКТ A</small><b>Автомагазин</b></button>
+</div>
+<div class="route-seq" id="routeSeq">Первый пункт пока не выбран.</div>
+</div>
+<div class="actions"><button class="btn" disabled="" id="routeNext">Хронология подтверждена</button></div>
+</section>
+<section class="scene" data-step="3">
+<div class="kicker">материал 03 · ночной эпизод</div>
+<h2>Перемотай ночь до рассвета</h2>
+<p>Удерживай кнопку. Как тогда: ещё немного, ещё один разговор, ещё одна история.</p>
+<div class="drive" id="drive">
+<div class="windshield"><div class="night-sky"></div><div class="road-depth"><i></i></div><span class="road-light l1"></span><span class="road-light l2"></span><span class="road-light l3"></span><span class="road-light r1"></span><span class="road-light r2"></span><span class="road-light r3"></span><div class="dash-glow"></div></div>
+<div class="drive-text" id="driveText">Разговоры обо всём. Мои тупые истории. И ни одной нормальной причины заканчивать вечер.</div>
+<div class="drive-clock"><div><b id="clock">22:41</b><span id="clockLabel">НОЧНАЯ ПОЕЗДКА</span></div></div>
+</div>
+<div class="hold"><button class="btn dark" id="holdDrive">Удерживать до утра</button><div class="meter"><i id="driveMeter"></i></div></div>
+<div class="actions"><button class="btn" disabled="" id="driveNext">Эпизод зафиксирован</button></div>
+</section>
+<section class="scene" data-step="4">
+<div class="kicker">материал 04 · особая локация</div>
+<h2>Зажги Маза Парк</h2>
+<p>Проведи пальцем по колесу. Свет включится только после твоего движения.</p>
+<div class="park" id="park">
+<div class="park-sky"></div><div class="ferris" id="ferris"><div class="ferris-ring"></div><div class="ferris-spokes"></div><i style="--a:0deg"></i><i style="--a:45deg"></i><i style="--a:90deg"></i><i style="--a:135deg"></i><i style="--a:180deg"></i><i style="--a:225deg"></i><i style="--a:270deg"></i><i style="--a:315deg"></i></div><div class="park-ground"></div>
+<i class="spark" style="left:28%;top:52%;--d:.1s"></i><i class="spark" style="left:44%;top:28%;--d:.25s"></i><i class="spark" style="left:67%;top:40%;--d:.4s"></i><i class="spark" style="left:78%;top:65%;--d:.55s"></i>
+<div class="park-copy"><b>Маза Парк</b><p id="parkText">Не все места важны сами по себе. Некоторые становятся важными, потому что там был нужный человек.</p></div>
+</div>
+<div class="actions"><button class="btn" disabled="" id="parkNext">Локация восстановлена</button></div>
+</section>
+<section class="scene" data-step="5">
+<div class="kicker">материал 05 · расстояние</div>
+<h2>Соедини два города</h2>
+<p>Зажми левую точку и протяни линию до правой.</p>
+<div class="distance" id="distance">
+<div class="distance-map"><i class="map-road a"></i><i class="map-road b"></i><i class="map-road c"></i><i class="map-road d"></i><span class="map-block b1"></span><span class="map-block b2"></span><span class="map-block b3"></span><span class="map-block b4"></span></div>
+<svg class="map-svg"><path class="ghost" d="M70 115 C135 175 245 245 325 325"></path><path class="live" d="M70 115 C70 115 70 115 70 115" id="liveLine"></path></svg>
+<div class="city-label a"><b>Твой город</b><small>временно</small></div><div class="city-label b"><b>Мой город</b><small>временно</small></div>
+<div class="city-point a" id="pointA"></div><div class="city-point b" id="pointB"></div>
+<div class="drag-hint" id="dragHint">Протяни нить до второй точки</div>
+</div>
+<div class="actions"><button class="btn" disabled="" id="distanceNext">Расстояние не справилось</button></div>
+</section>
+<section class="scene" data-step="6">
+<div class="kicker">материал 06 · анализ дела</div>
+<h2>Официальная версия разваливается</h2>
+<p>Система проверяет, можно ли всё ещё считать это обычной случайностью.</p>
+<div class="analysis">
+<div class="analysis-head"><span>CASE ANALYSIS</span><span>№4592</span></div>
+<div class="checks">
+<div class="check"><i>✓</i><span>Случайное знакомство</span><em>ПОДТВЕРЖДЕНО</em></div>
+<div class="check"><i>✓</i><span>Повторяющиеся встречи</span><em>ПОДТВЕРЖДЕНО</em></div>
+<div class="check"><i>✓</i><span>Эмоциональная значимость</span><em>ПОДТВЕРЖДЕНО</em></div>
+<div class="check"><i>✓</i><span>Расстояние между городами</span><em>ПОДТВЕРЖДЕНО</em></div>
+<div class="check error"><i>!</i><span>Классификация как случайность</span><em>ОШИБКА</em></div>
+</div>
+<div class="stamp" id="stamp">рассекречено</div>
+</div>
+<div class="actions"><button class="btn" disabled="" id="analysisNext">Открыть заключение</button></div>
+</section>
+<section class="scene" data-step="7">
+<div class="kicker">материал 07 · протокол разговоров</div>
+<h2>Один фрагмент система всё-таки восстановила</h2>
+<p>Нажми на запись. Это не настоящая аудиозапись — только то, как система собрала наши ночные разговоры.</p>
+<div class="audio-file">
+<div class="audio-head"><span>RECOVERED AUDIO</span><span>22:41—05:40</span></div>
+<div class="wave" id="conversationWave"></div>
+<button class="audio-play" id="playConversation"><i></i><span>Восстановить фрагмент</span></button>
+<div class="transcript" id="transcript">
+<p>«Ещё одна тупая история — и по домам».</p>
+<p>Через час: «Ладно, ещё немного».</p>
+<p>Фактически домой никто не торопился.</p>
+</div>
+<div class="audio-result" id="audioResult">Время потеряно. Разговор сохранён.</div>
+</div>
+<div class="actions"><button class="btn" disabled="" id="conversationNext">Перейти к заключению</button></div>
+</section><section class="scene" data-step="8">
+<div class="kicker">рассекреченное заключение</div>
+<h2>Если убрать всю красивую хрень</h2>
+<div class="verdict" id="verdict">
+<div class="verdict-line">Убрать папку.</div>
+<div class="verdict-line">Убрать улики и красные нитки.</div>
+<div class="verdict-line">Убрать попытки назвать всё случайностью.</div>
+<div class="verdict-line red">Остаётся одна причина.</div>
+</div>
+<div class="actions"><button class="btn" disabled="" id="verdictNext">Прочитать лично</button></div>
+</section>
+<section class="scene" data-step="9">
+<div class="kicker">личное сообщение · без системы</div>
+<div class="letter">
+<h2>Даш, всё просто.</h2>
+<p>
+Даш, мне не хочется прятать это за красивыми формулировками.<br/><br/>
+Мне очень легко и интересно рядом с тобой. Я скучаю по нашим ночным поездкам, разговорам обо всём и тому, как быстро рядом с тобой проходило время.<br/><br/>
+Сейчас мы в разных городах, и меня это бесит. Но ничего не отменяет.<br/><br/>
+<strong>Ты мне правда очень нравишься.</strong><br/><br/>
+Я хочу увидеть тебя снова — как только сможем.
+</p>
+<div class="signature">Иван</div>
+<div class="keys-mark">⌁</div>
+</div>
+<div class="actions final-action"><button class="btn dark" id="closeCase">Оставить дело открытым</button></div>
+</section>
+</div>
+<div class="modal" id="modal">
+<div class="modal-card">
+<div class="modal-artifact" id="modalArtifact"></div>
+<div class="modal-copy"><small>УЛИКА ИЗУЧЕНА</small><h3 id="modalTitle"></h3><p id="modalText"></p></div>
+<button class="btn dark" id="modalClose">Вернуться к доске</button>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="app.js?v=1"></script><script src="patch.js?v=4"></script>
+</body>
+</html>
