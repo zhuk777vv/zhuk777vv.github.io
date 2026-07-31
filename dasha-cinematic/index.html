@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="История, которая началась со свободного места рядом">
+  <title>Место рядом</title>
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <main id="app" aria-live="polite">
+    <canvas id="scene" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="cinematic-cut" id="cinematicCut" aria-hidden="true"></div>
+
+    <header class="hud" id="hud">
+      <div class="hud-mark">PRIVATE / D</div>
+      <div class="hud-progress"><i id="progress"></i></div>
+      <button class="sound" id="sound" aria-label="Включить звук"><span></span></button>
+    </header>
+
+    <section class="chapter active intro" data-chapter="0">
+      <div class="intro-copy">
+        <div class="eyebrow">обнаружен несохранённый фрагмент</div>
+        <h1>Это не должно было остаться в памяти</h1>
+        <p>Но одна случайность почему-то запомнилась слишком точно.</p>
+      </div>
+      <button class="hold-control" id="unlockHold" aria-label="Удерживать для открытия">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"></circle><circle class="ring" cx="60" cy="60" r="54"></circle></svg>
+        <span><b>Удерживай</b><small>не отпускай</small></span>
+      </button>
+      <div class="micro">Лучше открыть со звуком</div>
+    </section>
+
+    <section class="chapter car" data-chapter="1">
+      <div class="floating-copy top-left">
+        <div class="eyebrow">фрагмент 01</div>
+        <h2>Найди место, с которого всё началось</h2>
+        <p>Там не было ни красивого плана, ни особого повода.</p>
+      </div>
+      <button class="seat-hotspot" id="seatHotspot" aria-label="Свободное место рядом"><span></span><small>свободное место</small></button>
+      <div class="hint pulse-hint" id="seatHint">Коснись места рядом</div>
+    </section>
+
+    <section class="chapter route" data-chapter="2">
+      <div class="floating-copy top-left compact">
+        <div class="eyebrow">маршрут восстановлен частично</div>
+        <h2>Первое свидание звучало как плохая импровизация</h2>
+      </div>
+      <div class="nav-screen" id="navScreen">
+        <div class="nav-head"><span>ИСТОРИЯ МАРШРУТА</span><b id="routePercent">0%</b></div>
+        <div class="route-line"><i id="routeFill"></i><button class="route-thumb" id="routeThumb" aria-label="Восстановить маршрут"></button></div>
+        <div class="route-labels">
+          <div><span>01</span><b>АВТОМАГАЗИН</b></div>
+          <div><span>02</span><b>ТЕРЕМОК</b></div>
+          <div><span>03</span><b>БЕЗ МАРШРУТА</b></div>
+        </div>
+        <div class="nav-caption" id="navCaption">Проведи маршрут до конца</div>
+      </div>
+    </section>
+
+    <section class="chapter rain" data-chapter="3">
+      <div class="floating-copy top-left compact">
+        <div class="eyebrow">фрагмент 02</div>
+        <h2>Некоторые разговоры лучше видно, когда стираешь шум</h2>
+      </div>
+      <div class="wipe-layer" id="wipeLayer" aria-label="Стереть дождь с окна"></div>
+      <div class="wipe-message" id="wipeMessage">
+        <span>Я опять рассказывал какую-то тупую историю.</span>
+        <b>Ты почему-то слушала.</b>
+      </div>
+      <div class="hint" id="wipeHint">Проведи пальцем по стеклу</div>
+    </section>
+
+    <section class="chapter night" data-chapter="4">
+      <div class="floating-copy top-left compact">
+        <div class="eyebrow">время потеряно</div>
+        <h2>Вечера почему-то заканчивались уже утром</h2>
+      </div>
+      <div class="clock-block"><b id="clock">22:41</b><span id="clockDate">СЕГОДНЯ</span></div>
+      <button class="accelerator" id="accelerator" aria-label="Удерживать педаль">
+        <i></i><span><b>ДЕРЖИ</b><small>до самого утра</small></span>
+      </button>
+      <div class="night-line" id="nightLine">Никаких важных дел. Просто машина, город и разговоры обо всём.</div>
+    </section>
+
+    <section class="chapter park" data-chapter="5">
+      <div class="floating-copy top-left compact">
+        <div class="eyebrow">фрагмент 04</div>
+        <h2>Маза Парк сохранился не из-за аттракционов</h2>
+      </div>
+      <div class="wheel-ui" id="wheelUI">
+        <div class="wheel-ring" id="wheelRing">
+          <i style="--n:0"></i><i style="--n:1"></i><i style="--n:2"></i><i style="--n:3"></i>
+          <i style="--n:4"></i><i style="--n:5"></i><i style="--n:6"></i><i style="--n:7"></i>
+          <i style="--n:8"></i><i style="--n:9"></i><i style="--n:10"></i><i style="--n:11"></i>
+        </div>
+        <div class="wheel-center"><b>MAZA</b><span>проведи по кругу</span></div>
+      </div>
+      <div class="park-copy" id="parkCopy">Место было обычным. Необычной была ты рядом.</div>
+    </section>
+
+    <section class="chapter distance" data-chapter="6">
+      <div class="floating-copy top-left compact">
+        <div class="eyebrow">текущий статус</div>
+        <h2>Потом между нами появились два города</h2>
+        <p>Положи два пальца на точки одновременно.</p>
+      </div>
+      <div class="distance-map" id="distanceMap">
+        <svg viewBox="0 0 420 620" preserveAspectRatio="none" aria-hidden="true">
+          <path class="ghost-path" d="M84 176 C170 235 240 360 336 450"></path>
+          <path class="live-path" id="livePath" pathLength="1" d="M84 176 C170 235 240 360 336 450"></path>
+        </svg>
+        <div class="city city-a" data-city="a"><i></i><b>ТЫ</b><span>ДРУГОЙ ГОРОД</span></div>
+        <div class="city city-b" data-city="b"><i></i><b>Я</b><span>ДРУГОЙ ГОРОД</span></div>
+        <div class="signal" id="signal"></div>
+      </div>
+      <div class="distance-copy" id="distanceCopy">Расстояние появилось между нами. Но почему-то не внутри.</div>
+      <button class="one-finger" id="oneFinger">Соединить одним пальцем</button>
+    </section>
+
+    <section class="chapter shutdown" data-chapter="7">
+      <div class="shutdown-copy" id="shutdownCopy">
+        <div class="eyebrow">система больше не нужна</div>
+        <h2>Ладно. Хватит делать вид, что это просто архив.</h2>
+        <p>Здесь осталась только одна причина, ради которой всё это было собрано.</p>
+      </div>
+      <button class="truth" id="truthButton"><span>Сказать честно</span></button>
+    </section>
+
+    <section class="chapter finale" data-chapter="8">
+      <div class="final-wrap">
+        <div class="eyebrow">Даше. Без красивых формулировок.</div>
+        <h2 id="finalTitle">Ты случайно оказалась рядом.</h2>
+        <div class="final-text" id="finalText">
+          <p>И теперь тебя почему-то слишком много в моей голове.</p>
+          <p>Я скучаю по ночным поездкам, разговорам обо всём и даже по своим тупым историям, которые ты зачем-то слушала.</p>
+          <p>Сейчас между нами разные города. И да, меня это бесит.</p>
+          <strong>Потому что ты мне чертовски нравишься. Намного сильнее, чем я собирался тебе показывать.</strong>
+        </div>
+        <div class="signature">— тот самый человек, который однажды подсел рядом</div>
+        <button class="replay" id="replay">Пройти ещё раз</button>
+      </div>
+    </section>
+
+    <div class="toast" id="toast"></div>
+  </main>
+  <script src="app.js?v=1"></script>
+</body>
+</html>
